@@ -1,0 +1,22 @@
+import React from 'react';
+import Link from 'next/link';
+import LogoutButton from '../components/LogoutButton'
+
+interface AdminHeaderProps {
+  activeNav: string;
+}
+const AdminHeader: React.FC<AdminHeaderProps> = ({ activeNav }) => {
+  return (
+    <header className="p-4 pt-5 bg-black flex justify-between items-center gap-5 lg:gap-0 text-white border-b-[0.5px] border-gray-800">
+      <h1 className="text-lg">{activeNav}</h1>
+      <div className='flex gap-3'>
+        <Link href="/">
+          <button className="bg-customBlue text-black font-light px-5 py-1 rounded-lg " >Back to Home</button>
+        </Link>
+        <LogoutButton />
+      </div>
+    </header>
+  );
+};
+
+export default AdminHeader;
