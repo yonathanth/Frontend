@@ -5,6 +5,7 @@ import {ExerciseType} from "@/src/app/[locale]/user/Plans/workoutPlan/[workoutPl
 import WorkoutPlanList from "@/src/app/[locale]/user/Plans/workoutPlan/page";
 import MealList from "@/src/app/[locale]/user/Plans/Meals/page";
 import MealPlanList from "@/src/app/[locale]/user/Plans/MealPlans/page";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -92,9 +93,7 @@ export default function PlansPage() {
 
       <main className="p-4 md:p-8 mx-auto">
         {isLoading ? (
-          <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
-            <div className="text-4xl font-bold">Loading...</div>
-          </div>
+         <LoadingPage/>
         ) : error ? (
           <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
             <div className="text-4xl font-bold text-red-500">Error</div>

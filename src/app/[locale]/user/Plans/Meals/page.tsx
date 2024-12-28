@@ -160,32 +160,35 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
 
       {/* Image Preview for Larger Screens */}
       <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#1e1e1e] p-1">
-        <div className="w-full md:w-2/3 h-60 md:h-2/3 rounded-lg relative flex flex-col gap-3">
-          <div className="relative w-full h-60">
-            <Image
-              src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
-                selectedMeal ? selectedMeal.slug : ""
-              }`}
-              fill
-              alt={selectedMeal ? selectedMeal.name : ""}
-              // layout="fill"
-              // objectFit="cover"
-              className="rounded-lg"
-            />
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="text-xl md:text-2xl font-bold">{selectedMeal?.name}</h2>
-            <p className="text-xs text-gray-300 font-extralight">
-              {meals.find((meal) => meal.slug === selectedMeal?.slug)?.ingredients[0].name}
-            </p>
-          </div>
-          <button>
+        {selectedMeal ? (
+          <div className="w-full md:w-2/3 h-60 md:h-2/3 rounded-lg relative flex flex-col gap-3">
+            <div className="relative w-full h-60">
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
+                  selectedMeal ? selectedMeal.slug : ""
+                }`}
+                fill
+                alt={selectedMeal ? selectedMeal.name : ""}
+                className="rounded-lg"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <h2 className="text-xl md:text-2xl font-bold">{selectedMeal?.name}</h2>
+              <p className="text-xs text-gray-300 font-extralight">
+                {meals.find((meal) => meal.slug === selectedMeal?.slug)?.ingredients[0].name}
+              </p>
+            </div>
+            <button>
             <span className="text-white text-lg font-bold px-5 py-1 rounded-full bg-customBlue">
-              {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
+          {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
               <span className="text-xs font-extralight">Kcal</span>
-            </span>
-          </button>
-        </div>
+        </span>
+            </button>
+          </div>
+
+        ) : <div className="w-full md:w-2/3 h-60 bg-zinc-700 rounded-lg flex justify-center items-center">Select a
+          Meal</div>}
+
       </div>
     </div>
   );

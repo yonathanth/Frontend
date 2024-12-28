@@ -71,9 +71,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
   if (isLoading) {
     return (
-      <div className="text-white bg-zinc-900 p-10 rounded-lg m-20">
-        <div className="text-4xl font-bold">Loading Workout Plan...</div>
-      </div>
+      <LoadingPage/>
     );
   }
 

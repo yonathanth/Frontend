@@ -9,49 +9,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ExtendModal from "./ExtendModal";
 import Image from "next/image";
+import {User} from "../layout";
 import { WorkoutPlanType } from "@/src/app/[locale]/user/Plans/workoutPlan/page";
 import { MealType } from "@/src/app/[locale]/user/Plans/Meals/page";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export interface User {
-  id: string; // UUID
-  fullName: string;
-  gender: string;
-  phoneNumber: string;
-  email?: string;
-  address: string;
-  dob: Date;
-  emergencyContact: string;
-  firstRegisteredAt: Date;
-  startDate: Date;
-  totalAttendance: number;
-  countDown?: number;
-  height?: number;
-  weight?: number;
-  healthConditions: {
-    condition: string;
-    medications: string;
-  };
-  level: string;
-  goal: string;
-  status: string;
-  freezeDate?: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  serviceId: string;
-  service?: Array<Object>;
-  attendance: Array<Object>;
-  profileImageUrl?: string | null;
-  daysLeft: number;
-  lastWorkoutDate?: Date;
-  currentStreak: number;
-  highestStreak: number;
-  exercisesCompleted: Array<Object>;
-  notifications: Notification[];
-  workouts: Array<Object>;
-  bmis: Array<Object>;
-  mealPlans: Array<Object>;
-}
 
 interface AdvertisementType {
   name: string;

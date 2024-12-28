@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faPlay} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -161,9 +162,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
 
   if (isLoading) {
     return (
-      <div className="text-white bg-zinc-900 p-10 rounded-lg m-20">
-        <div className="text-4xl font-bold">Loading Workout Plan...</div>
-      </div>
+      <LoadingPage/>
     );
   }
 
