@@ -15,7 +15,6 @@ import { routing } from "@/src/i18n/routing";
 import LoadingPage from "../admin/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 interface ServiceType {
   id: string;
   name: string;
@@ -52,7 +51,7 @@ const Page = () => {
 
   const descriptions: Record<TabName, string> = {
     "Body Building":
-      "Achieve your fitness goals with our dedicated bodybuilding packages.",
+      "Achieve your Being Fit goals with our dedicated bodybuilding packages.",
     Exercise:
       "Stay fit and energized with various exercise options for all levels.",
     "Group Fitness":
@@ -69,7 +68,9 @@ const Page = () => {
   const fetchServices = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${NEXT_PUBLIC_API_BASE_URL}/api/services`);
+      const response = await axios.get(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/services`
+      );
       const data = response.data.data;
       const categorizedServices: { [key in TabName]?: ServiceType[] } = {};
 
