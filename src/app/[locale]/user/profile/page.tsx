@@ -16,11 +16,11 @@ import {
 } from "../../admin/gym-member/[memberDetail]/helperFunctions";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-interface BmiData {
-  id: string;
-  userId: string;
-  value: number;
-}
+// interface BmiData {
+//   id: string;
+//   userId: string;
+//   value: number;
+// }
 interface Service {
   id: string;
   name: string;

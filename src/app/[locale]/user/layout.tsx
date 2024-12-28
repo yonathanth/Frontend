@@ -1,6 +1,6 @@
 "use client";
 
-import React, {ReactNode, useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback} from "react";
 import UserHeader from "./components/UserHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -49,9 +49,9 @@ export interface User {
   mealPlans: Array<Object>; // Array of UserMealPlan models
 }
 
-interface LayoutProps {
-  children: ReactNode;
-}
+// interface LayoutProps {
+//   children: ReactNode;
+// }
 
 interface CustomJwtPayload {
   role: string;
@@ -141,7 +141,7 @@ export default function UserLayout({
         setUser(fetchedData);
       });
     }
-  }, [userId]); // Add userId as a dependency
+  }, [userId, getUserDetails]); // Add userId as a dependency
 
   if (!isAuthorized) {
     return <div>Loading...</div>;
