@@ -59,13 +59,11 @@ const WorkoutPlanList: React.FC<WorkoutPlansListProps> = ({plans, className}) =>
                   {plan.duration}
                 </p>
               </div>
-              <img
-                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${
-                  plan ? plan.slug : ""
-                }`}
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
-                // layout="fill"
-                // objectFit="cover"
+                width={240}
+                height={160}
                 className="rounded-lg"
               />
             </div>

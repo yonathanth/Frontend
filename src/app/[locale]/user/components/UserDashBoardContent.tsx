@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback } from "react";
 import {
   faBarsProgress,
   faClock,
@@ -100,14 +101,12 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     }
   };
 
-  const getUserDetails = async () => {
+  const getUserDetails = useCallback(async () => {
     console.log(userId);
     try {
       const res = await fetch(
-        ` ${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`,
-        {
-          cache: "no-store",
-        }
+        ` ${NEXT_PUBLIC_API_BASE_URL}/api/memberManagement/${userId}/profile`,
+        { cache: "no-store" }
       );
       if (!res.ok) {
         if (res.status === 404) {
@@ -121,7 +120,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         }
       }
       const data = await res.json();
-      const user = data?.data?.user;
+      const user = data?.data;
 
       if (user?.workouts?.[0]?.workoutId) {
         const workoutRes = await fetch(
@@ -147,7 +146,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   const fetchRecommendedMeals = async () => {
     try {
@@ -171,7 +170,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     }
   };
 
-  const fetchTodayPlans = async () => {
+  const fetchTodayPlans = useCallback(async () => {
     try {
       const res = await fetch(
         `${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}/getMyWorkouts`,
@@ -192,7 +191,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         err instanceof Error ? err.message : "An unknown error occurred"
       );
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchAdvertisement().then((fetchedData) => {
@@ -207,7 +206,9 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     fetchTodayPlans().then((fetchedData) =>
       fetchedData ? setTodayPlans(fetchedData) : setTodayPlans([])
     );
-  }, []);
+  }, [fetchTodayPlans, getUserDetails]);
+
+
 
   return (
     <div className=" bg-black flex flex-col h-full">
@@ -225,7 +226,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             <span className="font-bold">
               {workout && user?.exercisesCompleted
                 ? (user.exercisesCompleted.length / workout.exercises.length) *
-                  100
+                100
                 : 0}
               %
             </span>{" "}
@@ -357,8 +358,8 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
                   label: `${
                     workout && user?.exercisesCompleted
                       ? (user.exercisesCompleted.length /
-                          workout.exercises.length) *
-                        100
+                        workout.exercises.length) *
+                      100
                       : 0
                   } % Progress`,
                   icon: faBarsProgress,
@@ -388,22 +389,14 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             {/* Image Container */}
             <div>
               <div className="relative h-[300px] w-full bg-cover bg-center rounded-lg mb-4">
-                <img
+                <Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/advertisement/${
                     advertisement ? advertisement.slug : ""
                   }`}
                   alt={advertisement ? advertisement.name : ""}
-                  // layout="fill"
-                  // objectFit="cover"
+                  fill
                   className="rounded-lg"
                 />
-                {/* Tag*/}
-                {/*<div*/}
-                {/*  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#972421] text-white px-4 py-2 rounded-md text-sm font-bold rotate-[10deg] shadow-lg"*/}
-                {/*  style={{ zIndex: 10 }}*/}
-                {/*>*/}
-                {/*  Only a few left!*/}
-                {/*</div>*/}
               </div>
             </div>
             {/* Paragraph */}

@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { ExerciseType } from "../workoutPlan/[workoutPlanId]/page";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useRef, useState} from "react";
+import {ExerciseType} from "../workoutPlan/[workoutPlanId]/page";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface ExerciseListProps {
@@ -11,14 +12,14 @@ interface ExerciseListProps {
   className?: string;
 }
 
-const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => {
+const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
   const [selectedExercise, setSelectedExercise] = useState<ExerciseType | null>(null);
   const [filter, setFilter] = useState("all");
   const videoRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<any>(null);
   const [isYouTubeLoaderReady, setIsYouTubeLoaderReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const [showModal, setShowModal] = useState(false)
   const filteredExercises =
     filter === "all"
       ? exercises
@@ -100,7 +101,8 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
       {/* Sidebar */}
       <div className="w-full md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
-        <nav className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-center md:justify-start gap-2 mb-4">
+        <nav
+          className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-center md:justify-start gap-2 mb-4">
           {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
             (category) => (
               <button
@@ -137,23 +139,27 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
 
       {/* Video Preview */}
       <div className="flex-1 md:flex items-center justify-center bg-[#1e1e1e] p-1">
-        <div className="w-full md:w-2/3 h-60 md:h-2/3 bg-black rounded-lg relative">
+        <div className="w-full md:w-4/5 h-60 md:h-2/3 bg-black rounded-lg relative">
           {/* Thumbnail and Play Button */}
           {selectedExercise && !isPlaying && (
             <>
-              <img
-                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
-                  selectedExercise ? selectedExercise.slug : ""
-                }`}
-                alt={selectedExercise ? selectedExercise.name : ""}
-                // layout="fill"
-                // objectFit="cover"
-                className="rounded-lg"
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
+                    selectedExercise ? selectedExercise.slug : ""
+                  }`}
+                  alt={selectedExercise ? selectedExercise.name : ""}
+                  // layout="intrinsic"
+                  fill
+                  // width={240} // You can provide a width for aspect ratio calculation
+                  // height={160}
+                  // Ensures the image fills the parent container
+                  className="rounded-lg"
+                />
+              </div>
               <button
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10"
-                onClick={
-                  handlePlayVideo}
+                onClick={handlePlayVideo}
               >
                 <FontAwesomeIcon icon={faPlay} size="3x" className="text-white"/>
               </button>
@@ -166,7 +172,39 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
           />
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 md:hidden">
+          <div className="bg-[#1e1e1e] p-4 rounded-lg text-center w-11/12 max-w-md">
+            <button
+              className="absolute top-2 right-4 text-gray-300 hover:text-white"
+              onClick={() => setShowModal(false)}
+            >
+              ✕
+            </button>
+            <div className="w-full md:w-2/3 h-60 md:h-2/3 bg-black rounded-lg relative">
+              {/* Video Placeholder */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
+                      selectedExercise ? selectedExercise.slug : ""
+                    }`}
+                    alt={selectedExercise ? selectedExercise.name : ""}
+                    // layout="intrinsic"
+                    fill
+                    // width={240} // You can provide a width for aspect ratio calculation
+                    // height={160}
+                    // Ensures the image fills the parent container
+                    className="rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+
   );
 };
 

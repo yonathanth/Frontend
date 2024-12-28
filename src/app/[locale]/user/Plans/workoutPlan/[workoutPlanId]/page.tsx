@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faPlay} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -216,14 +217,14 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
 
           </div>
         </div>
-        <img
+        <Image
           src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${
             plan ? plan.slug : ""
           }`}
           alt={plan ? plan.name : ""}
-          // layout="fill"
-          // objectFit="cover"
           className="rounded-lg"
+          width={240}
+          height={160}
         />
       </div>
 
@@ -316,19 +317,20 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
           <div className="w-full h-full relative">
             {exercise && !isPlaying && (
               <>
-                <Image
-                  src={`/Images/exercises/${exercise?.slug}.jpg`}
-                  alt={exercise?.name || ""}
-                  width={500}
-                  height={500}
-                  className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                />
+                <div className="h-full w-full relative">
+                  <Image
+                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
+                    alt={exercise ? exercise.name : ""}
+                    className="rounded-lg"
+                    fill
+                  />
+                </div>
                 <button
                   className="absolute inset-0 flex items-center justify-center rounded-lg z-10"
                   onClick={
                     handlePlayVideo}
                 >
-                  <FontAwesomeIcon icon={faPlay} size="3x" className="text-white" />
+                  <FontAwesomeIcon icon={faPlay} size="3x" className="text-white"/>
                 </button>
 
               </>
@@ -361,13 +363,14 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             >
               ✕
             </button>
-            <Image
-              src={`/Images/exercises/${exercise?.slug}.jpg`}
-              alt={exercise?.name || ""}
-              width={500}
-              height={500}
-              className="w-full h-auto object-cover rounded-md"
-            />
+            <div className="h-full w-full relative">
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
+                alt={exercise ? exercise.name : ""}
+                className="rounded-lg"
+                fill
+              />
+            </div>
           </div>
         </div>
       )}

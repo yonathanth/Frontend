@@ -222,9 +222,11 @@ const AdminBroadcastsAndAdverts = () => {
           {preview && (
             <div className="mt-4">
               <p className="text-sm text-gray-400 mb-2">Image Preview:</p>
-              <img
+              <Image
                 src={preview}
                 alt="Advert Preview"
+                width={50}
+                height={50}
                 className="w-full max-h-64 object-cover border border-gray-700 rounded-lg"
               />
             </div>

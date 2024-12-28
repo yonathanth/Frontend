@@ -70,13 +70,11 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans, className}) => {
                   </p>
                 </div>
               </div>
-              <img
-                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${
-                  plan ? plan.slug : ""
-                }`}
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
-                // layout="fill"
-                // objectFit="cover"
+                width={240}
+                height={160}
                 className="rounded-lg"
               />
             </div>

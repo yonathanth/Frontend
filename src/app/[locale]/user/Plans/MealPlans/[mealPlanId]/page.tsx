@@ -115,14 +115,13 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           <div className="relative w-full h-60 rounded-lg">
             {/* Image component with layout 'fill' */}
             <div className="relative w-full h-full">
-              <img
+              <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${
                   plan ? plan.slug : ""
                 }`}
                 alt={plan ? plan.name : ""}
-                // layout="fill"
-                // objectFit="cover"
                 className="rounded-lg"
+                fill
               />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 rounded-lg"></div>
             </div>
@@ -238,11 +237,13 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                         </div>
                         <div className="flex flex-col items-center">
                           <Image
-                            src={`/Images/meals/${meal.slug}.jpg`}
-                            alt={meal.name}
-                            width={500}
-                            height={500}
-                            className="w-24 h-24 object-cover rounded-lg"
+                            src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
+                              meal ? meal.slug : ""
+                            }`}
+                            width={96}
+                            height={96}
+                            alt={meal ? meal.name : ""}
+                            className="rounded-lg"
                           />
                           <h3 className="text-tiny font-light">{meal.name}</h3>
                         </div>
@@ -262,4 +263,3 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
     </div>
   );
 };
-
