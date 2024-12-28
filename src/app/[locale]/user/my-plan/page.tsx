@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import MyWorkoutPlanPage from "@/src/app/[locale]/user/my-plan/MyWorkoutPlan/page";
 import MyMealPlanPage from "@/src/app/[locale]/user/my-plan/MyMealPlan/page";
@@ -19,7 +19,7 @@ export default function MyPlansPage() {
   const [error, setError] = useState<string | null>(null);
 
 
-  const fetchData = async (type: string) => {
+  const fetchData = useCallback(async (type: string) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -39,7 +39,7 @@ export default function MyPlansPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[userId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,10 +62,10 @@ export default function MyPlansPage() {
           setData(fetchedData);
         });
     }
-  }, [userId, view]);
+  }, [userId, view, fetchData]);
 
-  if (isLoading) return <p>Loading workouts...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // if (isLoading) return <p>Loading workouts...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="min-h-screen text-white">
