@@ -51,7 +51,7 @@ const Page = () => {
 
   const descriptions: Record<TabName, string> = {
     "Body Building":
-      "Achieve your Being Fit goals with our dedicated bodybuilding packages.",
+      "Achieve your Fitness goals with our dedicated bodybuilding packages.",
     Exercise:
       "Stay fit and energized with various exercise options for all levels.",
     "Group Fitness":
