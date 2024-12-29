@@ -11,8 +11,9 @@ import { ServiceProvider } from "./admin/components/serviceContext";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = {
-  title: "My Gym Website",
-  description: "A fitness gym website built with Next.js",
+  title: "Robi Fitness - Gym in Hawassa",
+  description:
+    "Robi Fitness is a premier gym in Hawassa, offering top-notch fitness services and facilities.",
 };
 
 export default async function RootLayout({
