@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import MyWorkoutPlanPage from "@/src/app/[locale]/user/my-plan/MyWorkoutPlan/page";
 import MyMealPlanPage from "@/src/app/[locale]/user/my-plan/MyMealPlan/page";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -64,7 +65,7 @@ export default function MyPlansPage() {
     }
   }, [userId, view, fetchData]);
 
-  // if (isLoading) return <p>Loading workouts...</p>;
+  if (isLoading) return <LoadingPage/>;
   // if (error) return <p>Error: {error}</p>;
 
   return (
@@ -77,7 +78,7 @@ export default function MyPlansPage() {
             view === "workouts" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Workout Plan
+          My Workout Plans
         </button>
         <button
           onClick={() => setView("mealPlans")}
@@ -85,7 +86,7 @@ export default function MyPlansPage() {
             view === "mealPlans" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Meal Plan
+          My Meal Plans
         </button>
       </nav>
       <main className="p-4 md:p-8 mx-auto">

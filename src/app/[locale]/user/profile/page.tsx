@@ -14,6 +14,7 @@ import {
   downloadMemberId,
   FormattedName,
 } from "../../admin/gym-member/[memberDetail]/helperFunctions";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // interface BmiData {
@@ -56,6 +57,8 @@ interface User {
   height: number | null;
   weight: number | null;
   bmis: {
+    createdAt: Date;
+    updatedAt: Date;
     id: string;
     userId: string;
     value: number;
@@ -90,7 +93,6 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -153,6 +155,9 @@ const Page = () => {
     }
   }, [userId, fetchMemberDetails]);
 
+
+
+
   if (loading) {
     return <div>Loading member details...</div>;
   }
@@ -165,6 +170,7 @@ const Page = () => {
     return <div>No member details available.</div>;
   }
 
+  if (isPageLoading) return <LoadingPage/>
   return (
     <div className="flex flex-col lg:flex-row bg-black text-white h-full">
       {/* Personal Info */}
@@ -367,7 +373,7 @@ const Page = () => {
           <div className="mt-4">
             <ResponsiveContainer width="100%" height={60}>
               <LineChart
-                data={memberDetails?.bmis || []}
+                data={ memberDetails.bmis || []}
                 width={970}
                 height={60}
               >

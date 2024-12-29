@@ -34,14 +34,15 @@ export interface WorkoutPlanType {
 interface WorkoutPlansListProps {
   plans: WorkoutPlanType[];
   className?: string;
+  userId?:string;
 }
 
-const WorkoutPlanList: React.FC<WorkoutPlansListProps> = ({plans, className}) => {
+const WorkoutPlanList: React.FC<WorkoutPlansListProps> = ({plans, className, userId}) => {
   return (
     <div className={`bg-black text-white flex flex-col h-full ${className ? className : ""}`}>
       <main className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[#252525] rounded-lg">
         {plans.map((plan: WorkoutPlanType) => (
-          <Link href={`Plans/workoutPlan/${plan.id}`} key={plan.id}>
+          <Link href={`Plans/workoutPlan/${plan.id}?userId=${userId}`} key={plan.id}>
             <div className="bg-black p-4 rounded-lg shadow-lg flex flex-row space-y-2">
               <div className="flex flex-col justify-between">
                 <div>

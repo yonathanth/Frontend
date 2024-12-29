@@ -12,6 +12,7 @@ import Image from "next/image";
 import {User} from "../layout";
 import { WorkoutPlanType } from "@/src/app/[locale]/user/Plans/workoutPlan/page";
 import { MealType } from "@/src/app/[locale]/user/Plans/Meals/page";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -64,7 +65,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
   };
 
   const getUserDetails = useCallback(async () => {
-    console.log(userId);
+    setIsLoading(true);
     try {
       const res = await fetch(
         ` ${NEXT_PUBLIC_API_BASE_URL}/api/memberManagement/${userId}/profile`,
@@ -83,7 +84,6 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
       }
       const data = await res.json();
       const user = data?.data;
-
       if (user?.workouts?.[0]?.workoutId) {
         const workoutRes = await fetch(
           `${NEXT_PUBLIC_API_BASE_URL}/api/workouts/${user.workouts[0].workoutId}`,
@@ -96,9 +96,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         const workout = workoutData?.data?.workout;
         setWorkout(workout);
       }
-
       setServiceId(user?.serviceId);
-      console.log("user", user);
       return user || {};
     } catch (err) {
       setError(
@@ -170,7 +168,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     );
   }, [fetchTodayPlans, getUserDetails]);
 
-
+  if (isLoading) return <LoadingPage/>
 
   return (
     <div className=" bg-black flex flex-col h-full">
@@ -233,7 +231,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
               Extend your subscription
             </button>
           ) : (
-            <>hello</>
+            <div>Glad we&apos;re family!</div>
           )}
         </div>
       </header>
@@ -311,9 +309,9 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
           <div className="bg-[#1e1e1e] mt-2 p-4 rounded-lg">
             <div className="grid grid-cols-1 sm:grid-rows-3 gap-4">
               {[
-                { label: `${user?.highestStreak} Days Streak`, icon: faFire },
+                { label: `${user?.highestStreak ? user.highestStreak : "-"} Days Streak`, icon: faFire },
                 {
-                  label: `${user?.exercisesCompleted?.length} Exercises Completed`,
+                  label: `${user?.exercisesCompleted ? user?.exercisesCompleted?.length : "-"} Exercises Completed`,
                   icon: faClock,
                 },
                 {
@@ -351,14 +349,14 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             {/* Image Container */}
             <div>
               <div className="relative h-[300px] w-full bg-cover bg-center rounded-lg mb-4">
-                <Image
+                {advertisement ? (<Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/advertisement/${
                     advertisement ? advertisement.slug : ""
                   }`}
                   alt={advertisement ? advertisement.name : ""}
                   fill
                   className="rounded-lg"
-                />
+                />) : <div className=""></div>}
               </div>
             </div>
             {/* Paragraph */}

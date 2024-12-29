@@ -218,7 +218,7 @@ export default function MyWorkoutPlan({params}: { params: { locale: string; MyWo
           </div>
         </div>
         <Image
-          src={`/Images/workouts/${plan?.slug}.jpg`}
+          src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
           alt={plan.name}
           width={500}
           height={500}

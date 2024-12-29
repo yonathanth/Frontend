@@ -110,13 +110,13 @@ export default function MyMealPlan({params}:{params:{locale:string; MyMealPlanId
       {/* Content Section */}
       <div className="flex flex-col lg:flex-row gap-6 flex-1">
         {/* Left Sidebar */}
-        <div className="flex flex-col justify-between w-full lg:w-2/5">
+        <div className="flex flex-col justify-start w-full lg:w-2/5">
           {/* Image Section */}
           <div className="relative w-full h-60 rounded-lg">
             {/* Image component with layout 'fill' */}
             <div className="relative w-full h-full">
               <Image
-                src={`/Images/mealPlans/${plan.slug}.jpg`} // Update this path to match the correct image location
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan.name}
                 layout="fill" // This makes the image fill the container
                 objectFit="cover" // Ensures the image behaves like a background (covering the area)

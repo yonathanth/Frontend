@@ -107,9 +107,9 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
 
   if (isLoading) return <LoadingPage />;
   return (
-    <div className={`flex flex-col md:flex-row h-screen text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row h-screen bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
-      <div className="w-full md:w-1/3 p-4 bg-[#1e1e1e]">
+      <div className="w-full  md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
         <nav
           className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-center md:justify-start gap-2 mb-4">
