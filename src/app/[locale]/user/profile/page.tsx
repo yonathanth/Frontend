@@ -1,29 +1,27 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import profile from "../../../../../assets/images/pp.png";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
   LineChart,
   Tooltip,
   Line,
-  XAxis,
   ResponsiveContainer,
 } from "recharts";
-import { ChartConfig } from "@/components/ui/chart";
 import EditProfileModal from "./components/EditProfileModal";
 import { jwtDecode } from "jwt-decode";
-import ProfileImageWithModal, {
+import {
   downloadMemberId,
   FormattedName,
 } from "../../admin/gym-member/[memberDetail]/helperFunctions";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-interface BmiData {
-  id: string;
-  userId: string;
-  value: number;
-}
+// interface BmiData {
+//   id: string;
+//   userId: string;
+//   value: number;
+// }
 interface Service {
   id: string;
   name: string;
@@ -59,6 +57,8 @@ interface User {
   height: number | null;
   weight: number | null;
   bmis: {
+    createdAt: Date;
+    updatedAt: Date;
     id: string;
     userId: string;
     value: number;
@@ -93,7 +93,6 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -119,7 +118,7 @@ const Page = () => {
     decodeToken();
   }, []);
 
-  const fetchMemberDetails = async () => {
+  const fetchMemberDetails = useCallback(async () => {
     if (!userId) return;
     setIsPageLoading(true);
 
@@ -137,7 +136,7 @@ const Page = () => {
 
       const data = await response.json();
       if (data.success) {
-        setMemberDetails(data.data);
+        return data.data
       } else {
         setError(data.message || "Failed to load member details");
       }
@@ -147,12 +146,17 @@ const Page = () => {
       setLoading(false);
       setIsPageLoading(false);
     }
-  };
+  }, [userId]);
   useEffect(() => {
     if (userId) {
-      fetchMemberDetails();
+      fetchMemberDetails().then((fetchedData) => {
+        setMemberDetails(fetchedData);
+      });
     }
-  }, [userId]);
+  }, [userId, fetchMemberDetails]);
+
+
+
 
   if (loading) {
     return <div>Loading member details...</div>;
@@ -166,6 +170,7 @@ const Page = () => {
     return <div>No member details available.</div>;
   }
 
+  if (isPageLoading) return <LoadingPage/>
   return (
     <div className="flex flex-col lg:flex-row bg-black text-white h-full">
       {/* Personal Info */}
@@ -173,10 +178,12 @@ const Page = () => {
         {/* Profile Card */}
         <div className="bg-[#111111] rounded-lg flex justify-between items-center">
           <div className="flex items-center p-4 space-x-4">
-            <img
+            <Image
               src={memberDetails?.profileImageUrl || ""}
               alt="Profile"
-              className="w-16 h-16 rounded-full object-cover"
+              width={64}
+              height={64}
+              className=" rounded-full object-cover"
             />
             <div>
               <FormattedName fullName={memberDetails?.fullName || ""} />{" "}
@@ -186,9 +193,11 @@ const Page = () => {
             className="mt-2 lg:mt-4 flex flex-col justify-between gap-2 lg:gap-5 p-2 pr-3 items-end"
             onClick={() => downloadMemberId(memberDetails!)}
           >
-            <img
+            <Image
               src={memberDetails?.barcode || ""}
               alt="barcode"
+              width={64}
+              height={24}
               className="h-6 w-12 lg:w-16 bg-white"
             />
             <span className="text-customBlue">M</span>
@@ -364,7 +373,7 @@ const Page = () => {
           <div className="mt-4">
             <ResponsiveContainer width="100%" height={60}>
               <LineChart
-                data={memberDetails?.bmis || []}
+                data={ memberDetails.bmis || []}
                 width={970}
                 height={60}
               >

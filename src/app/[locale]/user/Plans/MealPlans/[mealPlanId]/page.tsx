@@ -1,21 +1,67 @@
 'use client'
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import LoadingPage from "../../../loading";
 import {MealPlanType, MealType} from "../../Meals/page";
 import Image from "next/image";
 import {MealCategory} from "@/src/app/[locale]/user/Plans/MealPlans/page";
+import axios from "axios";
+import {useSearchParams} from "next/navigation";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+interface UserMealPlanType {
+  id:         string ;
+  userId     :string;
+  mealPlanId :string
+  startedAt  :Date;
+  progress :  number;
+  finishedAt: Date
+}
 
 export default function PlanDetails({params}: { params: { locale: string; mealPlanId: string } }) {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [plan, setPlan] = useState<MealPlanType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [doesMealPlanExist, setDoesMealPlanExist] = useState(true);
 
-  const getMealPlan = async (id: string) => {
+
+  const doesMealPlanExistForUser = useCallback(async (mealPlanId: string, userId: string) =>{
+    try {
+      const response = await axios.get(`http://localhost:5000/api/members/${userId}`);
+      const userData = response.data.data.user;
+      if (!userData || !Array.isArray(userData.mealPlans)) {
+        throw new Error("MealPlans section not found or invalid.");
+      }
+      const exists = userData.mealPlans.some((mealPlan: UserMealPlanType) => mealPlan.mealPlanId === mealPlanId);
+      setDoesMealPlanExist(exists);
+      return exists;
+    } catch (error) {
+      setDoesMealPlanExist(false);
+    }
+  }, []);
+
+  const selectPlan = async (mealPlanId: string) => {
+    const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/members/addUserMealPlan`, {
+      cache: "no-store", method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: userId,
+        mealPlanId: mealPlanId
+      })
+    })
+    if (!res.ok) {
+      throw new Error(`Failed to select plan ${res.statusText}`)
+    }
+    setDoesMealPlanExist(true);
+  }
+
+  const getMealPlan = useCallback(async(id: string) => {
     try {
       setIsLoading(true);
       const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/mealPlans/${id}`, {cache: "no-store"});
@@ -29,11 +75,25 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [])
 
   useEffect(() => {
-    getMealPlan(params.mealPlanId);
-  }, [params.mealPlanId]);
+    const fetchData = async () => {
+      setIsLoading(true); // Keep loading state true until both tasks are done
+
+      try {
+        await getMealPlan(params.mealPlanId); // Fetch mealPlan plan
+        if (userId) {
+          await doesMealPlanExistForUser(params.mealPlanId, userId); // Check if mealPlan exists
+        }
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false once everything is done
+      }
+    };
+    fetchData();
+  }, [params.mealPlanId, userId]);
 
   if (!plan) return <LoadingPage/>;
 
@@ -42,7 +102,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
   let totalProteins = 0
   let totalCarbs = 0
   let totalFat = 0
-  plan.meals.forEach((meal, index) => {
+  plan.meals.forEach((meal) => {
     totalProteins += meal.protein ? meal.protein : 0
     totalFat += meal.fats ? meal.fats : 0
     totalCarbs += meal.carbs ? meal.carbs : 0
@@ -71,9 +131,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
   if (isLoading) {
     return (
-      <div className="text-white bg-zinc-900 p-10 rounded-lg m-20">
-        <div className="text-4xl font-bold">Loading Workout Plan...</div>
-      </div>
+      <LoadingPage/>
     );
   }
 
@@ -97,7 +155,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
   if (!plan) {
     return (
       <div className="text-white bg-zinc-900 p-10 rounded-lg m-20">
-        <div className="text-4xl font-bold">Workout Plan Not Found</div>
+        <div className="text-4xl font-bold">Meal Plan Not Found</div>
       </div>
     );
   }
@@ -110,29 +168,25 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
       {/* Content Section */}
       <div className="flex flex-col lg:flex-row gap-6 flex-1">
         {/* Left Sidebar */}
-        <div className="flex flex-col justify-between w-full lg:w-2/5">
+        <div className="flex flex-col justify-start w-full lg:w-2/5">
           {/* Image Section */}
           <div className="relative w-full h-60 rounded-lg">
             {/* Image component with layout 'fill' */}
             <div className="relative w-full h-full">
-              <img
+              <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${
                   plan ? plan.slug : ""
                 }`}
                 alt={plan ? plan.name : ""}
-                // layout="fill"
-                // objectFit="cover"
                 className="rounded-lg"
+                fill
               />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 rounded-lg"></div>
             </div>
-            {/* Text overlay */}
             <h1 className="absolute top-4 left-6 text-xl font-bold z-10 text-white">
               {plan.duration} weeks, {plan.mainGoal}
             </h1>
           </div>
-
-          {/* Weight Gain Meal Program */}
           <div className="bg-[#252525] p-4 rounded-lg mt-2 lg:mt-2">
             <h2 className="text-base font-semibold">{plan.mainGoal}</h2>
             <div className="mt-4">
@@ -153,6 +207,16 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
               </div>
             </div>
           </div>
+          {!doesMealPlanExist? (
+          <button
+            className=" bg-customBlue w-[200px] text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
+            onClick={async () => {
+              await selectPlan(plan.id);
+            }}
+          >
+            Select Plan
+          </button>
+          ): <div className="text-sm">Added to Your Plans!</div>}
         </div>
 
 
@@ -238,11 +302,13 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                         </div>
                         <div className="flex flex-col items-center">
                           <Image
-                            src={`/Images/meals/${meal.slug}.jpg`}
-                            alt={meal.name}
-                            width={500}
-                            height={500}
-                            className="w-24 h-24 object-cover rounded-lg"
+                            src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
+                              meal ? meal.slug : ""
+                            }`}
+                            width={96}
+                            height={96}
+                            alt={meal ? meal.name : ""}
+                            className="rounded-lg"
                           />
                           <h3 className="text-tiny font-light">{meal.name}</h3>
                         </div>
@@ -262,4 +328,3 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
     </div>
   );
 };
-

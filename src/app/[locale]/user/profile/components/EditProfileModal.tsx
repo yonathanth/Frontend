@@ -302,7 +302,7 @@ const EditAdmin = ({ setShowModal, fetchData, member }: EditAdminProps) => {
           {/* Add more form fields for other details like phoneNumber, email, etc. */}
 
           <div className="mb-4">
-            <label className="block text-sm">Height</label>
+            <label className="block text-sm">Height (cm)</label>
             <input
               name="height"
               value={formData.height}

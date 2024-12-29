@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import {MealPlanType} from "@/src/app/[locale]/user/Plans/MealPlans/page";
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export type MealCategory = "breakfast" | "lunch" | "dinner";
 
@@ -43,10 +44,11 @@ const MyMealPlanPage: React.FC<MyMealPlanPageProps> = ({plans, className, userId
                 </div>
               </div>
               <Image
-                src={`/Images/mealPlans/${plan.slug}.jpg`}
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
+                width={500}
+                height={500}
                 alt={plan.name}
-                className="w-60 h-40 object-contain rounded-lg"
-                width={500} height={500}
+                className="w-60 justify-end  h-40 object-contain rounded-lg"
               />
             </div>
           </Link>

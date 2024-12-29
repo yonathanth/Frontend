@@ -1,12 +1,19 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ExerciseList from "@/src/app/[locale]/user/Plans/Exercises/page";
 import {ExerciseType} from "@/src/app/[locale]/user/Plans/workoutPlan/[workoutPlanId]/page";
 import WorkoutPlanList from "@/src/app/[locale]/user/Plans/workoutPlan/page";
 import MealList from "@/src/app/[locale]/user/Plans/Meals/page";
 import MealPlanList from "@/src/app/[locale]/user/Plans/MealPlans/page";
+import LoadingPage from "@/src/app/[locale]/user/loading";
+import {jwtDecode} from "jwt-decode";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+
+
+interface CustomJwtPayload {
+  id: string;
+}
 
 
 export default function PlansPage() {
@@ -14,7 +21,10 @@ export default function PlansPage() {
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const fetchData = async (type: string) => {
+  const [userId, setUserId] = useState<string>("");
+
+
+  const fetchData = useCallback(async (type: string) => {
     try {
       setIsLoading(true);
       setError(null); // Reset error
@@ -44,13 +54,29 @@ export default function PlansPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+    try {
+      const decodedToken: CustomJwtPayload = jwtDecode(token);
+      setUserId(decodedToken.id);
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      localStorage.removeItem("token");
+    }
+  }, []);
+
+  useEffect(() => {
+    if(userId) {
     fetchData(view).then((fetchedData) => {
       setData(fetchedData); // Always set an array
     });
-  }, [view]);
+    }
+  }, [userId, view, fetchData]);
 
   return (
     <div className="text-white flex flex-col h-full">
@@ -62,7 +88,7 @@ export default function PlansPage() {
             view === "workouts" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Workout Plan
+          Workout Plans
         </button>
         <button
           onClick={() => setView("mealPlans")}
@@ -70,7 +96,7 @@ export default function PlansPage() {
             view === "mealPlans" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Meal Plan
+          Meal Plans
         </button>
         <button
           onClick={() => setView("exerciseList")}
@@ -78,7 +104,7 @@ export default function PlansPage() {
             view === "exerciseList" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Exercise List
+          Exercises
         </button>
         <button
           onClick={() => setView("mealList")}
@@ -86,15 +112,13 @@ export default function PlansPage() {
             view === "mealList" ? "bg-customBlue" : "bg-[#252525] hover:bg-[#333]"
           }`}
         >
-          Meal List
+          Meals
         </button>
       </nav>
 
       <main className="p-4 md:p-8 mx-auto">
         {isLoading ? (
-          <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
-            <div className="text-4xl font-bold">Loading...</div>
-          </div>
+         <LoadingPage/>
         ) : error ? (
           <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
             <div className="text-4xl font-bold text-red-500">Error</div>
@@ -115,14 +139,14 @@ export default function PlansPage() {
         ) : (
           view === "workouts" ?
             <>
-              <WorkoutPlanList className="col-span-3" plans={data}/>
+              <WorkoutPlanList className="col-span-3" plans={data} userId={userId}/>
             </>
             : view === "exerciseList" ?
               <>
-                <ExerciseList className="" exercises={data}/>
+                <ExerciseList className="col-span-3" exercises={data} />
               </>
               : view === "mealPlans" ?
-                <MealPlanList className="col-span-3" plans={data}/> :
+                <MealPlanList className="col-span-3" plans={data} userId={userId}/> :
                 <MealList className="col-span-3" meals={data}/>
         )}
       </main>

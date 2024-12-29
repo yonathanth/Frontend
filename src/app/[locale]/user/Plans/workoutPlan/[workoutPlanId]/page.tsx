@@ -1,8 +1,12 @@
 "use client";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faPlay} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import LoadingPage from "@/src/app/[locale]/user/loading";
+import {useSearchParams} from "next/navigation";
+import axios from "axios";
+
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -30,7 +34,18 @@ interface WorkoutPlanType {
   exercises: ExerciseType[];
 }
 
+interface UserWorkoutType {
+  id: string;
+  userId: string;
+  workoutId: string;
+  startedAt: Date;
+  progress: number,
+  finishedAt: Date,
+}
+
 export default function WorkoutPlan({params}: { params: { locale: string; workoutPlanId: string } }) {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [exercise, setExercise] = useState<ExerciseType | null>(null);
   const [plan, setPlan] = useState<WorkoutPlanType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,6 +56,23 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
   const [isYouTubeLoaderReady, setIsYouTubeLoaderReady] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [doesWorkoutExist, setDoesWorkoutExist] = useState(true);
+
+  const doesWorkoutExistForUser = useCallback(async (workoutId: string, userId: string) =>{
+    try {
+      const response = await axios.get(`http://localhost:5000/api/members/${userId}`);
+      const userData = response.data.data.user;
+      if (!userData || !Array.isArray(userData.workouts)) {
+        throw new Error("Workouts section not found or invalid.");
+      }
+      const exists = userData.workouts.some((workout: UserWorkoutType) => workout.workoutId === workoutId);
+      setDoesWorkoutExist(exists);
+      return exists;
+    } catch (error) {
+      setDoesWorkoutExist(false);
+    }
+  }, []);
+
   const selectPlan = async (workoutId: string) => {
     const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/members/addUserWorkout`, {
       cache: "no-store", method: "POST",
@@ -48,15 +80,16 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        userId: "b99b5403-3930-48f0-b0a2-ea1591e5dc50",
+        userId: userId,
         workoutId: workoutId
       })
     })
     if (!res.ok) {
+      const data = await res.json()
       throw new Error(`Failed to select plan ${res.statusText}`)
     }
+    setDoesWorkoutExist(true);
     const data = await res.json()
-    console.log(data)
   }
 
   const getWorkoutPlan = async (id: string) => {
@@ -91,8 +124,22 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
   }, []);
 
   useEffect(() => {
-    getWorkoutPlan(params.workoutPlanId);
-  }, [params.workoutPlanId]);
+    const fetchData = async () => {
+      setIsLoading(true); // Keep loading state true until both tasks are done
+
+      try {
+        await getWorkoutPlan(params.workoutPlanId); // Fetch workout plan
+        if (userId) {
+          await doesWorkoutExistForUser(params.workoutPlanId, userId); // Check if workout exists
+        }
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false once everything is done
+      }
+    };
+    fetchData();
+  }, [params.workoutPlanId, userId]);
 
   const initializePlayer = (videoId: string) => {
     if (playerRef.current) {
@@ -160,9 +207,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
 
   if (isLoading) {
     return (
-      <div className="text-white bg-zinc-900 p-10 rounded-lg m-20">
-        <div className="text-4xl font-bold">Loading Workout Plan...</div>
-      </div>
+      <LoadingPage/>
     );
   }
 
@@ -205,25 +250,24 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
               <FontAwesomeIcon icon={faClock} className="text-customBlue"/>
               <span className="text-sm font-extralight">{plan.duration} weeks</span>
             </div>
-            <button
+            {!doesWorkoutExist? (<button
               className=" bg-customBlue text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
               onClick={async () => {
                 await selectPlan(plan.id);
               }}
             >
               Select Plan
-            </button>
-
+            </button>): <div className="text-sm">Added to Your Plans!</div>}
           </div>
         </div>
-        <img
+        <Image
           src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${
             plan ? plan.slug : ""
           }`}
           alt={plan ? plan.name : ""}
-          // layout="fill"
-          // objectFit="cover"
           className="rounded-lg"
+          width={240}
+          height={160}
         />
       </div>
 
@@ -316,19 +360,20 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
           <div className="w-full h-full relative">
             {exercise && !isPlaying && (
               <>
-                <Image
-                  src={`/Images/exercises/${exercise?.slug}.jpg`}
-                  alt={exercise?.name || ""}
-                  width={500}
-                  height={500}
-                  className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                />
+                <div className="h-full w-full relative">
+                  <Image
+                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
+                    alt={exercise ? exercise.name : ""}
+                    className="rounded-lg"
+                    fill
+                  />
+                </div>
                 <button
                   className="absolute inset-0 flex items-center justify-center rounded-lg z-10"
                   onClick={
                     handlePlayVideo}
                 >
-                  <FontAwesomeIcon icon={faPlay} size="3x" className="text-white" />
+                  <FontAwesomeIcon icon={faPlay} size="3x" className="text-white"/>
                 </button>
 
               </>
@@ -361,13 +406,14 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             >
               ✕
             </button>
-            <Image
-              src={`/Images/exercises/${exercise?.slug}.jpg`}
-              alt={exercise?.name || ""}
-              width={500}
-              height={500}
-              className="w-full h-auto object-cover rounded-md"
-            />
+            <div className="h-full w-full relative">
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
+                alt={exercise ? exercise.name : ""}
+                className="rounded-lg"
+                fill
+              />
+            </div>
           </div>
         </div>
       )}

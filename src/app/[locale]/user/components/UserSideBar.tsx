@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import logo from "@/assets/logos/logo.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-  faTableCells,
-  faPersonRunning,
   faCalendarCheck,
+  faPersonRunning,
+  faTableCells,
   faUser,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
+
 interface UserSidebarProps {
   setActiveNav: (nav: string) => void;
 }
@@ -22,16 +23,19 @@ const iconMapping: { [key: string]: IconDefinition } = {
   faUser: faUser,
 };
 
-const UserSidebar: React.FC<UserSidebarProps> = ({ setActiveNav }) => {
+const UserSidebar: React.FC<UserSidebarProps> = ({setActiveNav}) => {
   const pathname = usePathname();
   const [activeNav, setActive] = useState<string>("Dashboard");
 
-  const navItems = [
-    { name: "Dashboard", icon: "faTableCells", path: "/en/user" },
-    { name: "Plan", icon: "faPersonRunning", path: "/en/user/Plans" },
-    { name: "My plans", icon: "faCalendarCheck", path: "/en/user/my-plan" },
-    { name: "Profile", icon: "faUser", path: "/en/user/profile" },
-  ];
+  const navItems = useMemo(
+    () => [
+      { name: "Dashboard", icon: "faTableCells", path: "/en/user" },
+      { name: "Plan", icon: "faPersonRunning", path: "/en/user/Plans" },
+      { name: "My plans", icon: "faCalendarCheck", path: "/en/user/my-plan" },
+      { name: "Profile", icon: "faUser", path: "/en/user/profile" },
+    ],
+    []
+  );
 
   useEffect(() => {
     const currentItem = navItems.find((item) => item.path === pathname);
@@ -43,7 +47,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ setActiveNav }) => {
   return (
     <aside className="bg-black w-40 text-white flex flex-col border-r-[0.5px] border-gray-800">
       <div className="p-[0.85rem] border-b-[0.5px] border-gray-800">
-        <Image src={logo} alt="logo" className="w-28 mx-auto" />
+        <Image src={logo} alt="logo" className="w-28 mx-auto"/>
       </div>
 
       <nav className="flex-grow mx-auto flex flex-col gap-4 pt-10 text-sm">

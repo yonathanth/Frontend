@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback} from "react";
 import UserHeader from "./components/UserHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -49,9 +49,9 @@ export interface User {
   mealPlans: Array<Object>; // Array of UserMealPlan models
 }
 
-interface LayoutProps {
-  children: ReactNode;
-}
+// interface LayoutProps {
+//   children: ReactNode;
+// }
 
 interface CustomJwtPayload {
   role: string;
@@ -62,8 +62,8 @@ interface CustomJwtPayload {
 export const dynamic = "force-dynamic";
 
 export default function UserLayout({
-  children,
-}: {
+                                     children,
+                                   }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function UserLayout({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const getUserDetails = async () => {
+  const getUserDetails = useCallback(async() => {
     try {
       const res = await fetch(
         `${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`,
@@ -103,7 +103,7 @@ export default function UserLayout({
     } finally {
       setIsLoading(false);
     }
-  };
+  },[userId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -137,12 +137,11 @@ export default function UserLayout({
 
   useEffect(() => {
     if (userId) {
-      // Only fetch user details if userId is set
       getUserDetails().then((fetchedData) => {
         setUser(fetchedData);
       });
     }
-  }, [userId]); // Add userId as a dependency
+  }, [userId, getUserDetails]); // Add userId as a dependency
 
   if (!isAuthorized) {
     return <div>Loading...</div>;

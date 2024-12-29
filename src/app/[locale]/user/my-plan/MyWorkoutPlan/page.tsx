@@ -65,7 +65,7 @@ const MyWorkoutPlanPage: React.FC<MyWorkoutPlanPageProps> = ({plans, className, 
 
                 </div>
                 <Image
-                  src={`/Images/workouts/${plan.slug}.jpg`}
+                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
                   width={500}
                   height={500}
                   alt={plan.name}

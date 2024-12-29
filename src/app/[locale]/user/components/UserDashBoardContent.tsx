@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback } from "react";
 import {
   faBarsProgress,
   faClock,
@@ -8,49 +9,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ExtendModal from "./ExtendModal";
 import Image from "next/image";
+import {User} from "../layout";
 import { WorkoutPlanType } from "@/src/app/[locale]/user/Plans/workoutPlan/page";
 import { MealType } from "@/src/app/[locale]/user/Plans/Meals/page";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export interface User {
-  id: string; // UUID
-  fullName: string;
-  gender: string;
-  phoneNumber: string;
-  email?: string;
-  address: string;
-  dob: Date;
-  emergencyContact: string;
-  firstRegisteredAt: Date;
-  startDate: Date;
-  totalAttendance: number;
-  countDown?: number;
-  height?: number;
-  weight?: number;
-  healthConditions: {
-    condition: string;
-    medications: string;
-  };
-  level: string;
-  goal: string;
-  status: string;
-  freezeDate?: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  serviceId: string;
-  service?: Array<Object>;
-  attendance: Array<Object>;
-  profileImageUrl?: string | null;
-  daysLeft: number;
-  lastWorkoutDate?: Date;
-  currentStreak: number;
-  highestStreak: number;
-  exercisesCompleted: Array<Object>;
-  notifications: Notification[];
-  workouts: Array<Object>;
-  bmis: Array<Object>;
-  mealPlans: Array<Object>;
-}
 
 interface AdvertisementType {
   name: string;
@@ -100,14 +64,12 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     }
   };
 
-  const getUserDetails = async () => {
-    console.log(userId);
+  const getUserDetails = useCallback(async () => {
+    setIsLoading(true);
     try {
       const res = await fetch(
-        ` ${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`,
-        {
-          cache: "no-store",
-        }
+        ` ${NEXT_PUBLIC_API_BASE_URL}/api/memberManagement/${userId}/profile`,
+        { cache: "no-store" }
       );
       if (!res.ok) {
         if (res.status === 404) {
@@ -121,8 +83,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         }
       }
       const data = await res.json();
-      const user = data?.data?.user;
-
+      const user = data?.data;
       if (user?.workouts?.[0]?.workoutId) {
         const workoutRes = await fetch(
           `${NEXT_PUBLIC_API_BASE_URL}/api/workouts/${user.workouts[0].workoutId}`,
@@ -135,9 +96,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         const workout = workoutData?.data?.workout;
         setWorkout(workout);
       }
-
       setServiceId(user?.serviceId);
-      console.log("user", user);
       return user || {};
     } catch (err) {
       setError(
@@ -147,7 +106,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   const fetchRecommendedMeals = async () => {
     try {
@@ -171,7 +130,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     }
   };
 
-  const fetchTodayPlans = async () => {
+  const fetchTodayPlans = useCallback(async () => {
     try {
       const res = await fetch(
         `${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}/getMyWorkouts`,
@@ -192,7 +151,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
         err instanceof Error ? err.message : "An unknown error occurred"
       );
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchAdvertisement().then((fetchedData) => {
@@ -207,7 +166,9 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     fetchTodayPlans().then((fetchedData) =>
       fetchedData ? setTodayPlans(fetchedData) : setTodayPlans([])
     );
-  }, []);
+  }, [fetchTodayPlans, getUserDetails]);
+
+  if (isLoading) return <LoadingPage/>
 
   return (
     <div className=" bg-black flex flex-col h-full">
@@ -225,7 +186,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             <span className="font-bold">
               {workout && user?.exercisesCompleted
                 ? (user.exercisesCompleted.length / workout.exercises.length) *
-                  100
+                100
                 : 0}
               %
             </span>{" "}
@@ -270,7 +231,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
               Extend your subscription
             </button>
           ) : (
-            <>hello</>
+            <div>Glad we&apos;re family!</div>
           )}
         </div>
       </header>
@@ -348,17 +309,17 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
           <div className="bg-[#1e1e1e] mt-2 p-4 rounded-lg">
             <div className="grid grid-cols-1 sm:grid-rows-3 gap-4">
               {[
-                { label: `${user?.highestStreak} Days Streak`, icon: faFire },
+                { label: `${user?.highestStreak ? user.highestStreak : "-"} Days Streak`, icon: faFire },
                 {
-                  label: `${user?.exercisesCompleted?.length} Exercises Completed`,
+                  label: `${user?.exercisesCompleted ? user?.exercisesCompleted?.length : "-"} Exercises Completed`,
                   icon: faClock,
                 },
                 {
                   label: `${
                     workout && user?.exercisesCompleted
                       ? (user.exercisesCompleted.length /
-                          workout.exercises.length) *
-                        100
+                        workout.exercises.length) *
+                      100
                       : 0
                   } % Progress`,
                   icon: faBarsProgress,
@@ -388,22 +349,14 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             {/* Image Container */}
             <div>
               <div className="relative h-[300px] w-full bg-cover bg-center rounded-lg mb-4">
-                <img
+                {advertisement ? (<Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/advertisement/${
                     advertisement ? advertisement.slug : ""
                   }`}
                   alt={advertisement ? advertisement.name : ""}
-                  // layout="fill"
-                  // objectFit="cover"
+                  fill
                   className="rounded-lg"
-                />
-                {/* Tag*/}
-                {/*<div*/}
-                {/*  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#972421] text-white px-4 py-2 rounded-md text-sm font-bold rotate-[10deg] shadow-lg"*/}
-                {/*  style={{ zIndex: 10 }}*/}
-                {/*>*/}
-                {/*  Only a few left!*/}
-                {/*</div>*/}
+                />) : <div className=""></div>}
               </div>
             </div>
             {/* Paragraph */}

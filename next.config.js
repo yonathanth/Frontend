@@ -10,20 +10,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-};
-// next.config.js
-module.exports = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5000",
-        pathname: "/uploads/advertisement/**",
-      },
-    ],
+    domains: ['localhost'], // Add your image domains here
   },
 };
+// next.config.js
+
 // module.exports = {
 //   typescript: {
 //     // !! WARN !!

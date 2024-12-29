@@ -41,15 +41,16 @@ export type MealCategory = "breakfast" | "lunch" | "dinner";
 interface MealPlansListProps{
   plans:MealPlanType[];
   className?:string;
+  userId?:string;
 }
 
-const MealPlanList: React.FC<MealPlansListProps> = ({plans, className}) => {
+const MealPlanList: React.FC<MealPlansListProps> = ({plans, className, userId}) => {
 
   return (
     <div className={`bg-black text-white h-auto ${className ? className : ""}`}>
       <main className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[#252525] rounded-lg">
         {plans.map((plan) => (
-          <Link href={`Plans/MealPlans/${plan.id}`} key={plan.id}>
+          <Link href={`Plans/MealPlans/${plan.id}?userId=${userId}`} key={plan.id}>
             <div className="bg-black p-4 rounded-lg shadow-lg flex flex-row space-y-2">
               <div className="flex flex-col justify-between">
                 <div>
@@ -70,13 +71,11 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans, className}) => {
                   </p>
                 </div>
               </div>
-              <img
-                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${
-                  plan ? plan.slug : ""
-                }`}
+              <Image
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
-                // layout="fill"
-                // objectFit="cover"
+                width={240}
+                height={160}
                 className="rounded-lg"
               />
             </div>
