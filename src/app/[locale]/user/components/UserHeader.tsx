@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faBell} from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import LogoutButton from '../../admin/components/LogoutButton';
-import {User} from "@/src/app/[locale]/user/layout";
+import { User } from "@/src/app/[locale]/user/layout";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -18,7 +18,7 @@ interface NotificationType {
   updatedAt: Date
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({activeNav, user}) => {
+const UserHeader: React.FC<UserHeaderProps> = ({ activeNav, user }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +54,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({activeNav, user}) => {
   };
   const toggleTooltip = () => {
     setIsTooltipVisible((prev) => !prev);
-    fetchNotifications().then(r => {})
+    fetchNotifications().then(r => { })
   };
 
 
@@ -71,48 +71,48 @@ const UserHeader: React.FC<UserHeaderProps> = ({activeNav, user}) => {
       <header
         className="p-4 pt-[1.26rem] bg-black flex justify-between items-center text-white border-b-[0.5px] border-gray-800 relative z-50">
         <h1 className="text-lg truncate mr-2 sm:mr-0">{activeNav}</h1>
-        <div className="flex gap-4 items-center relative">
+        <div className="flex gap-2 items-center relative">
           {/* Notification Icon */}
           <FontAwesomeIcon
             icon={faBell}
-            className="bg-customBlue text-black font-light px-2 py-1 rounded-lg text-sm sm:text-base cursor-pointer"
+            className="bg-customBlue text-black font-light px-2 py-[0.35rem] rounded-lg text-sm sm:text-base cursor-pointer"
             onClick={toggleTooltip}
           />
 
-{/* Tooltip */}
-{isTooltipVisible && (
-  <div
-    className="absolute top-10 right-10 w-[250px] sm:w-[350px] p-4 rounded-lg bg-opacity-80 text-white shadow-2xl border border-customBlue z-50"
-    style={{
-      backdropFilter: 'blur(10px)',
-    }}
-  >
-    <ul
-      className="space-y-2 text-xs max-h-60 overflow-y-auto"
-      style={{ scrollbarWidth: "thin", scrollbarColor: "#2596BE #1E293B" }}
-    >
-      {notifications?.map((notification) => {
-        const updatedDate = new Date(notification.updatedAt); // Convert to Date object
-        const formattedDate = updatedDate.toLocaleDateString("en-GB"); // Format to dd-mm-yyyy
-        return (
-          <li
-            key={notification.id} // Use unique ID as key
-            className="p-3 bg-[#1E293B] bg-opacity-50 rounded-md"
-          >
-            <p className="text-xs">{notification.name}</p>
-            <p className="text-lg">{notification.description}</p>
-            <p className="text-gray-400 text-[10px]">{formattedDate}</p> {/* Display formatted date */}
-          </li>
-        );
-      })}
-    </ul>
-  </div>
-)}
+          {/* Tooltip */}
+          {isTooltipVisible && (
+            <div
+              className="absolute top-10 right-10 w-[250px] sm:w-[350px] p-4 rounded-lg bg-opacity-80 text-white shadow-2xl border border-customBlue z-50"
+              style={{
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <ul
+                className="space-y-2 text-xs max-h-60 overflow-y-auto"
+                style={{ scrollbarWidth: "thin", scrollbarColor: "#2596BE #1E293B" }}
+              >
+                {notifications?.map((notification) => {
+                  const updatedDate = new Date(notification.updatedAt); // Convert to Date object
+                  const formattedDate = updatedDate.toLocaleDateString("en-GB"); // Format to dd-mm-yyyy
+                  return (
+                    <li
+                      key={notification.id} // Use unique ID as key
+                      className="p-3 bg-[#1E293B] bg-opacity-50 rounded-md"
+                    >
+                      <p className="text-xs">{notification.name}</p>
+                      <p className="text-lg">{notification.description}</p>
+                      <p className="text-gray-400 text-[10px]">{formattedDate}</p> {/* Display formatted date */}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
           {/* Email Display */}
           <p className="hidden sm:block font-extralight text-sm truncate">
             {user?.email}
           </p>
-          <LogoutButton/>
+          <LogoutButton />
 
         </div>
       </header>
