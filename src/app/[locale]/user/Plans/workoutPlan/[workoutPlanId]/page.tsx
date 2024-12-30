@@ -260,7 +260,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             </button>): <div className="text-sm">Added to Your Plans!</div>}
           </div>
         </div>
-        <Image
+        <img
           src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${
             plan ? plan.slug : ""
           }`}
@@ -361,7 +361,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             {exercise && !isPlaying && (
               <>
                 <div className="h-full w-full relative">
-                  <Image
+                  <img
                     src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                     alt={exercise ? exercise.name : ""}
                     className="rounded-lg"
@@ -407,7 +407,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
               ✕
             </button>
             <div className="h-full w-full relative">
-              <Image
+              <img
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                 alt={exercise ? exercise.name : ""}
                 className="rounded-lg"

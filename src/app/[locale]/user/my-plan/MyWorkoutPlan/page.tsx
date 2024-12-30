@@ -52,9 +52,6 @@ const MyWorkoutPlanPage: React.FC<MyWorkoutPlanPageProps> = ({plans, className, 
                     <p className="text-xs font-extralight">
                       <span className="font-semibold"></span> {plan.difficulty}
                     </p>
-                    <p className="text-sm font-extralight">
-                      <span className="font-semibold"></span> {plan.mainGoal}
-                    </p>
                   </div>
 
                   <p className="text-xs flex items-center gap-2 font-extralight">
@@ -64,7 +61,7 @@ const MyWorkoutPlanPage: React.FC<MyWorkoutPlanPageProps> = ({plans, className, 
 
 
                 </div>
-                <Image
+                <img
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
                   width={500}
                   height={500}

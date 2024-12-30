@@ -79,32 +79,35 @@ const UserHeader: React.FC<UserHeaderProps> = ({activeNav, user}) => {
             onClick={toggleTooltip}
           />
 
-          {/* Tooltip */}
-          {isTooltipVisible && (
-            <div
-              className="absolute top-10 right-10 w-[250px] sm:w-[350px]  p-4 rounded-lg  bg-opacity-80 text-white shadow-2xl border border-customBlue z-50"
-              style={{
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <ul className="space-y-2 text-xs">
-                {notifications?.map((notification) => {
-                  const updatedDate = new Date(notification.updatedAt); // Convert to Date object
-                  const formattedDate = updatedDate.toLocaleDateString("en-GB"); // Format to dd-mm-yyyy
-                  return (
-                    <li
-                      key={notification.id} // Use unique ID as key
-                      className="p-3 bg-[#1E293B] bg-opacity-50 rounded-md"
-                    > <p className="text-xs">{notification.name}</p>
-                      <p className=" text-lg ">{notification.description}</p>
-                      <p className="text-gray-400 text-[10px]">{formattedDate}</p> {/* Display formatted date */}
-                    </li>
-                  );
-                })}
-              </ul>
-
-            </div>
-          )}
+{/* Tooltip */}
+{isTooltipVisible && (
+  <div
+    className="absolute top-10 right-10 w-[250px] sm:w-[350px] p-4 rounded-lg bg-opacity-80 text-white shadow-2xl border border-customBlue z-50"
+    style={{
+      backdropFilter: 'blur(10px)',
+    }}
+  >
+    <ul
+      className="space-y-2 text-xs max-h-60 overflow-y-auto"
+      style={{ scrollbarWidth: "thin", scrollbarColor: "#2596BE #1E293B" }}
+    >
+      {notifications?.map((notification) => {
+        const updatedDate = new Date(notification.updatedAt); // Convert to Date object
+        const formattedDate = updatedDate.toLocaleDateString("en-GB"); // Format to dd-mm-yyyy
+        return (
+          <li
+            key={notification.id} // Use unique ID as key
+            className="p-3 bg-[#1E293B] bg-opacity-50 rounded-md"
+          >
+            <p className="text-xs">{notification.name}</p>
+            <p className="text-lg">{notification.description}</p>
+            <p className="text-gray-400 text-[10px]">{formattedDate}</p> {/* Display formatted date */}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+)}
           {/* Email Display */}
           <p className="hidden sm:block font-extralight text-sm truncate">
             {user?.email}
