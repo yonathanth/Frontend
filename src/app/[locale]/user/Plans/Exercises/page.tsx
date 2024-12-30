@@ -109,24 +109,23 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
   return (
     <div className={`flex flex-col md:flex-row h-screen bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
-      <div className="w-full  md:w-1/3 p-4 bg-[#1e1e1e]">
+      <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
-        <nav
-          className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-center md:justify-start gap-2 mb-4">
-          {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
-            (category) => (
-              <button
-                key={category}
-                onClick={() => setFilter(category.toLowerCase())}
-                className={`px-5 py-1 text-xs rounded-full ${
-                  filter === category.toLowerCase() ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
-                }`}
-              >
-                {category}
-              </button>
-            )
-          )}
-        </nav>
+        <div className="bg-[#2a2a2a] p-2 rounded-full flex w-64 md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
+  {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
+    (category) => (
+      <button
+        key={category}
+        onClick={() => setFilter(category.toLowerCase())}
+        className={`px-5 py-1 text-xs rounded-full ${
+          filter === category.toLowerCase() ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
+        }`}
+      >
+        {category}
+      </button>
+    )
+  )}
+</div>
         <ul className="space-y-2">
           {filteredExercises.map((exercise) => (
             <li

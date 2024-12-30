@@ -365,7 +365,6 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
                     src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                     alt={exercise ? exercise.name : ""}
                     className="rounded-lg"
-                    fill
                   />
                 </div>
                 <button
@@ -411,7 +410,6 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                 alt={exercise ? exercise.name : ""}
                 className="rounded-lg"
-                fill
               />
             </div>
           </div>

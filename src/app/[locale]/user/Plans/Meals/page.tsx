@@ -83,9 +83,9 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
   return (
     <div className={`flex flex-col md:flex-row h-screen text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
-      <div className="w-full md:w-1/2 p-4 bg-[#1e1e1e]">
+      <div className="w-full rounded-tl-3xl rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
         <nav
-          className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
+          className="bg-[#2a2a2a] p-2 rounded-full w-64 md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
           {["All", "breakfast", "lunch", "dinner", "snack", "other"].map((category) => (
             <button
               key={category}
@@ -100,7 +100,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
         </nav>
 
         {/* Meal List */}
-        <ul className="space-y-2">
+        <ul className="space-y-2 w-64 md:w-full">
           {filteredmeals.map((meal) => (
             <li
               key={meal.slug}
@@ -111,10 +111,10 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
                   : "bg-[#2a2a2a] hover:bg-[#333333]"
               }`}
             >
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4 pr-3">
                 <h3 className="text-sm">{meal.name}</h3>
                 {meal.ingredients?.map((ingredient) => (
-                  <p key={ingredient.id} className="text-xs text-gray-300 font-extralight">
+                  <p key={ingredient.id} className="text-xs text-gray-300 font-extralight ">
                     {ingredient.name}
                   </p>
                 )) || (
@@ -143,7 +143,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
               ✕
             </button>
             <div className="relative w-full h-full">
-              <Image src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
+              <img src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
                 selectedMeal ? selectedMeal.slug : ""
               }`} width={500
               } height={500}
@@ -163,11 +163,10 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
         {selectedMeal ? (
           <div className="w-full md:w-2/3 h-60 md:h-2/3 rounded-lg relative flex flex-col gap-3">
             <div className="relative w-full h-60">
-              <Image
+              <img
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
                   selectedMeal ? selectedMeal.slug : ""
                 }`}
-                fill
                 alt={selectedMeal ? selectedMeal.name : ""}
                 className="rounded-lg"
               />
