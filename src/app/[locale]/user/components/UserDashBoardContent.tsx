@@ -171,7 +171,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
   if (isLoading) return <LoadingPage/>
 
   return (
-    <div className=" bg-black flex flex-col h-full">
+    <div className=" bg-black flex flex-col h-auto">
       {/* Header Section */}
       <header className="text-black flex flex-wrap lg:flex-nowrap gap-3 items-center px-4 lg:px-0">
         <div className="bg-[#2596BE] p-6 sm:p-8 w-full lg:w-[68%] rounded-lg">
@@ -349,12 +349,11 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             {/* Image Container */}
             <div>
               <div className="relative h-[300px] w-full bg-cover bg-center rounded-lg mb-4">
-                {advertisement ? (<Image
+                {advertisement ? (<img
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/advertisement/${
                     advertisement ? advertisement.slug : ""
                   }`}
                   alt={advertisement ? advertisement.name : ""}
-                  fill
                   className="rounded-lg"
                 />) : <div className=""></div>}
               </div>

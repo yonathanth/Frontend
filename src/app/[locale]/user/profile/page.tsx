@@ -172,7 +172,7 @@ const Page = () => {
 
   if (isPageLoading) return <LoadingPage/>
   return (
-    <div className="flex flex-col lg:flex-row bg-black text-white h-full">
+    <div className="flex flex-col lg:flex-row bg-black text-white h-auto">
       {/* Personal Info */}
       <div className="w-full lg:w-1/3 space-y-3 pr-0 sm:pr-4 flex flex-col">
         {/* Profile Card */}

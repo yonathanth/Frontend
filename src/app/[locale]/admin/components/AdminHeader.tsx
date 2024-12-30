@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import LogoutButton from '../components/LogoutButton'
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface AdminHeaderProps {
   activeNav: string;
@@ -11,7 +13,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ activeNav }) => {
       <h1 className="text-lg">{activeNav}</h1>
       <div className='flex gap-3'>
         <Link href="/">
-          <button className="bg-customBlue text-black font-light px-5 py-1 rounded-lg " >Back to Home</button>
+          <button className="bg-customBlue text-black font-light px-2 text-sm py-1 rounded-lg " ><FontAwesomeIcon icon={faHouse}/></button>
         </Link>
         <LogoutButton />
       </div>

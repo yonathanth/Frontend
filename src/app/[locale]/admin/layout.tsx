@@ -73,6 +73,7 @@ export default function AdminLayout({
         ></div>
       )}
       <div className="flex-1 flex flex-col justify-start lg:hidden">
+        <div className="flex justify-between">
         <button
           className="lg:hidden p-4 w-10"
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -80,6 +81,8 @@ export default function AdminLayout({
           <FontAwesomeIcon icon={faBars} className="text-white text-2xl" />
         </button>
         <AdminHeader activeNav={activeNav} />
+
+        </div>
         <main className="flex-1 bg-black p-6 overflow-auto">{children}</main>
       </div>
       <div className="hidden lg:flex flex-1 flex-col">

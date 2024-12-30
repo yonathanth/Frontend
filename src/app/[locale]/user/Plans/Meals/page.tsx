@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -59,11 +59,13 @@ interface MealListProps {
 }
 
 
-const MealList: React.FC<MealListProps> = ({meals, className}) => {
+
+const MealList: React.FC<MealListProps> = ({ meals, className }) => {
   const [selectedMeal, setSelectedMeal] = useState<MealType | null>(null);
   const [filter, setFilter] = useState("All");
   const [showModal, setShowModal] = useState(false);
-  const filteredmeals: MealType[] =
+
+  const filteredMeals: MealType[] =
     filter === "All"
       ? meals
       : meals.filter((meal) =>
@@ -76,23 +78,29 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
               : false
       );
 
+  useEffect(() => {
+    // Set the first meal from the "All" list as default when the page loads
+    if (filteredMeals.length > 0 && !selectedMeal) {
+      setSelectedMeal(filteredMeals[0]);
+    }
+  }, [filteredMeals]);
+
   const handleMealClick = (meal: MealType) => {
     setSelectedMeal(meal);
     setShowModal(true);
   };
+
   return (
-    <div className={`flex flex-col md:flex-row h-screen text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row h-auto text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
-      <div className="w-full md:w-1/2 p-4 bg-[#1e1e1e]">
-        <nav
-          className="bg-[#2a2a2a] p-2 rounded-full flex flex-wrap lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
+      <div className="w-72 rounded-3xl sm:rounded-none sm:rounded-tl-3xl  sm:rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
+        <nav className="bg-[#2a2a2a] p-2 rounded-full md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
           {["All", "breakfast", "lunch", "dinner", "snack", "other"].map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-5 py-1 text-xs rounded-full ${
-                filter === category ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
-              }`}
+              className={`px-5 py-1 text-xs rounded-full ${filter === category ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
+                }`}
             >
               {category}
             </button>
@@ -100,28 +108,18 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
         </nav>
 
         {/* Meal List */}
-        <ul className="space-y-2">
-          {filteredmeals.map((meal) => (
+        <ul className="space-y-2 md:w-full">
+          {filteredMeals.map((meal) => (
             <li
               key={meal.slug}
               onClick={() => handleMealClick(meal)}
-              className={`flex items-center justify-between p-3 cursor-pointer rounded-full px-4 ${
-                selectedMeal?.slug === meal.slug
+              className={`flex items-center justify-between p-3 cursor-pointer rounded-full px-4 ${selectedMeal?.slug === meal.slug
                   ? "bg-customBlue"
                   : "bg-[#2a2a2a] hover:bg-[#333333]"
-              }`}
+                }`}
             >
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4 pr-3">
                 <h3 className="text-sm">{meal.name}</h3>
-                {meal.ingredients?.map((ingredient) => (
-                  <p key={ingredient.id} className="text-xs text-gray-300 font-extralight">
-                    {ingredient.name}
-                  </p>
-                )) || (
-                  <p className="text-xs text-gray-300 font-extralight">
-                    No ingredients available.
-                  </p>
-                )}
               </div>
               <button className="text-white text-lg font-bold">
                 {meal.calories} <span className="text-xs font-extralight">Kcal</span>
@@ -129,9 +127,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
             </li>
           ))}
         </ul>
-
       </div>
-
       {/* Modal for Small Screens */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 md:hidden">
@@ -143,12 +139,11 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
               ✕
             </button>
             <div className="relative w-full h-full">
-              <Image src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
-                selectedMeal ? selectedMeal.slug : ""
-              }`} width={500
-              } height={500}
-                     alt={selectedMeal?.name || ""}
-                     className="w-full rounded-md mb-4"/>
+              <img src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal ? selectedMeal.slug : ""
+                }`} width={500
+                } height={500}
+                alt={selectedMeal?.name || ""}
+                className="w-full rounded-md mb-4" />
             </div>
 
             <p className="text-xs text-gray-300 font-extralight">
@@ -158,37 +153,43 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
         </div>
       )}
 
+
       {/* Image Preview for Larger Screens */}
-      <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#1e1e1e] p-1">
+      <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#1e1e1e] p-1 rounded-tr-3xl rounded-br-3xl py-12">
         {selectedMeal ? (
-          <div className="w-full md:w-2/3 h-60 md:h-2/3 rounded-lg relative flex flex-col gap-3">
+          <div className="w-full md:w-2/3 rounded-lg relative flex flex-col gap-3">
             <div className="relative w-full h-60">
-              <Image
-                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
-                  selectedMeal ? selectedMeal.slug : ""
-                }`}
-                fill
-                alt={selectedMeal ? selectedMeal.name : ""}
+              <img
+                src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal.slug}`}
+                alt={selectedMeal.name}
                 className="rounded-lg"
               />
             </div>
             <div className="flex flex-col items-center justify-center">
-              <h2 className="text-xl md:text-2xl font-bold">{selectedMeal?.name}</h2>
-              <p className="text-xs text-gray-300 font-extralight">
-                {meals.find((meal) => meal.slug === selectedMeal?.slug)?.ingredients[0].name}
-              </p>
+              <h2 className="text-xl md:text-2xl font-bold">{selectedMeal.name}</h2>
+              <div className="text-sm text-gray-300 font-extralight mt-2">
+                <p className="text-xs text-gray-300 font-extralight">
+                  {meals
+                    .find((meal) => meal.slug === selectedMeal?.slug)
+                    ?.ingredients.map((ingredient) => ingredient.name)
+                    .join(", ")}
+                </p>
+              </div>
+
             </div>
             <button>
-            <span className="text-white text-lg font-bold px-5 py-1 rounded-full bg-customBlue">
-          {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
-              <span className="text-xs font-extralight">Kcal</span>
-        </span>
-            </button>
+                <span className="text-white text-lg font-bold px-5 py-1 rounded-full bg-customBlue">
+                  {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
+                  <span className="text-xs font-extralight">Kcal</span>
+                </span>
+              </button>
+
           </div>
-
-        ) : <div className="w-full md:w-2/3 h-60 bg-zinc-700 rounded-lg flex justify-center items-center">Select a
-          Meal</div>}
-
+        ) : (
+          <div className="w-full md:w-2/3 h-60 bg-zinc-700 rounded-lg flex justify-center items-center">
+            Select a Meal
+          </div>
+        )}
       </div>
     </div>
   );

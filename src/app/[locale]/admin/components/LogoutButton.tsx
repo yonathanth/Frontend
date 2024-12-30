@@ -1,6 +1,8 @@
 'use client'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LogoutButton = () => {
   const [showModal, setShowModal] = useState(false);
@@ -28,9 +30,10 @@ const LogoutButton = () => {
     <div>
       <button
         onClick={handleShowModal}
-        className="bg-red-500 text-white font-light px-5 py-1 rounded-lg"
+        className="bg-red-500 text-black font-light text-sm px-2 py-1 rounded-lg"
       >
-        Logout
+              <FontAwesomeIcon icon={faRightFromBracket} className="" />
+        
       </button>
 
       {/* Modal */}
@@ -48,7 +51,7 @@ const LogoutButton = () => {
 
              >
                 Logout
-             </button>
+               </button>
              <button
                className="bg-gray-600 px-4 py-2 rounded-md"
                onClick={handleCloseModal}

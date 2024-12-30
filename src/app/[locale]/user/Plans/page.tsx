@@ -79,7 +79,7 @@ export default function PlansPage() {
   }, [userId, view, fetchData]);
 
   return (
-    <div className="text-white flex flex-col h-full">
+    <div className="text-white flex flex-col h-auto">
       {/* Navigation */}
       <nav className="flex flex-wrap justify-center md:justify-start gap-2 p-4">
         <button

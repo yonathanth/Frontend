@@ -62,19 +62,12 @@ const UserSidebar: React.FC<UserSidebarProps> = ({setActiveNav}) => {
             }`}
           >
             <span
-              className={`absolute right-0 top-0 h-full w-1 bg-customBlue rounded-l-md transition-all duration-200 ${
+              className={`absolute right-[-2rem] top-0 h-full w-1 bg-customBlue rounded-l-md transition-all duration-200 ${
                 activeNav === item.name
                   ? "opacity-100"
                   : "opacity-0 group-hover:opacity-100"
               }`}
-            ></span>
-            <FontAwesomeIcon
-              icon={iconMapping[item.icon]}
-              className={`text-2xl font-light px-2 py-1 ${
-                activeNav === item.name ? "text-customBlue" : "text-white"
-              }`}
-            />
-            <span
+            ></span>            <span
               className={`${
                 activeNav === item.name ? "text-customBlue" : "text-white"
               }`}

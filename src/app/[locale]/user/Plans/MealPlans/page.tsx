@@ -71,7 +71,7 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans, className, userId}) 
                   </p>
                 </div>
               </div>
-              <Image
+              <img
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
                 width={240}
