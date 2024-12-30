@@ -171,7 +171,7 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
   if (isLoading) return <LoadingPage/>
 
   return (
-    <div className=" bg-black flex flex-col h-full">
+    <div className=" bg-black flex flex-col h-auto">
       {/* Header Section */}
       <header className="text-black flex flex-wrap lg:flex-nowrap gap-3 items-center px-4 lg:px-0">
         <div className="bg-[#2596BE] p-6 sm:p-8 w-full lg:w-[68%] rounded-lg">

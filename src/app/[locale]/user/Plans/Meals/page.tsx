@@ -91,7 +91,7 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
   };
 
   return (
-    <div className={`flex flex-col md:flex-row h-full text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row h-auto text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
       <div className="w-72 rounded-3xl sm:rounded-none sm:rounded-tl-3xl  sm:rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
         <nav className="bg-[#2a2a2a] p-2 rounded-full md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">

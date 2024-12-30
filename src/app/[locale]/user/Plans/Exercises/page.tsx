@@ -113,7 +113,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
 
   if (isLoading) return <LoadingPage />;
   return (
-    <div className={`flex flex-col md:flex-row h-full bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row h-auto bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
       <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
