@@ -1,8 +1,8 @@
 "use client";
-import React, {useEffect, useRef, useState} from "react";
-import {ExerciseType} from "../workoutPlan/[workoutPlanId]/page";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlay} from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useRef, useState } from "react";
+import { ExerciseType } from "../workoutPlan/[workoutPlanId]/page";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import LoadingPage from "@/src/app/[locale]/user/loading";
 
@@ -13,7 +13,7 @@ interface ExerciseListProps {
   className?: string;
 }
 
-const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
+const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => {
   const [selectedExercise, setSelectedExercise] = useState<ExerciseType | null>(null);
   const [filter, setFilter] = useState("all");
   const videoRef = useRef<HTMLDivElement | null>(null);
@@ -28,6 +28,25 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
       : exercises.filter((exercise: ExerciseType) =>
         exercise.focusArea.toLowerCase().includes(filter)
       );
+  useEffect(() => {
+    // Set the first meal from the "All" list as default when the page loads
+    if (filteredExercises.length > 0 && !selectedExercise) {
+      setSelectedExercise(filteredExercises[0]);
+    }
+  }, [filteredExercises]);
+
+  const handleExerciseClick = (exercise: ExerciseType) => {
+    setIsLoading(true); // Start loading when a new exercise is selected
+
+    if (playerRef.current) {
+      playerRef.current.destroy();
+      playerRef.current = null;
+    }
+    setIsPlaying(false); // Reset to thumbnail view
+    setSelectedExercise(exercise || null);
+
+    setIsLoading(false); // Stop loading once the exercise is selected
+  };
 
   useEffect(() => {
     //@ts-ignore
@@ -92,50 +111,35 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
     }
   };
 
-  const handleExerciseClick = (exercise: ExerciseType) => {
-    setIsLoading(true); // Start loading when a new exercise is selected
-
-    if (playerRef.current) {
-      playerRef.current.destroy();
-      playerRef.current = null;
-    }
-    setIsPlaying(false); // Reset to thumbnail view
-    setSelectedExercise(exercise || null);
-
-    setIsLoading(false); // Stop loading once the exercise is selected
-  };
-
   if (isLoading) return <LoadingPage />;
   return (
-    <div className={`flex flex-col md:flex-row h-screen bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row h-full bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
       <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
         <div className="bg-[#2a2a2a] p-2 rounded-full flex w-64 md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
-  {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
-    (category) => (
-      <button
-        key={category}
-        onClick={() => setFilter(category.toLowerCase())}
-        className={`px-5 py-1 text-xs rounded-full ${
-          filter === category.toLowerCase() ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
-        }`}
-      >
-        {category}
-      </button>
-    )
-  )}
-</div>
+          {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
+            (category) => (
+              <button
+                key={category}
+                onClick={() => setFilter(category.toLowerCase())}
+                className={`px-5 py-1 text-xs rounded-full ${filter === category.toLowerCase() ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
+                  }`}
+              >
+                {category}
+              </button>
+            )
+          )}
+        </div>
         <ul className="space-y-2">
           {filteredExercises.map((exercise) => (
             <li
               key={exercise.slug}
               onClick={() => handleExerciseClick(exercise)}
-              className={`flex items-center justify-between p-3 cursor-pointer rounded-full ${
-                selectedExercise?.slug === exercise.slug
+              className={`flex items-center justify-between p-3 cursor-pointer rounded-full ${selectedExercise?.slug === exercise.slug
                   ? "bg-customBlue"
                   : "bg-[#2a2a2a] hover:bg-[#333333]"
-              }`}
+                }`}
             >
               <div className="flex items-baseline gap-2">
                 <h3 className="text-sm">{exercise.name}</h3>
@@ -146,20 +150,20 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
         </ul>
       </div>
 
+      
+
       {/* Video Preview */}
       <div className="flex-1 md:flex items-center justify-center bg-[#1e1e1e] p-1">
-        <div className="w-full md:w-4/5 h-60 md:h-2/3 bg-black rounded-lg relative">
+        <div className="w-full md:w-4/5 h-60 md:h-auto my-10 bg-black rounded-lg relative">
           {/* Thumbnail and Play Button */}
           {selectedExercise && !isPlaying && (
             <>
               <div className="relative w-full h-full">
-                <Image
-                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
-                    selectedExercise ? selectedExercise.slug : ""
-                  }`}
+                <img
+                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
+                    }`}
                   alt={selectedExercise ? selectedExercise.name : ""}
                   // layout="intrinsic"
-                  fill
                   // width={240} // You can provide a width for aspect ratio calculation
                   // height={160}
                   // Ensures the image fills the parent container
@@ -170,7 +174,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10"
                 onClick={handlePlayVideo}
               >
-                <FontAwesomeIcon icon={faPlay} size="3x" className="text-white"/>
+                <FontAwesomeIcon icon={faPlay} size="3x" className="text-white" />
               </button>
             </>
           )}
@@ -195,9 +199,8 @@ const ExerciseList: React.FC<ExerciseListProps> = ({exercises, className}) => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-full h-full">
                   <Image
-                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
-                      selectedExercise ? selectedExercise.slug : ""
-                    }`}
+                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
+                      }`}
                     alt={selectedExercise ? selectedExercise.name : ""}
                     // layout="intrinsic"
                     fill
