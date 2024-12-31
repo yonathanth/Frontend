@@ -131,7 +131,7 @@ const Register = () => {
     }
 
     if (!isTermsChecked) {
-      setError("Please agree to the terms and conditions.");
+      setError("Please agree to the terms and conditions below.");
       return;
     }
     if (!formData.profileImage) {
