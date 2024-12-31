@@ -12,7 +12,6 @@ import SmallLoading from "../admin/components/SmallLoading";
 import WorkoutPlan from "../user/Plans/workoutPlan/[workoutPlanId]/page";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 interface Service {
   id: string;
   name: string;
@@ -127,7 +126,7 @@ const Register = () => {
     e.preventDefault();
 
     if (!selectedPackage) {
-      setError("Please choose a package.");
+      setError("Please choose a package below.");
       return;
     }
 
