@@ -237,16 +237,16 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
   }
 
   return (
-    <div className="flex flex-col p-3">
+    <div className="flex flex-col p-1  md:p-3">
       <div className="bg-[#151515] p-4 rounded-lg shadow-lg flex flex-row justify-between text-white space-y-2">
         <div className="flex flex-col justify-between">
           <div>
-            <h2 className="text-lg font-semibold">{plan.name}</h2>
-            <p className="text-xs font-extralight">{plan.difficulty}</p>
-            <p className="text-xs font-extralight">{plan.mainGoal}</p>
+            <h2 className="text-sm md:text-lg font-semibold">{plan.name}</h2>
+            <p className="text-[11px] md:text-xs font-extralight">{plan.difficulty}</p>
+            <p className="text-[11px] md:text-xs font-extralight">{plan.mainGoal}</p>
           </div>
           <div className="flex flex-col gap-y-10">
-            <div className="flex items-center space-x-2 mt-auto">
+            <div className="flex items-center pt-2 space-x-2 mt-auto">
               <FontAwesomeIcon icon={faClock} className="text-customBlue"/>
               <span className="text-sm font-extralight">{plan.duration} weeks</span>
             </div>
@@ -265,9 +265,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             plan ? plan.slug : ""
           }`}
           alt={plan ? plan.name : ""}
-          className="rounded-lg"
-          width={240}
-          height={160}
+          className="rounded-lg h-20 sm:w-36 sm:h-40"
         />
       </div>
 
