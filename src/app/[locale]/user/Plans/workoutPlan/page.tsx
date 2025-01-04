@@ -61,9 +61,12 @@ const WorkoutPlanList: React.FC<WorkoutPlansListProps> = ({plans, className, use
   </div>
 
   {/* Image Section */}
-  <img
+  <Image
     src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
     alt={plan.name}
+    width={500}
+    height={500}
+    quality={90}
     className="w-full h-20 sm:w-36 sm:h-40 object-cover rounded-lg"
   />
 </div>
