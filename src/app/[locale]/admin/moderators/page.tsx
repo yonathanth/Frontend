@@ -50,9 +50,7 @@ const ModeratorsList = () => {
   }, []);
 
   return (
-    <div className="bg-black p-6 rounded-lg text-white">
-      <h2 className="text-xl font-bold mb-4">Moderators List</h2>
-
+    <div className="bg-black  md:p-6 rounded-lg text-white">
       {isLoading && <p className="text-gray-400">Loading...</p>}
       {errorMessage && (
         <p className="text-red-500 text-sm mb-4">{errorMessage}</p>

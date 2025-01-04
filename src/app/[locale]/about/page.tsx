@@ -1,9 +1,9 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import aboutUsHero from "@/assets/images/aboutus_hero.jpg";
-import ourPhilo from "@/assets/images/ourPhilosophy.jpg";
-import trainers from "@/assets/images/trainers.jpg";
+import aboutUsHero from "../../../../assets/images/aboutus_hero.jpg";
+import ourPhilo from "../../../../assets/images/ourPhilosophy.jpg";
+import trainers from "../../../../assets/images/trainers.jpg";
 import { motion } from "framer-motion";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -123,7 +123,6 @@ const AboutUsPage = () => {
                 transition={{ duration: 0.8 }}
               >
                 {t("sections.0.content")}
-
               </motion.p>
             </div>
 
@@ -144,7 +143,10 @@ const AboutUsPage = () => {
           </section>
 
           {/* Section 2 - Our Philosophy */}
-          <section id="our-philosophy" className="scroll-section flex flex-col-reverse md:flex-row items-center py-14 gap-20">
+          <section
+            id="our-philosophy"
+            className="scroll-section flex flex-col-reverse md:flex-row items-center py-14 gap-20"
+          >
             <motion.div
               className="w-full lg:w-1/2 relative md:h-80 h-60 lg:h-60"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -186,13 +188,15 @@ const AboutUsPage = () => {
                 transition={{ duration: 0.8 }}
               >
                 {t("sections.1.content")}
-
               </motion.p>
             </div>
           </section>
 
           {/* Section 3 - Our Facilities & Trainers */}
-          <section id="our-Facilities" className="scroll-section flex flex-col md:flex-row items-center pb-40  gap-20">
+          <section
+            id="our-Facilities"
+            className="scroll-section flex flex-col md:flex-row items-center pb-40  gap-20"
+          >
             <div className="md:w-1/2 sm:w-full sm:px-0 px-6">
               <div className="relative">
                 <motion.h2
@@ -219,7 +223,6 @@ const AboutUsPage = () => {
                 transition={{ duration: 0.8 }}
               >
                 {t("sections.2.content")}
-
               </motion.p>
             </div>
 
@@ -249,9 +252,7 @@ const AboutUsPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span>
-              {t("sections.3.callToAction")}
-            </span>
+            <span>{t("sections.3.callToAction")}</span>
           </motion.button>
         </Link>
       </section>

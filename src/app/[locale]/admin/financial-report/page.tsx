@@ -8,7 +8,6 @@ import { Island_Moments } from "next/font/google";
 import SmallLoading from "../components/SmallLoading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 interface transaction {
   name: string;
   category: string;
@@ -129,7 +128,7 @@ const FinancialReport = () => {
   };
 
   return (
-    <div className="text-white p-6 bg-black">
+    <div className="text-white p-3 md:p-6 bg-black">
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
       {/* Filter options */}

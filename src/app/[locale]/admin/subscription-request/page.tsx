@@ -5,7 +5,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 interface Requests {
   id: string;
   userName: string;
@@ -53,13 +52,9 @@ const Page = () => {
     }
   };
   return (
-    <div className="bg-black p-6 rounded-lg overflow-auto">
-      <h2 className="text-xl font-bold mb-4 text-white">
-        Subscription Extension Requests
-      </h2>
-
+    <div className="bg-black p-3 md:p-6 rounded-lg overflow-auto">
       {/* Table Layout with Responsive Scroll */}
-      <div className=" mt-10">
+      <div>
         <table className="min-w-[800px] w-full">
           <thead>
             <tr>
