@@ -117,7 +117,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
       {/* Sidebar */}
       <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
-        <div className="bg-[#2a2a2a] p-2 rounded-full flex w-64 md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
+        <div className="bg-[#2a2a2a] p-2 rounded-full flex w-[22rem] md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
           {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
             (category) => (
               <button
