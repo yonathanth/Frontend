@@ -69,7 +69,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ activeNav, user }) => {
       )}
 
       <header
-        className="p-4 pt-[1.26rem] bg-black flex justify-between items-center text-white border-b-[0.5px] border-gray-800 relative z-50">
+        className="p-4 pt-[1.5rem] bg-black flex justify-between items-center text-white border-b-[0.5px] border-gray-800 relative z-50">
         <h1 className="text-lg truncate mr-2 sm:mr-0">{activeNav}</h1>
         <div className="flex gap-2 items-center relative">
           {/* Notification Icon */}
