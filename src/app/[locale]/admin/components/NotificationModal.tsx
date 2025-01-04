@@ -19,7 +19,6 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState<"success" | "error" | null>(null);
-
   if (!isOpen) return null;
 
   const handleSend = async () => {

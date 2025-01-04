@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import LogoutButton from '../../admin/components/LogoutButton';
 import { User } from "@/src/app/[locale]/user/layout";
+import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -87,9 +88,13 @@ const UserHeader: React.FC<UserHeaderProps> = ({ activeNav, user }) => {
                 backdropFilter: 'blur(10px)',
               }}
             >
-              <ul
+              {isLoading ?
+                <div className="flex items-center justify-center my-10 bg-black text-white">
+                  <div className="animate-spin border-4 border-customBlue border-t-transparent rounded-full w-12 h-12"></div>
+                </div> :
+                <ul
                 className="space-y-2 text-xs max-h-60 overflow-y-auto"
-                style={{ scrollbarWidth: "thin", scrollbarColor: "#2596BE #1E293B" }}
+                style={{scrollbarWidth: "thin", scrollbarColor: "#2596BE #1E293B"}}
               >
                 {notifications?.map((notification) => {
                   const updatedDate = new Date(notification.updatedAt); // Convert to Date object
@@ -105,14 +110,15 @@ const UserHeader: React.FC<UserHeaderProps> = ({ activeNav, user }) => {
                     </li>
                   );
                 })}
-              </ul>
+              </ul>}
+
             </div>
           )}
           {/* Email Display */}
           <p className="hidden sm:block font-extralight text-sm truncate">
             {user?.email}
           </p>
-          <LogoutButton />
+          <LogoutButton/>
 
         </div>
       </header>

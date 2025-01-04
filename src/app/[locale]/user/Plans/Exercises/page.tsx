@@ -114,8 +114,10 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
   if (isLoading) return <LoadingPage />;
   return (
     <div className={`flex flex-col md:flex-row h-auto bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
+
       {/* Sidebar */}
       <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
+
         {/* Filter Buttons */}
         <div className="bg-[#2a2a2a] p-2 rounded-full flex w-64 md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
           {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
@@ -134,6 +136,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
         <ul className="space-y-2">
           {filteredExercises.map((exercise) => (
             <li
+
               key={exercise.slug}
               onClick={() => handleExerciseClick(exercise)}
               className={`flex items-center justify-between p-3 cursor-pointer rounded-full ${selectedExercise?.slug === exercise.slug
@@ -150,25 +153,22 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
         </ul>
       </div>
 
-      
+
 
       {/* Video Preview */}
-      <div className="flex-1 md:flex items-center justify-center py-10 bg-[#1e1e1e] p-1">
-        <div className="w-full max-w-[480px] min-h-80  my-10 bg-[#1e1e1e] rounded-lg relative">
+      <div className="flex-1 md:flex items-center justify-center p-1">
+        <div className="w-full max-w-[480px] min-h-80 my-10 bg-[#1e1e1e] rounded-lg relative">
           {/* Thumbnail and Play Button */}
           {selectedExercise && !isPlaying && (
             <>
-              <div className="relative max-h-80 w-full h-full">
+              <div className="relative w-full h-full">
                 <Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
                     }`}
                   alt={selectedExercise ? selectedExercise.name : ""}
-                  // layout="intrinsic"
-                  width={500} // You can provide a width for aspect ratio calculation
-                  height={500}
+                  fill={true}
                   quality={90}
-                  // Ensures the image fills the parent container
-                  className="rounded-lg w-full h-full"
+                  className="rounded-lg max-w-[480px] min-h-80"
                 />
               </div>
               <button
