@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -59,8 +59,7 @@ interface MealListProps {
 }
 
 
-
-const MealList: React.FC<MealListProps> = ({ meals, className }) => {
+const MealList: React.FC<MealListProps> = ({meals, className}) => {
   const [selectedMeal, setSelectedMeal] = useState<MealType | null>(null);
   const [filter, setFilter] = useState("All");
   const [showModal, setShowModal] = useState(false);
@@ -83,7 +82,7 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
     if (filteredMeals.length > 0 && !selectedMeal) {
       setSelectedMeal(filteredMeals[0]);
     }
-  }, [filteredMeals]);
+  }, [filteredMeals, selectedMeal]);
 
   const handleMealClick = (meal: MealType) => {
     setSelectedMeal(meal);
@@ -94,13 +93,14 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
     <div className={`flex flex-col md:flex-row h-auto text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
       <div className="w-72 rounded-3xl sm:rounded-none sm:rounded-tl-3xl  sm:rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
-        <nav className="bg-[#2a2a2a] p-2 rounded-full md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
+        <nav
+          className="bg-[#2a2a2a] p-2 rounded-full md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
           {["All", "breakfast", "lunch", "dinner", "snack", "other"].map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
               className={`px-5 py-1 text-xs rounded-full ${filter === category ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
-                }`}
+              }`}
             >
               {category}
             </button>
@@ -114,11 +114,12 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
               key={meal.slug}
               onClick={() => handleMealClick(meal)}
               className={`flex items-center justify-between p-3 cursor-pointer rounded-full px-4 ${selectedMeal?.slug === meal.slug
-                  ? "bg-customBlue"
-                  : "bg-[#2a2a2a] hover:bg-[#333333]"
-                }`}
+                ? "bg-customBlue"
+                : "bg-[#2a2a2a] hover:bg-[#333333]"
+              }`}
             >
-              <div className="flex items-baseline gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4 pr-3">
+              <div
+                className="flex items-baseline gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4 pr-3">
                 <h3 className="text-sm">{meal.name}</h3>
               </div>
               <button className="text-white text-lg font-bold">
@@ -139,11 +140,11 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
               ✕
             </button>
             <div className="relative w-full h-full">
-              <img src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal ? selectedMeal.slug : ""
-                }`} width={500
-                } height={500}
-                alt={selectedMeal?.name || ""}
-                className="w-full rounded-md mb-4" />
+              <Image src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal ? selectedMeal.slug : ""}`}
+                     width={500}
+                     height={500}
+                     alt={selectedMeal?.name || ""}
+                     className="w-full rounded-md mb-4"/>
             </div>
 
             <p className="text-xs text-gray-300 font-extralight">
@@ -155,13 +156,16 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
 
 
       {/* Image Preview for Larger Screens */}
-      <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#1e1e1e] p-1 rounded-tr-3xl rounded-br-3xl py-12">
+      <div
+        className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#1e1e1e] p-1 rounded-tr-3xl rounded-br-3xl py-12">
         {selectedMeal ? (
           <div className="w-full md:w-2/3 rounded-lg relative flex flex-col gap-3">
-            <div className="relative w-full h-60">
-              <img
+            <div className="relative w-full mb-4 h-60">
+              <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal.slug}`}
                 alt={selectedMeal.name}
+                width={500}
+                height={500}
                 className="rounded-lg"
               />
             </div>
@@ -182,7 +186,7 @@ const MealList: React.FC<MealListProps> = ({ meals, className }) => {
                   {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
                   <span className="text-xs font-extralight">Kcal</span>
                 </span>
-              </button>
+            </button>
 
           </div>
         ) : (

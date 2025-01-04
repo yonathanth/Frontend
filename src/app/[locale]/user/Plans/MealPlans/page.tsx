@@ -44,8 +44,10 @@ interface MealPlansListProps{
   userId?:string;
 }
 
-const MealPlanList: React.FC<MealPlansListProps> = ({plans, className, userId}) => {
-
+const MealPlanList: React.FC<MealPlansListProps> = ({plans = [], className, userId}) => {
+  if (!plans || plans.length === 0) {
+    return <p className="text-white">No meal plans available.</p>;
+  }
   return (
     <div className={`bg-black text-white h-auto ${className ? className : ""}`}>
       <main className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[#252525] rounded-lg">
@@ -71,7 +73,7 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans, className, userId}) 
                   </p>
                 </div>
               </div>
-              <img
+              <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
                 width={240}

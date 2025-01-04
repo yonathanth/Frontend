@@ -65,8 +65,6 @@ export default function MyPlansPage() {
     }
   }, [userId, view, fetchData]);
 
-  if (isLoading) return <LoadingPage/>;
-  // if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="min-h-screen text-white">
@@ -91,9 +89,7 @@ export default function MyPlansPage() {
       </nav>
       <main className="p-4 md:p-8 mx-auto">
         {isLoading ? (
-          <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
-            <div className="text-4xl font-bold">Loading...</div>
-          </div>
+          <LoadingPage/>
         ) : error ? (
           <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
             <div className="text-4xl font-bold text-red-500">Error</div>

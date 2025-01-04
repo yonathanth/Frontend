@@ -51,23 +51,23 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
   useEffect(() => {
     //@ts-ignore
     if (!window.YT) {
-      setIsLoading(true); // Start loading when the YouTube API script is being added
+      // setIsLoading(true); // Start loading when the YouTube API script is being added
       const script = document.createElement("script");
       script.src = "https://www.youtube.com/iframe_api";
       script.async = true;
       document.body.appendChild(script);
       (window as any).onYouTubeIframeAPIReady = () => {
         setIsYouTubeLoaderReady(true);
-        setIsLoading(false); // Stop loading once the API is ready
+        // setIsLoading(false); // Stop loading once the API is ready
       };
     } else {
       setIsYouTubeLoaderReady(true);
-      setIsLoading(false); // Stop loading if API is already available
+      // setIsLoading(false); // Stop loading if API is already available
     }
   }, []);
 
   const initializePlayer = (videoId: string) => {
-    setIsLoading(true); // Start loading before initializing the player
+    // setIsLoading(true); // Start loading before initializing the player
 
     if (playerRef.current) {
       playerRef.current.destroy();
@@ -83,7 +83,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
           onReady: (event: any) => {
             event.target.playVideo();
             setIsPlaying(true);
-            setIsLoading(false); // Stop loading when video starts playing
+            // setIsLoading(false); // Stop loading when video starts playing
           },
           onStateChange: (event: any) => {
             //@ts-ignore
@@ -97,7 +97,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
         },
       });
     } else {
-      setIsLoading(false); // Stop loading if player cannot be initialized
+      // setIsLoading(false); // Stop loading if player cannot be initialized
     }
   };
 
@@ -153,21 +153,22 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
       
 
       {/* Video Preview */}
-      <div className="flex-1 md:flex items-center justify-center bg-[#1e1e1e] p-1">
-        <div className="w-full md:w-4/5 h-60 md:h-auto my-10 bg-black rounded-lg relative">
+      <div className="flex-1 md:flex items-center justify-center py-10 bg-[#1e1e1e] p-1">
+        <div className="w-full max-w-[480px] min-h-80  my-10 bg-[#1e1e1e] rounded-lg relative">
           {/* Thumbnail and Play Button */}
           {selectedExercise && !isPlaying && (
             <>
-              <div className="relative w-full h-full">
-                <img
+              <div className="relative max-h-80 w-full h-full">
+                <Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
                     }`}
                   alt={selectedExercise ? selectedExercise.name : ""}
                   // layout="intrinsic"
-                  // width={240} // You can provide a width for aspect ratio calculation
-                  // height={160}
+                  width={500} // You can provide a width for aspect ratio calculation
+                  height={500}
+                  quality={90}
                   // Ensures the image fills the parent container
-                  className="rounded-lg"
+                  className="rounded-lg w-full h-full"
                 />
               </div>
               <button
@@ -194,7 +195,7 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
             >
               ✕
             </button>
-            <div className="w-full md:w-2/3 h-60 md:h-2/3 bg-black rounded-lg relative">
+            <div className="w-full md:w-2/3 max-h-80 h-auto md:h-2/3 bg-black rounded-lg relative">
               {/* Video Placeholder */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-full h-full">
@@ -202,12 +203,12 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
                     src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
                       }`}
                     alt={selectedExercise ? selectedExercise.name : ""}
-                    // layout="intrinsic"
+                    layout="intrinsic"
                     fill
-                    // width={240} // You can provide a width for aspect ratio calculation
-                    // height={160}
+                    width={240} // You can provide a width for aspect ratio calculation
+                    height={160}
                     // Ensures the image fills the parent container
-                    className="rounded-lg"
+                    className="rounded-lg h-full w-full"
                   />
                 </div>
               </div>
