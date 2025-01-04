@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import LogoutButton from '../../admin/components/LogoutButton';
 import { User } from "@/src/app/[locale]/user/layout";
-import LoadingPage from "@/src/app/[locale]/user/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
