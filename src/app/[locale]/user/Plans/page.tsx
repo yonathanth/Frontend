@@ -41,11 +41,18 @@ export default function PlansPage() {
       } else if (type === "exerciseList") {
         res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/exercises/`, {cache: "no-store"});
         data = await res.json();
+        console.log(data)
+        if (!data.success) {
+          return []
+        }
         const exercises: ExerciseType[] = data.data.exercises;
         return exercises || [];
       } else if (type === "mealList") {
         res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/meals/`, {cache: "no-store"});
         data = await res.json();
+        if (!data.success) {
+          return []
+        }
         return data.data.meals || [];
       }
     } catch (err) {
