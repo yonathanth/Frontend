@@ -199,3 +199,11 @@ test-button:hover {
   transform: skewX(-10deg);
   display: inline-block;  }
 
+
+  /* Hide the spinner for number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

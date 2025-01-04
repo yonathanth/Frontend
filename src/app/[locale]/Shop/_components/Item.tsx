@@ -40,9 +40,12 @@ export const Item: React.FC<ItemProps> = ({
     >
       {/* Product Image */}
       console.log(image)
-      <img
+      <Image
         src={`${NEXT_PUBLIC_API_BASE_URL}${image}`}
         alt={title}
+        width={500}
+        height={500}
+        quality={90}
         className="opacity-75 hover:opacity-100 w-full h-52 object-cover rounded-md mb-4 bg-white"
       />
       {/* Product Info */}

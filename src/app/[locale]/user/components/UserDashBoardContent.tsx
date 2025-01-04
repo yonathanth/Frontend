@@ -349,10 +349,12 @@ const Dashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             {/* Image Container */}
             <div>
               <div className="relative h-[300px] w-full bg-cover bg-center rounded-lg mb-4">
-                {advertisement ? (<img
+                {advertisement ? (<Image
                   src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/advertisement/${
                     advertisement ? advertisement.slug : ""
                   }`}
+                  fill={true}
+                  quality={90}
                   alt={advertisement ? advertisement.name : ""}
                   className="rounded-lg"
                 />) : <div className=""></div>}

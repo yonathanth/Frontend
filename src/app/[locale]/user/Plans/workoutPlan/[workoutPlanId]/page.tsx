@@ -237,16 +237,16 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
   }
 
   return (
-    <div className="flex flex-col p-3">
+    <div className="flex flex-col p-1  md:p-3">
       <div className="bg-[#151515] p-4 rounded-lg shadow-lg flex flex-row justify-between text-white space-y-2">
         <div className="flex flex-col justify-between">
           <div>
-            <h2 className="text-lg font-semibold">{plan.name}</h2>
-            <p className="text-xs font-extralight">{plan.difficulty}</p>
-            <p className="text-xs font-extralight">{plan.mainGoal}</p>
+            <h2 className="text-sm md:text-lg font-semibold">{plan.name}</h2>
+            <p className="text-[11px] md:text-xs font-extralight">{plan.difficulty}</p>
+            <p className="text-[11px] md:text-xs font-extralight">{plan.mainGoal}</p>
           </div>
           <div className="flex flex-col gap-y-10">
-            <div className="flex items-center space-x-2 mt-auto">
+            <div className="flex items-center pt-2 space-x-2 mt-auto">
               <FontAwesomeIcon icon={faClock} className="text-customBlue"/>
               <span className="text-sm font-extralight">{plan.duration} weeks</span>
             </div>
@@ -260,14 +260,15 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             </button>): <div className="text-sm">Added to Your Plans!</div>}
           </div>
         </div>
-        <img
+        <Image
           src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${
             plan ? plan.slug : ""
           }`}
+          height={500}
+          width={500}
+          quality={90}
           alt={plan ? plan.name : ""}
-          className="rounded-lg"
-          width={240}
-          height={160}
+          className="rounded-lg h-20 sm:w-36 sm:h-40"
         />
       </div>
 
@@ -361,9 +362,11 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
             {exercise && !isPlaying && (
               <>
                 <div className="h-full w-full relative">
-                  <img
+                  <Image
                     src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                     alt={exercise ? exercise.name : ""}
+                    fill
+                    quality={90}
                     className="rounded-lg"
                   />
                 </div>
@@ -406,9 +409,10 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
               ✕
             </button>
             <div className="h-full w-full relative">
-              <img
+              <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${exercise ? exercise.slug : ""}`}
                 alt={exercise ? exercise.name : ""}
+                fill
                 className="rounded-lg"
               />
             </div>

@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faPlay} from "@fortawesome/free-solid-svg-icons";
 import {useSearchParams} from "next/navigation";
+import Image from "next/image";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
@@ -216,7 +217,7 @@ export default function MyWorkoutPlan({params}: { params: { locale: string; MyWo
             </div>
           </div>
         </div>
-        <img
+        <Image
           src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/workouts/${plan ? plan.slug : ""}`}
           alt={plan.name}
           width={500}
@@ -314,7 +315,7 @@ export default function MyWorkoutPlan({params}: { params: { locale: string; MyWo
           <div className="w-full h-full relative">
             {exercise && !isPlaying && (
               <>
-                <img
+                <Image
                   src={`/Images/exercises/${exercise?.slug}.jpg`}
                   alt={exercise?.name || ""}
                   width={500}
@@ -359,7 +360,7 @@ export default function MyWorkoutPlan({params}: { params: { locale: string; MyWo
             >
               ✕
             </button>
-            <img
+            <Image
               src={`/Images/exercises/${exercise?.slug}.jpg`}
               alt={exercise?.name || ""}
               width={500}

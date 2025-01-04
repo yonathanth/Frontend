@@ -7,8 +7,8 @@ import MealList from "@/src/app/[locale]/user/Plans/Meals/page";
 import MealPlanList from "@/src/app/[locale]/user/Plans/MealPlans/page";
 import LoadingPage from "@/src/app/[locale]/user/loading";
 import {jwtDecode} from "jwt-decode";
-const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
 interface CustomJwtPayload {
@@ -41,11 +41,18 @@ export default function PlansPage() {
       } else if (type === "exerciseList") {
         res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/exercises/`, {cache: "no-store"});
         data = await res.json();
+        console.log(data)
+        if (!data.success) {
+          return []
+        }
         const exercises: ExerciseType[] = data.data.exercises;
         return exercises || [];
       } else if (type === "mealList") {
         res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/meals/`, {cache: "no-store"});
         data = await res.json();
+        if (!data.success) {
+          return []
+        }
         return data.data.meals || [];
       }
     } catch (err) {
@@ -71,10 +78,10 @@ export default function PlansPage() {
   }, []);
 
   useEffect(() => {
-    if(userId) {
-    fetchData(view).then((fetchedData) => {
-      setData(fetchedData); // Always set an array
-    });
+    if (userId) {
+      fetchData(view).then((fetchedData) => {
+        setData(fetchedData); // Always set an array
+      });
     }
   }, [userId, view, fetchData]);
 
@@ -118,7 +125,7 @@ export default function PlansPage() {
 
       <main className="p-4 md:p-8 mx-auto">
         {isLoading ? (
-         <LoadingPage/>
+          <LoadingPage/>
         ) : error ? (
           <div className="text-white col-span-3 bg-zinc-900 p-10 rounded-lg m-20">
             <div className="text-4xl font-bold text-red-500">Error</div>
@@ -141,12 +148,15 @@ export default function PlansPage() {
             <>
               <WorkoutPlanList className="col-span-3" plans={data} userId={userId}/>
             </>
-            : view === "exerciseList" ?
-              <>
-                <ExerciseList className="col-span-3" exercises={data} />
-              </>
-              : view === "mealPlans" ?
-                <MealPlanList className="col-span-3" plans={data} userId={userId}/> :
+            :
+            view === "mealPlans" ?
+              <MealPlanList className="col-span-3" plans={data} userId={userId}/>
+              :
+              view === "exerciseList" ?
+                <>
+                  <ExerciseList className="col-span-3" exercises={data}/>
+                </>
+                :
                 <MealList className="col-span-3" meals={data}/>
         )}
       </main>

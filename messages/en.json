@@ -384,14 +384,16 @@
     }
   },
   "login_page": {
-    "heading": "Log in to Account",
+    "heading": "Welcome Back!",
+    "no_account":"You dont have an account?",
+    "motivational_text" :"Stay consistent, and reach your fitness goals!",
     "fields": {
       "phone_number": "Phone Number",
       "password": "Password"
     },
     "buttons": {
       "login": "Log in",
-      "signup": "Sign Up?"
+      "signup": "Sign Up"
     }
   },
   "registration_page": {
