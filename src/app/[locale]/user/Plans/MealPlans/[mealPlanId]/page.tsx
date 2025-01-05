@@ -116,14 +116,13 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
         lunch: [],
         dinner: []
       };
-    meals.forEach((meal) => {
+    meals.forEach((meal: MealType) => {
       // @ts-ignore
-      if (grouped[meal.category]) {
+      if (grouped[meal?.category]) {
         // @ts-ignore
         grouped[meal.category].push(meal);
       }
     });
-
     return grouped;
   };
 
@@ -183,9 +182,12 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
               />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 rounded-lg"></div>
             </div>
-            <h1 className="absolute top-4 left-6 text-xl font-bold z-10 text-white">
+            <div className="absolute top-4 left-6 z-10 text-white">
+              <h1 className="text-xl font-bold">{plan.name}</h1>
+            <h1 className="text-lg">
               {plan.duration} weeks, {plan.mainGoal}
             </h1>
+            </div>
           </div>
           <div className="bg-[#252525] p-4 rounded-lg mt-2 lg:mt-2">
             <h2 className="text-base font-semibold">{plan.mainGoal}</h2>
@@ -265,7 +267,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           </h3>
           {selectedDay !== null ? (
             (() => {
-              const [ dayIndex] = selectedDay
+              const [monthIndex ,weekIndex, dayIndex] = selectedDay
                 .split("-")
                 .map(Number);
               return ["breakfast", "lunch", "dinner"].map((category, index) => {
