@@ -70,7 +70,7 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans = [], className, user
                   </p>
                   <p className="text-xs flex items-center gap-2 font-extralight">
                     <FontAwesomeIcon icon={faClock} className="text-customBlue"/>
-                    {plan.duration}
+                    {plan.duration}{" "} weeks
                   </p>
                 </div>
               </div>

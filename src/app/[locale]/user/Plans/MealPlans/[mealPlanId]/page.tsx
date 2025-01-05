@@ -209,7 +209,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           </div>
           {!doesMealPlanExist? (
           <button
-            className=" bg-customBlue w-[200px] text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
+            className=" bg-customBlue w-[200px] my-3 text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
             onClick={async () => {
               await selectPlan(plan.id);
             }}
@@ -296,7 +296,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                             <span className="pr-5">Fat</span> <span>{meal.fats}g</span>
                           </p>
                           <p className="text-xs font-extralight mt-4">
-                            Calorie <span className="font-semibold">{meal.calories}</span> kcal
+                            Calories <span className="font-semibold">{meal.calories}</span> kcal
                           </p>
                         </div>
                         <div className="flex flex-col items-center">
@@ -304,16 +304,17 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                             src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
                               meal ? meal.slug : ""
                             }`}
-                            width={96}
-                            height={96}
+                            width={500}
+                            height={500}
+                            quality={90}
                             alt={meal ? meal.name : ""}
-                            className="rounded-lg"
+                            className="rounded-lg w-8/12 mb-3"
                           />
                           <h3 className="text-tiny font-light">{meal.name}</h3>
                         </div>
                       </div>
                     ) : (
-                      <div className="text-gray-400 text-sm">No meals available for {category}.</div>
+                      <div className="text-gray-400 text-sm">This is your lucky meal! Eat whatever you want here.</div>
                     )}
                   </div>
                 );
