@@ -88,12 +88,10 @@ const Login = () => {
           className="object-cover"
         />
       </div>
-      <div className="lg:w-1/2 w-full my-auto p-20 bg-black">
+      <div className="lg:w-1/2 w-full my-auto p-8 sm:p-20 bg-black">
         <div className="text-white bg-black bg-opacity-75 p-8 rounded-md">
           <h2 className="text-3xl mb-2 text-left">{t("heading")}</h2>
-          <p className="text-sm text-gray-400 mb-8">
-            {t("motivational_text")}
-          </p>
+          <p className="text-sm text-gray-400 mb-8">{t("motivational_text")}</p>
           <form
             className="flex flex-col items-center w-full"
             onSubmit={handleLogin}
