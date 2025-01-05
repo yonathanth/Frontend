@@ -280,10 +280,9 @@ const Page = () => {
             },
             {
               label: "BMI",
-              value:
-                memberDetails?.bmis && memberDetails.bmis.length > 0
-                  ? `${memberDetails.bmis[-1].value} kg/m²`
-                  : "N/A",
+              value: memberDetails.bmis[-1]
+                ? `${memberDetails.bmis[-1].value} kg/m²`
+                : "N/A",
             },
           ].map((item, index) => (
             <div key={index} className="text-center flex flex-col items-center">

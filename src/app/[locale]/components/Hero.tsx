@@ -31,8 +31,8 @@ const Hero = () => {
         }
       }, delay);
     };
-    incrementCounter(membersTarget, setMembersCount, 10);
-    incrementCounter(servicesTarget, setServicesCount, 200);
+    incrementCounter(membersTarget, setMembersCount, 5);
+    incrementCounter(servicesTarget, setServicesCount, 300);
   }, []);
 
   const t = useTranslations("home_Page");
