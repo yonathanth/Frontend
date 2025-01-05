@@ -95,7 +95,7 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
       )
     : null;
   const barcodeImgBase64 = memberDetails.barcode;
-  const logoBase64 = await fetchImageAsBase64("/images/logo.png");
+  const logoBase64 = await fetchImageAsBase64("/Images/logo.png");
   // FRONT SIDE
   // Left Black Background
   doc.setFillColor(black);
