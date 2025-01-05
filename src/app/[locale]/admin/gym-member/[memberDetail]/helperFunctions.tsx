@@ -111,7 +111,7 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
 
   // Profile photo
   if (profileImgBase64) {
-    doc.addImage(profileImgBase64, "JPEG", 8, 10, 20, 20, undefined, "FAST");
+    doc.addImage(profileImgBase64, "JPEG", 8, 14, 20, 20, undefined, "FAST");
   }
 
   // Name and Gender on the Left
@@ -121,7 +121,7 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.text(
     capitalize(memberDetails.fullName.split(" ")[0]),
     (cardWidth / 2 - 6.5) / 2,
-    36,
+    40,
     { align: "center" }
   );
   doc.setFont("Montserrat", "normal");
@@ -131,20 +131,20 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
       capitalize(memberDetails.fullName.split(" ")[1])) ||
       "",
     (cardWidth / 2 - 6.5) / 2,
-    40,
+    43,
     { align: "center" }
   );
   doc.setFont("Montserrat", "bold");
   doc.setFontSize(7);
 
-  doc.text(
-    memberDetails.gender === "male" ? "M" : "F",
-    (cardWidth / 2 - 6.5) / 2,
-    46,
-    {
-      align: "center",
-    }
-  );
+  // doc.text(
+  //   memberDetails.gender === "male" ? "M" : "F",
+  //   (cardWidth / 2 - 6.5) / 2,
+  //   46,
+  //   {
+  //     align: "center",
+  //   }
+  // );
 
   // Contact Details on the Right
   doc.setFont("Montserrat", "normal");
@@ -154,6 +154,7 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.text("Address", cardWidth / 2, 22);
   doc.text("Service", cardWidth / 2, 27);
   doc.text("Emergency", cardWidth / 2, 32);
+  doc.text("Sex", cardWidth / 2, 37);
 
   doc.setFontSize(8);
   doc.setFont("Montserrat", "bold");
@@ -172,10 +173,11 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
     17
   );
   doc.text(truncatedEmergencyContact, cardWidth / 2 + 15, 32);
+  doc.text(memberDetails.gender, cardWidth / 2 + 15, 37);
 
-  // Barcode on the Right Bottom
-  if (barcodeImgBase64) {
-    doc.addImage(barcodeImgBase64, "PNG", cardWidth / 2 - 2, 41, 40, 8);
+  // Logo
+  if (logoBase64) {
+    doc.addImage(logoBase64, "PNG", 2, 0, 8, 12);
   }
 
   // "ID" Label on the Top-Right
@@ -184,16 +186,16 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.text("ID", cardWidth - 3, 5, { align: "right" });
   // BACK SIDE
   doc.addPage();
-  doc.setFillColor(black);
+  doc.setFillColor(white);
   doc.rect(0, 0, cardWidth, cardHeight, "F");
 
-  // Logo
-  if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", 33, 8, 18, 23);
+  // Barcode on the Right Bottom
+  if (barcodeImgBase64) {
+    doc.addImage(barcodeImgBase64, "PNG", 6, 8, 75, 15);
   }
 
   // Centered text
-  doc.setTextColor(white);
+  doc.setTextColor(black);
   doc.setFont("Montserrat", "bold");
   doc.setFontSize(10);
   doc.text("Robi Fitness Center", cardWidth / 2, 33, { align: "center" });
