@@ -110,13 +110,13 @@ const GymMembersList = () => {
         }
       );
       console.log(response.data);
+      fetchMembers();
+      // const refetchResponse = await axios.get(
+      //   `${NEXT_PUBLIC_API_BASE_URL}/api/members`
+      // );
+      // const users = refetchResponse.data.data.users;
 
-      const refetchResponse = await axios.get(
-        `${NEXT_PUBLIC_API_BASE_URL}/api/members`
-      );
-      const users = refetchResponse.data.data.users;
-
-      setMemberList(users);
+      // setMemberList(users);
     } catch (error) {
       console.error(`Error updating status for member ${memberId}:`, error);
     } finally {

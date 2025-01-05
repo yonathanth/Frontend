@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 interface ServiceType {
   id: number;
   name: string;
@@ -60,6 +59,8 @@ const EditServiceModal: React.FC<EditServiceModalProps> = ({
       const sanitizedService = {
         ...editedService,
         maxDays: parseInt(editedService.maxDays, 10), // Convert maxDays to an integer
+        period: parseInt(editedService.period, 10), // Convert period to an integer
+        price: parseFloat(editedService.price.toString()), // Convert price to a float
       };
       const response = await axios.patch(
         `${NEXT_PUBLIC_API_BASE_URL}/api/services/${editedService.id}`,

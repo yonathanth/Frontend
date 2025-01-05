@@ -420,6 +420,8 @@
   },
   "login_page": {
     "heading": "አካውንቶ ይግቡ",
+    "no_account": "አልተመዘገቡም?",
+    "motivational_text": "ጠንክረው በመንቀሳቀስ፣ ጤናሜ ይሁኑ!",
     "fields": {
       "phone_number": "ስልክ ቁጥር",
       "password": "የይለፍ ቃል"

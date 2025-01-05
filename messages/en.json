@@ -385,8 +385,8 @@
   },
   "login_page": {
     "heading": "Welcome Back!",
-    "no_account":"You dont have an account?",
-    "motivational_text" :"Stay consistent, and reach your fitness goals!",
+    "no_account": "don't have an account?",
+    "motivational_text": "Stay consistent, and reach your fitness goals!",
     "fields": {
       "phone_number": "Phone Number",
       "password": "Password"
