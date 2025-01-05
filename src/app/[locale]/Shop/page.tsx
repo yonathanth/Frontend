@@ -16,7 +16,6 @@ import { Item } from "./_components/Item";
 import LoadingPage from "../Register/components/loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 // Define the Product type
 interface Product {
   id: string;
@@ -44,7 +43,9 @@ const ShopPage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/inventory/`);
+        const response = await fetch(
+          `${NEXT_PUBLIC_API_BASE_URL}/api/inventory/`
+        );
         const data: { success: boolean; data: Product[] } =
           await response.json();
 
@@ -77,7 +78,7 @@ const ShopPage: React.FC = () => {
       <Header />
       <HeroSection />
 
-      <div className="w-full pl-10 pr-10 pb-10">
+      <div className="w-full px-4 md:px-10 pb-10">
         {/* Filters */}
         <div
           id="next-section"

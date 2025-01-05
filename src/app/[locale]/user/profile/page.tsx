@@ -136,7 +136,7 @@ const Page = () => {
 
       const data = await response.json();
       if (data.success) {
-        return data.data
+        return data.data;
       } else {
         setError(data.message || "Failed to load member details");
       }
@@ -155,9 +155,6 @@ const Page = () => {
     }
   }, [userId, fetchMemberDetails]);
 
-
-
-
   if (loading) {
     return <div>Loading member details...</div>;
   }
@@ -170,7 +167,7 @@ const Page = () => {
     return <div>No member details available.</div>;
   }
 
-  if (isPageLoading) return <LoadingPage/>
+  if (isPageLoading) return <LoadingPage />;
   return (
     <div className="flex flex-col lg:flex-row bg-black text-white h-auto">
       {/* Personal Info */}
@@ -285,9 +282,9 @@ const Page = () => {
               label: "BMI",
               value:
                 memberDetails?.bmis && memberDetails.bmis.length > 0
-                  ? `${memberDetails.bmis[0].value} kg/m²`
-            : "N/A",
-          },
+                  ? `${memberDetails.bmis[-1].value} kg/m²`
+                  : "N/A",
+            },
           ].map((item, index) => (
             <div key={index} className="text-center flex flex-col items-center">
               <p className="text-customBlue font-bold">{item.value}</p>
@@ -373,7 +370,7 @@ const Page = () => {
           <div className="mt-4">
             <ResponsiveContainer width="100%" height={60}>
               <LineChart
-                data={ memberDetails.bmis || []}
+                data={memberDetails.bmis || []}
                 width={970}
                 height={60}
               >

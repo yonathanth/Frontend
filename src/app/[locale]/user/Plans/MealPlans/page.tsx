@@ -4,6 +4,7 @@ import Link from "next/link";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface MealPlanType {
@@ -31,17 +32,17 @@ export interface MealPlanType {
     preparationTime: number;
     protein?: number;
     carbs?: number;
-    fats? : number;
+    fats?: number;
   }[];
 }
 
 export type MealCategory = "breakfast" | "lunch" | "dinner";
 
 
-interface MealPlansListProps{
-  plans:MealPlanType[];
-  className?:string;
-  userId?:string;
+interface MealPlansListProps {
+  plans: MealPlanType[];
+  className?: string;
+  userId?: string;
 }
 
 const MealPlanList: React.FC<MealPlansListProps> = ({plans = [], className, userId}) => {
@@ -76,9 +77,10 @@ const MealPlanList: React.FC<MealPlansListProps> = ({plans = [], className, user
               <Image
                 src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/mealPlans/${plan ? plan.slug : ""}`}
                 alt={plan ? plan.name : ""}
-                width={240}
-                height={160}
-                className="rounded-lg"
+                width={500}
+                height={500}
+                quality={90}
+                className="ml-3 w-full h-20 sm:w-36 sm:h-40 object-cover rounded-lg"
               />
             </div>
           </Link>

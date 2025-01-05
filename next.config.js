@@ -11,7 +11,10 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['localhost'], // Add your image domains here
+    remotePatterns: [{
+      protocol: "http",
+      hostname: "**",
+    },], // Add your image domains here
   },
 };
 // next.config.js

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import ServiceCard from "./ServicesCards";
-import servicesHero from "@/assets/images/services_hero.jpg";
+import servicesHero from "@/assets/images/services.jpeg";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
@@ -51,7 +51,7 @@ const Page = () => {
 
   const descriptions: Record<TabName, string> = {
     "Body Building":
-      "Achieve your Being Fit goals with our dedicated bodybuilding packages.",
+      "Achieve your Fitness goals with our dedicated bodybuilding packages.",
     Exercise:
       "Stay fit and energized with various exercise options for all levels.",
     "Group Fitness":

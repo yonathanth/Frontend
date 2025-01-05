@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import loginImage from "./home image.png";
+import loginImage from "./login.jpeg";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -33,11 +33,14 @@ const Login = () => {
     const loginData = { phoneNumber, password };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-      });
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(loginData),
+        }
+      );
 
       const data = await response.json();
 

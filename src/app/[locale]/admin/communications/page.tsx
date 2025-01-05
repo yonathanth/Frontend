@@ -15,8 +15,12 @@ const AdminBroadcastsAndAdverts = () => {
   const [broadcastStatus, setBroadCastStatus] = useState<
     "success" | "error" | null
   >(null);
-  const[broadcastErrorMessage, setBroadcastErrorMessage] = useState<string | null>("");
-  const[advertisementErrorMessage, setAdvertisementErrorMessage] = useState<string | null>("")
+  const [broadcastErrorMessage, setBroadcastErrorMessage] = useState<
+    string | null
+  >("");
+  const [advertisementErrorMessage, setAdvertisementErrorMessage] = useState<
+    string | null
+  >("");
   const [advertStatus, setAdvertStatus] = useState<"success" | "error" | null>(
     null
   );
@@ -46,15 +50,14 @@ const AdminBroadcastsAndAdverts = () => {
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
-      setBroadcastErrorMessage(errorMessage)
+      setBroadcastErrorMessage(errorMessage);
       // alert(`Error: ${errorMessage}`);
       setTimeout(() => {
         setBroadCastStatus(null);
-        setBroadcastErrorMessage("")
-      } , 3000);
+        setBroadcastErrorMessage("");
+      }, 3000);
     }
   };
-
 
   const handleAdvertSubmit = async () => {
     // Validate required fields
@@ -123,8 +126,6 @@ const AdminBroadcastsAndAdverts = () => {
     }
   };
 
-
-
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setAdvertPhoto(file);
@@ -140,13 +141,10 @@ const AdminBroadcastsAndAdverts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-6">
-      <h1 className="text-2xl font-bold mb-8 text-center">
-        Admin - Broadcasts & Adverts
-      </h1>
+    <div className="min-h-screen bg-black text-white px-3 py-6">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Broadcast Section */}
-        <div className="flex-1 bg-black p-6 rounded-lg space-y-4">
+        <div className="flex-1 bg-black md:p-6 rounded-lg space-y-4">
           <h2 className="text-xl font-semibold mb-4"> Broadcast</h2>
           <div>
             <label className="block text-sm font-light mb-2">Name</label>
@@ -175,14 +173,12 @@ const AdminBroadcastsAndAdverts = () => {
             <p className="text-green-400 mt-4">Broadcast sent successfully!</p>
           )}
           {broadcastStatus === "error" && (
-            <p className="text-red-400 mt-4">
-              {broadcastErrorMessage}
-            </p>
+            <p className="text-red-400 mt-4">{broadcastErrorMessage}</p>
           )}
         </div>
 
         {/* Advert Section */}
-        <div className="flex-1 bg-black p-6 rounded-lg space-y-4">
+        <div className="flex-1 bg-black md:p-6 rounded-lg space-y-4">
           <h2 className="text-xl font-semibold mb-4"> Advert</h2>
           <div>
             <label className="block text-sm font-light mb-2">Name</label>
@@ -241,9 +237,7 @@ const AdminBroadcastsAndAdverts = () => {
             <p className="text-green-400 mt-4">Advert added successfully!</p>
           )}
           {advertStatus === "error" && (
-            <p className="text-red-400 mt-4">
-              {advertisementErrorMessage}
-            </p>
+            <p className="text-red-400 mt-4">{advertisementErrorMessage}</p>
           )}
         </div>
       </div>
