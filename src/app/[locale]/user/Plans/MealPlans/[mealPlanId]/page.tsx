@@ -221,7 +221,6 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
 
         {/* Center Schedule */}
-
         <div className="">
           <div className="bg-[#1C1C1C] p-3 rounded-lg h-96 overflow-y-auto">
             <ul className="text-xs space-y-2">
