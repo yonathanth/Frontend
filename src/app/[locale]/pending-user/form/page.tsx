@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SmallLoading from "../../admin/components/SmallLoading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 const RegisterForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -160,7 +159,7 @@ const RegisterForm = () => {
             </div>
             <div className="w-full">
               <label className="block mb-2 text-white" htmlFor="height">
-                Current Height (cm):
+                Current Height (M):
               </label>
               <input
                 type="text"
