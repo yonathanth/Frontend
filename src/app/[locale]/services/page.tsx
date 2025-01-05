@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import ServiceCard from "./ServicesCards";
-import servicesHero from "@/assets/images/services_hero.jpg";
+import servicesHero from "@/assets/images/services.jpeg";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";

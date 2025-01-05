@@ -4,7 +4,7 @@ import { Link } from "../../../i18n/routing";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "../styles/ButtonStyles.module.css";
-import heroImage from "@/assets/images/home_image.png";
+import heroImage from "@/assets/images/hero.jpeg";
 
 const Hero = () => {
   const [membersCount, setMembersCount] = useState(0);

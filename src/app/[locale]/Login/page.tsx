@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import loginImage from "./home image.png";
+import loginImage from "./login.jpeg";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -10,8 +10,6 @@ import { Link } from "@/src/i18n/routing";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
-
 
 interface CustomJwtPayload {
   role: string;
@@ -26,18 +24,20 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
   const [showPassword, setShowPassword] = useState(false);
 
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const loginData = { phoneNumber, password };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-      });
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(loginData),
+        }
+      );
 
       const data = await response.json();
 
@@ -88,7 +88,8 @@ const Login = () => {
         <div className="text-white bg-black bg-opacity-75 p-8 rounded-md">
           <h2 className="text-3xl mb-2 text-left">{t("heading")}</h2>
           <p className="text-sm text-gray-400 mb-8">
-            {t("motivational_text")} {/* Example: "Stay consistent, and reach your fitness goals!" */}
+            {t("motivational_text")}{" "}
+            {/* Example: "Stay consistent, and reach your fitness goals!" */}
           </p>
           <form
             className="flex flex-col items-center w-full"
@@ -127,14 +128,13 @@ const Login = () => {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-400">
               {t("no_account")}{" "}
-              <Link href="/register" className="text-customBlue">{t("buttons.signup")}
+              <Link href="/register" className="text-customBlue">
+                {t("buttons.signup")}
               </Link>
             </p>
           </div>
           {errorMessage && (
-            <div className="mt-4 text-red-500 text-center">
-              {errorMessage}
-            </div>
+            <div className="mt-4 text-red-500 text-center">{errorMessage}</div>
           )}
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import aboutUsHero from "../../../../assets/images/aboutus_hero.jpg";
+import aboutUsHero from "../../../../assets/images/about.jpeg";
 import ourPhilo from "../../../../assets/images/ourPhilosophy.jpg";
 import trainers from "../../../../assets/images/trainers.jpg";
 import { motion } from "framer-motion";
