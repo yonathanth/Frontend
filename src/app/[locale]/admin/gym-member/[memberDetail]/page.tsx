@@ -9,6 +9,7 @@ import {
   faMessage,
   faDownload,
   faEdit,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 
 import ProfileImageWithModal, {
@@ -21,6 +22,7 @@ import { Link } from "@/src/i18n/routing";
 import NotificationModal from "../../components/NotificationModal";
 import EditAdmin from "../../components/EditMemberForm";
 import Loading from "../../loading";
+import axios from "axios";
 interface Service {
   id: string;
   name: string;
@@ -101,6 +103,8 @@ const MemberDetails = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
 
@@ -139,6 +143,43 @@ const MemberDetails = ({
       fetchMemberDetails();
     }
   }, [id]);
+
+  const handleManualAttendance = async () => {
+    if (!id) {
+      setErrorMessage("Please enter a valid User ID.");
+      setMessage("");
+      return;
+    }
+
+    try {
+      setErrorMessage("");
+      setMessage("Processing...");
+
+      const response = await axios.post(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/attendance/${id}`,
+        { id: id }
+      );
+
+      if (response.data.success) {
+        const { totalAttendance, daysLeft } = response.data.data;
+        setMessage(
+          `Attendance recorded successfully! Total Attendance: ${totalAttendance}, Days Left: ${daysLeft}.`
+        );
+      }
+    } catch (err: any) {
+      setMessage("");
+      setErrorMessage(
+        err.response?.data?.message ||
+          "An error occurred while recording attendance."
+      );
+    } finally {
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        setMessage("");
+        setErrorMessage("");
+      }, 3000);
+    }
+  };
 
   if (loading) {
     return <div>Loading member details...</div>;
@@ -227,6 +268,12 @@ const MemberDetails = ({
               className="text-xs mt-3 bg-customBlue text-black py-1 px-4 rounded-full self-start"
             >
               <FontAwesomeIcon icon={faMessage} />
+            </button>
+            <button
+              onClick={handleManualAttendance}
+              className="text-xs mt-3 bg-customBlue text-black py-1 px-4 rounded-full self-start"
+            >
+              <FontAwesomeIcon icon={faCalendar} />
             </button>
           </div>
         </div>
@@ -403,6 +450,16 @@ const MemberDetails = ({
           fetchData={fetchMemberDetails}
           member={memberDetails}
         />
+      )}
+      {message && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
+          {message}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
+          {errorMessage}
+        </div>
       )}
     </div>
   );

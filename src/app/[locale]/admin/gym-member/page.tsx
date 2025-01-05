@@ -9,7 +9,14 @@ import AddMember from "../components/AddMemberForm";
 import SmallLoading from "../components/SmallLoading";
 import Loading from "../loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+interface Service {
+  id: string;
+  name: string;
+  price: string;
+  benefits: string[];
+  category: string;
+  description?: string[];
+}
 export type Member = {
   id: string;
   fullName: string;
@@ -36,6 +43,7 @@ export type Member = {
   updatedAt: string;
   serviceId: string | null;
   profileImageUrl: string | null;
+  service: Service;
 };
 
 const GymMembersList = () => {
@@ -89,10 +97,15 @@ const GymMembersList = () => {
     const matchesSearchTerm = member.fullName
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
+
+    const matchesService = member.service.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
     const matchesStatus = statusFilter
       ? member.status.toLowerCase() === statusFilter.toLowerCase()
       : true;
-    return matchesSearchTerm && matchesStatus;
+    return (matchesSearchTerm || matchesService) && matchesStatus;
   });
 
   const updateUserStatus = async (
