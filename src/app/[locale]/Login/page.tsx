@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "@/src/i18n/routing";
-const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,16 +15,20 @@ interface CustomJwtPayload {
   status: string;
 }
 
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const Login = () => {
   const t = useTranslations("login_page");
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     const loginData = { phoneNumber, password };
 
@@ -44,7 +47,6 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         const decodedToken = jwtDecode<CustomJwtPayload>(data.token);
-        console.log("Decoded Token:", decodedToken);
 
         const { role, status } = decodedToken;
 
@@ -70,7 +72,9 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage("An error occurred. Please try again."); // Set a generic error message
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -84,12 +88,11 @@ const Login = () => {
           className="object-cover"
         />
       </div>
-      <div className="lg:w-1/2 w-full my-auto p-10 bg-black">
+      <div className="lg:w-1/2 w-full my-auto p-20 bg-black">
         <div className="text-white bg-black bg-opacity-75 p-8 rounded-md">
           <h2 className="text-3xl mb-2 text-left">{t("heading")}</h2>
           <p className="text-sm text-gray-400 mb-8">
-            {t("motivational_text")}{" "}
-            {/* Example: "Stay consistent, and reach your fitness goals!" */}
+            {t("motivational_text")}
           </p>
           <form
             className="flex flex-col items-center w-full"
@@ -120,9 +123,14 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full p-2 font-semibold rounded-lg bg-customBlue hover:bg-customHoverBlue text-black"
+              className="w-full p-2 font-semibold rounded-lg bg-customBlue hover:bg-customHoverBlue text-black flex items-center justify-center"
+              disabled={isLoading}
             >
-              {t("buttons.login")}
+              {isLoading ? (
+                <div className="w-6 h-6 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                t("buttons.login")
+              )}
             </button>
           </form>
           <div className="mt-4 text-center">

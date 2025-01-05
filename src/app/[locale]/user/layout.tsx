@@ -180,7 +180,7 @@ export default function UserLayout({
           <UserHeader activeNav={activeNav} user={user} />
         </div>
         {/* Main content that scrolls if needed */}
-        <main className="flex-1 bg-black p-6 overflow-auto">{children}</main>
+        <main className="flex-1 bg-black overflow-auto">{children}</main>
       </div>
 
       {/* Desktop Layout */}

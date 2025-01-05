@@ -9,7 +9,7 @@ interface AdminHeaderProps {
 }
 const AdminHeader: React.FC<AdminHeaderProps> = ({ activeNav }) => {
   return (
-    <header className="p-4 pt-5 bg-black flex justify-between items-center gap-5 lg:gap-0 text-white border-b-[0.5px] border-gray-800">
+    <header className="p-4 pt-[1.5rem] bg-black flex justify-between items-center gap-5 lg:gap-0 text-white border-b-[0.5px] border-gray-800">
       <h1 className="text-lg">{activeNav}</h1>
       <div className='flex gap-3'>
         <Link href="/">
