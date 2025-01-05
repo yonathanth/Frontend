@@ -3,12 +3,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFilter,
+  faPlus,
+  faSearch,
+  faDownload,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import AddMember from "../components/AddMemberForm";
 import SmallLoading from "../components/SmallLoading";
 import Loading from "../loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import downloadUsers from "./helper"; // Adjust the path as needed
+
 interface Service {
   id: string;
   name: string;
@@ -248,6 +255,17 @@ const GymMembersList = () => {
           >
             <FontAwesomeIcon icon={faPlus} />
             <span>Add Member</span>
+          </button>
+          <button
+            onClick={() => downloadUsers()}
+            className="bg-[#ffffff29] px-4 py-2 rounded-md border border-gray-600 flex items-center"
+          >
+            <span className="text-gray-300">
+              <FontAwesomeIcon
+                icon={faDownload}
+                className="text-customBlue text-base sm:text-xl cursor-pointer"
+              />
+            </span>
           </button>
           <div className="relative w-full sm:w-auto">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
