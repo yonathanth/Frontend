@@ -74,6 +74,10 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
             ? meal.category.toLowerCase().includes("lunch")
             : filter === "dinner"
               ? meal.category.toLowerCase().includes("dinner")
+              : filter === "snack"
+                ? meal.category.toLowerCase().includes("snack")
+                : filter === "other"
+                  ? meal.category.toLowerCase().includes("other")
               : false
       );
 
@@ -90,7 +94,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
   };
 
   return (
-    <div className={`flex flex-col md:flex-row h-auto text-white rounded-3xl ${className || ""}`}>
+    <div className={`flex flex-col md:flex-row text-white rounded-3xl ${className || ""}`}>
       {/* Sidebar */}
       <div className="w-72 rounded-3xl sm:rounded-none sm:rounded-tl-3xl  sm:rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
         <nav
@@ -108,7 +112,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
         </nav>
 
         {/* Meal List */}
-        <ul className="space-y-2 md:w-full">
+        <ul className="space-y-2 md:w-full h-96 overflow-y-auto pr-5">
           {filteredMeals.map((meal) => (
             <li
               key={meal.slug}
@@ -143,12 +147,16 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
               <Image src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${selectedMeal ? selectedMeal.slug : ""}`}
                      width={500}
                      height={500}
+                     quality={90}
                      alt={selectedMeal?.name || ""}
                      className="w-full rounded-md mb-4"/>
             </div>
-
+            <h2 className="text-xl md:text-2xl font-bold">{selectedMeal?.name}</h2>
             <p className="text-xs text-gray-300 font-extralight">
-              {meals.find((meal) => meal.slug === selectedMeal?.slug)?.ingredients[0].name}
+              {meals
+                .find((meal) => meal.slug === selectedMeal?.slug)
+                ?.ingredients.map((ingredient) => ingredient.name)
+                .join(", ")}
             </p>
           </div>
         </div>

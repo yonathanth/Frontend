@@ -31,7 +31,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
   const doesMealPlanExistForUser = useCallback(async (mealPlanId: string, userId: string) =>{
     try {
-      const response = await axios.get(`http://localhost:5000/api/members/${userId}`);
+      const response = await axios.get(`${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`);
       const userData = response.data.data.user;
       if (!userData || !Array.isArray(userData.mealPlans)) {
         throw new Error("MealPlans section not found or invalid.");
@@ -116,14 +116,13 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
         lunch: [],
         dinner: []
       };
-    meals.forEach((meal) => {
+    meals.forEach((meal: MealType) => {
       // @ts-ignore
-      if (grouped[meal.category]) {
+      if (grouped[meal?.category]) {
         // @ts-ignore
         grouped[meal.category].push(meal);
       }
     });
-
     return grouped;
   };
 
@@ -183,9 +182,12 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
               />
               <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 rounded-lg"></div>
             </div>
-            <h1 className="absolute top-4 left-6 text-xl font-bold z-10 text-white">
+            <div className="absolute top-4 left-6 z-10 text-white">
+              <h1 className="text-xl font-bold">{plan.name}</h1>
+            <h1 className="text-lg">
               {plan.duration} weeks, {plan.mainGoal}
             </h1>
+            </div>
           </div>
           <div className="bg-[#252525] p-4 rounded-lg mt-2 lg:mt-2">
             <h2 className="text-base font-semibold">{plan.mainGoal}</h2>
@@ -209,7 +211,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           </div>
           {!doesMealPlanExist? (
           <button
-            className=" bg-customBlue w-[200px] text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
+            className=" bg-customBlue w-[200px] my-3 text-black px-8 py-2 rounded-lg shadow-lg hover:bg-customHoverBlue"
             onClick={async () => {
               await selectPlan(plan.id);
             }}
@@ -221,7 +223,6 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
 
         {/* Center Schedule */}
-
         <div className="">
           <div className="bg-[#1C1C1C] p-3 rounded-lg h-96 overflow-y-auto">
             <ul className="text-xs space-y-2">
@@ -266,7 +267,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           </h3>
           {selectedDay !== null ? (
             (() => {
-              const [monthIndex, weekIndex, dayIndex] = selectedDay
+              const [monthIndex ,weekIndex, dayIndex] = selectedDay
                 .split("-")
                 .map(Number);
               return ["breakfast", "lunch", "dinner"].map((category, index) => {
@@ -297,7 +298,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                             <span className="pr-5">Fat</span> <span>{meal.fats}g</span>
                           </p>
                           <p className="text-xs font-extralight mt-4">
-                            Calorie <span className="font-semibold">{meal.calories}</span> kcal
+                            Calories <span className="font-semibold">{meal.calories}</span> kcal
                           </p>
                         </div>
                         <div className="flex flex-col items-center">
@@ -305,16 +306,17 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
                             src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/meals/${
                               meal ? meal.slug : ""
                             }`}
-                            width={96}
-                            height={96}
+                            width={500}
+                            height={500}
+                            quality={90}
                             alt={meal ? meal.name : ""}
-                            className="rounded-lg"
+                            className="rounded-lg w-8/12 mb-3"
                           />
                           <h3 className="text-tiny font-light">{meal.name}</h3>
                         </div>
                       </div>
                     ) : (
-                      <div className="text-gray-400 text-sm">No meals available for {category}.</div>
+                      <div className="text-gray-400 text-sm">This is your lucky meal! Eat whatever you want here.</div>
                     )}
                   </div>
                 );

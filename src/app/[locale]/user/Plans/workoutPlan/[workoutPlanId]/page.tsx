@@ -60,7 +60,7 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
 
   const doesWorkoutExistForUser = useCallback(async (workoutId: string, userId: string) =>{
     try {
-      const response = await axios.get(`http://localhost:5000/api/members/${userId}`);
+      const response = await axios.get(`${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`);
       const userData = response.data.data.user;
       if (!userData || !Array.isArray(userData.workouts)) {
         throw new Error("Workouts section not found or invalid.");
@@ -85,11 +85,11 @@ export default function WorkoutPlan({params}: { params: { locale: string; workou
       })
     })
     if (!res.ok) {
-      const data = await res.json()
+      // const data = await res.json()
       throw new Error(`Failed to select plan ${res.statusText}`)
     }
     setDoesWorkoutExist(true);
-    const data = await res.json()
+    // const data = await res.json()
   }
 
   const getWorkoutPlan = async (id: string) => {
