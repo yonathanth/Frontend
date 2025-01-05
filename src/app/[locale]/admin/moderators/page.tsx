@@ -32,7 +32,7 @@ const ModeratorsList = () => {
       // Filter out members with the role 'root'
       const filteredUsers = users.filter(
         (user: { role: string }) =>
-          user.role === "admin" || user.role === "attendance"
+          user.role === "admin" || user.role === "moderator"
       );
 
       setMemberList(filteredUsers);
