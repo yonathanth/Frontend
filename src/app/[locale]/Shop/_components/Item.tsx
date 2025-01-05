@@ -32,20 +32,17 @@ export const Item: React.FC<ItemProps> = ({
       quantity: 1,
     });
   };
-
+  console.log(image);
   return (
     <div
       key={id}
       className="p-4 shadow-lg rounded-md hover:shadow-xl transition duration-300 flex flex-col justify-between hover:border-customBlue hover:border-2"
     >
       {/* Product Image */}
-      console.log(image)
-      <Image
+
+      <img
         src={`${NEXT_PUBLIC_API_BASE_URL}${image}`}
         alt={title}
-        width={500}
-        height={500}
-        quality={90}
         className="opacity-75 hover:opacity-100 w-full h-52 object-cover rounded-md mb-4 bg-white"
       />
       {/* Product Info */}
