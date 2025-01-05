@@ -345,8 +345,8 @@ const MemberDetails = ({
             },
             {
               label: "BMI",
-              value: memberDetails.bmis[-1]
-                ? `${memberDetails.bmis[-1].value} kg/m²`
+              value: memberDetails.bmis.at(-1)
+                ? `${memberDetails.bmis.at(-1)!.value} kg/m²`
                 : "N/A",
             },
             {
