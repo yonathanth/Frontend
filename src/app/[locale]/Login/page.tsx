@@ -134,7 +134,7 @@ const Login = () => {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-400">
               {t("no_account")}{" "}
-              <Link href="/register" className="text-customBlue">
+              <Link href="/Register" className="text-customBlue">
                 {t("buttons.signup")}
               </Link>
             </p>
