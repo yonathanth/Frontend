@@ -1,7 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faPhoneAlt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMapMarkerAlt,
+  faPhoneAlt,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
+import { useTranslations } from "next-intl";
 
 const Contact = () => {
   const t = useTranslations("home_Page.contactSection");
@@ -12,23 +15,32 @@ const Contact = () => {
         {/* Contact Information */}
         <div className="flex-1 mb-8 md:mb-0 text-center md:text-left">
           <div className="mb-6 flex justify-center md:justify-start items-center">
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#2596BE] text-2xl mr-4" />
-            <p className='text-sm font-thin'>{t("address")}</p>
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              className="text-[#2596BE] text-2xl mr-4"
+            />
+            <p className="text-sm font-thin">{t("address")}</p>
           </div>
 
-          <div className='flex flex-col gap-4 items-center md:flex-row md:items-center'>
+          <div className="flex flex-col gap-4 items-center md:flex-row md:items-center">
             <div className="flex items-center">
-              <FontAwesomeIcon icon={faPhoneAlt} className="text-[#2596BE] text-2xl mr-2" />
-              <a href="tel:+2519112345212" className='text-sm font-thin hover:underline'>
-                {t("phone")}
-              </a>
+              <FontAwesomeIcon
+                icon={faPhoneAlt}
+                className="text-[#2596BE] text-2xl mr-2"
+              />
+              href="tel:+2519112345212" className='text-sm font-thin
+              hover:underline'
+              {t("phone")}
             </div>
 
             <div className="flex items-center">
-              <FontAwesomeIcon icon={faEnvelope} className="text-[#2596BE] text-2xl mr-2" />
-              <a href="robifitness.hawassa@gmail.com" className='text-sm font-thin hover:underline'>
-                {t("email")}
-              </a>
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                className="text-[#2596BE] text-2xl mr-2"
+              />
+              href="robifitness.hawassa@gmail.com" className="text-sm font-thin
+              hover:underline"
+              {t("email")}
             </div>
           </div>
         </div>
@@ -43,7 +55,6 @@ const Contact = () => {
             className="rounded-lg w-full md:w-[20rem] h-[8.5rem] opacity-65"
           ></iframe>
         </div>
-
       </div>
     </section>
   );
