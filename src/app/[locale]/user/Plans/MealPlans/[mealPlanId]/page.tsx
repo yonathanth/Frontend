@@ -31,7 +31,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
 
   const doesMealPlanExistForUser = useCallback(async (mealPlanId: string, userId: string) =>{
     try {
-      const response = await axios.get(`http://localhost:5000/api/members/${userId}`);
+      const response = await axios.get(`${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`);
       const userData = response.data.data.user;
       if (!userData || !Array.isArray(userData.mealPlans)) {
         throw new Error("MealPlans section not found or invalid.");
@@ -266,7 +266,7 @@ export default function PlanDetails({params}: { params: { locale: string; mealPl
           </h3>
           {selectedDay !== null ? (
             (() => {
-              const [monthIndex, weekIndex, dayIndex] = selectedDay
+              const [ dayIndex] = selectedDay
                 .split("-")
                 .map(Number);
               return ["breakfast", "lunch", "dinner"].map((category, index) => {
