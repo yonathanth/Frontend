@@ -10,8 +10,8 @@ const Hero = () => {
   const [membersCount, setMembersCount] = useState(0);
   const [servicesCount, setServicesCount] = useState(0);
   useEffect(() => {
-    const membersTarget = 0;
-    const servicesTarget = 0;
+    const membersTarget = 300;
+    const servicesTarget = 5;
 
     interface CounterSetter {
       (count: number): void;
