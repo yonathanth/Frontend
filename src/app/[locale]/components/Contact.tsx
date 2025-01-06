@@ -28,8 +28,7 @@ const Contact = () => {
                 icon={faPhoneAlt}
                 className="text-[#2596BE] text-2xl mr-2"
               />
-              href="tel:+2519112345212" className='text-sm font-thin
-              hover:underline'
+
               {t("phone")}
             </div>
 
@@ -38,8 +37,7 @@ const Contact = () => {
                 icon={faEnvelope}
                 className="text-[#2596BE] text-2xl mr-2"
               />
-              href="robifitness.hawassa@gmail.com" className="text-sm font-thin
-              hover:underline"
+
               {t("email")}
             </div>
           </div>
@@ -48,8 +46,7 @@ const Contact = () => {
         {/* Google Map Embed */}
         <div className="flex-1 text-center md:text-left">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4553.200619973271!2d38.4767155!3d7.0470941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x17b1458ea4379789%3A0x565bfd7841f22171!2sChapi%20game%20zone%2C%20Hawassa!5e0!3m2!1sen!2set!4v1697670458913!5m2!1sen!2set"
-            height="250"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d640.5776421023746!2d38.47648242637393!3d7.047466172739626!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x17b1450068a78b4b%3A0xdc42b389f2cab475!2sRobi%20Fitness%20and%20Health%20Center!5e0!3m2!1sen!2set!4v1736142786257!5m2!1sen!2set"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="rounded-lg w-full md:w-[20rem] h-[8.5rem] opacity-65"
