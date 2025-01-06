@@ -36,7 +36,7 @@ export type Member = {
   firstRegisteredAt: string;
   startDate: string;
   totalAttendance: number;
-  remainingDays: number;
+  daysLeft: number;
   countDown: number | null;
   height: number | null;
   weight: number | null;
@@ -338,6 +338,12 @@ const GymMembersList = () => {
                   Phone no.
                 </th>
                 <th className="px-2 text-left text-gray-200 font-bold text-sm py-3">
+                  Days Left{" "}
+                </th>
+                <th className="px-2 text-left text-gray-200 font-bold text-sm py-3">
+                  Service{" "}
+                </th>
+                <th className="px-2 text-left text-gray-200 font-bold text-sm py-3">
                   Start Date
                 </th>
                 <th className="px-2 text-left text-gray-200 font-bold text-sm py-3">
@@ -381,6 +387,12 @@ const GymMembersList = () => {
                       </Link>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
                         {member.phoneNumber}
+                      </td>
+                      <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
+                        {member.daysLeft}
+                      </td>
+                      <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
+                        {member.service.name}
                       </td>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
                         {member.startDate.substring(0, 10)}
