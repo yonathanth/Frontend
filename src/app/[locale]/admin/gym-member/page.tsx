@@ -389,7 +389,10 @@ const GymMembersList = () => {
                         {member.phoneNumber}
                       </td>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
-                        {member.daysLeft}
+                        {member.status === "expired" ||
+                        member.status === "active"
+                          ? member.daysLeft
+                          : "-"}
                       </td>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
                         {member.service.name}
