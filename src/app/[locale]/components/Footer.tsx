@@ -144,9 +144,9 @@ const Footer: React.FC = () => {
               onClose={closeModal}
             />
           </div>
-          <div className="text-sm font-light flex items-center justify-center space-x-2 p-4 bg-gradient-to-r ">
+          <div className="text-sm font-light flex items-center justify-center space-x-2 p-4 bg-gradient-to-r order-last md:order-none">
   <span className="animate-pulse">Made by</span>
-  <span className="bg-black text-[#9370d8] px-2 py-1 font-extrabold rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 ">
+  <span className="bg-black text-[#9370d8] px-2 py-1 font-extrabold rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105">
     ShalOps Digital Solutions PLC
   </span>
 </div>
