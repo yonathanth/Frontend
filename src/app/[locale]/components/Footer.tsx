@@ -144,7 +144,12 @@ const Footer: React.FC = () => {
               onClose={closeModal}
             />
           </div>
-          <div className="text-sm font-extralight">Made by <span className=" shalops px-2 text-black font-extrabold">ShalOps</span></div>
+          <div className="text-sm font-light flex items-center justify-center space-x-2 p-4 bg-gradient-to-r ">
+  <span className="animate-pulse">Made by</span>
+  <span className="bg-black text-[#9370d8] px-2 py-1 font-extrabold rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 ">
+    ShalOps Digital Solutions PLC
+  </span>
+</div>
 
           <div className="flex space-x-4">
             <a
