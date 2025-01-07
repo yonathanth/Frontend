@@ -136,7 +136,7 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
       {/* Modal for Small Screens */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 md:hidden">
-          <div className="bg-[#1e1e1e] p-4 rounded-lg text-center w-11/12 max-w-md">
+          <div className="bg-[#1e1e1e] p-4 rounded-lg text-center w-11/12 max-w-md flex flex-col gap-2">
             <button
               className="absolute top-2 right-4 text-gray-300 hover:text-white"
               onClick={() => setShowModal(false)}
@@ -153,11 +153,19 @@ const MealList: React.FC<MealListProps> = ({meals, className}) => {
             </div>
             <h2 className="text-xl md:text-2xl font-bold">{selectedMeal?.name}</h2>
             <p className="text-xs text-gray-300 font-extralight">
-              {meals
-                .find((meal) => meal.slug === selectedMeal?.slug)
-                ?.ingredients.map((ingredient) => ingredient.name)
-                .join(", ")}
-            </p>
+                  {meals
+                    .find((meal) => meal.slug === selectedMeal?.slug)
+                    ?.ingredients.map((ingredient) => ingredient.name)
+                    .join(", ")}
+                </p>
+                <button>
+                <span className="text-white text-lg font-bold px-5 py-1 rounded-full bg-customBlue">
+                  {meals.find((meal) => meal.slug === selectedMeal?.slug)?.calories}{" "}
+                  <span className="text-xs font-extralight">Kcal</span>
+                </span>
+            </button>
+
+
           </div>
         </div>
       )}
