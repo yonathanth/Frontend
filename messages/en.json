@@ -118,8 +118,8 @@
       ]
     },
     "contactSection": {
-      "address": "Gabriel, Hawassa Building mall 3rd floor",
-      "phone": "+251 911 2345 212",
+      "address": "Hawassa, Gabriel D.L building",
+      "phone": "+251943313282",
       "email": "robifitness.hawassa@gmail.com"
     },
     "footerSection": {
@@ -362,11 +362,11 @@
     "details": {
       "address": {
         "label": "Address",
-        "value": "Gabriel, Hawassa Building Mall, 3rd Floor"
+        "value": "Hawassa, Gabriel D.L building"
       },
       "phone": {
         "label": "Phone",
-        "value": "+251 911 2345 212"
+        "value": "+25943313282"
       },
       "email": {
         "label": "Email",
