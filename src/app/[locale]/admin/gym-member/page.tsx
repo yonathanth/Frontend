@@ -170,6 +170,7 @@ const GymMembersList = () => {
     if (
       action === "Activate" &&
       (status === "inactive" ||
+        status === "expired" ||
         status === "freeze" ||
         status === "dormant" ||
         status === "pending")
@@ -478,6 +479,30 @@ const GymMembersList = () => {
                                 </>
                               )}
                               {member.status === "inactive" && (
+                                <>
+                                  <li>
+                                    <button
+                                      onClick={() =>
+                                        handleDropdownAction("Activate", member)
+                                      }
+                                      className="block px-4 py-2 text-gray-300 hover:bg-[#1d1d1d]"
+                                    >
+                                      Active
+                                    </button>
+                                  </li>
+                                  <li>
+                                    <button
+                                      onClick={() =>
+                                        handleDropdownAction("Dormant", member)
+                                      }
+                                      className="block px-4 py-2 text-gray-300 hover:bg-[#1d1d1d]"
+                                    >
+                                      Dormant
+                                    </button>
+                                  </li>
+                                </>
+                              )}
+                              {member.status === "expired" && (
                                 <>
                                   <li>
                                     <button

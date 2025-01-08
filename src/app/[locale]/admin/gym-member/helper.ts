@@ -53,17 +53,18 @@ const downloadUsers = async () => {
 
     // Map to extract relevant details
     const userData = filteredUsers.map((user: Member) => ({
+      fullName: user.fullName,
       phoneNumber: user.phoneNumber,
       serviceName: user.service?.name || "N/A",
       startDate: user.startDate,
     }));
 
     // Convert to CSV format
-    const csvHeader = "Phone Number,Service Name,Start Date\n";
+    const csvHeader = "Name, Phone Number,Service Name,Start Date\n";
     const csvRows = userData
       .map(
         (user: Member) =>
-          `${user.phoneNumber},${user.serviceName},${user.startDate}`
+          `${user.fullName},${user.phoneNumber},${user.serviceName},${user.startDate}`
       )
       .join("\n");
     const csvContent = `${csvHeader}${csvRows}`;
