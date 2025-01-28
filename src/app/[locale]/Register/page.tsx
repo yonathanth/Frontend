@@ -476,15 +476,15 @@ const Register = () => {
             </label>
           </div>
           <div className="my-4  sm:hidden">
+            {error && (
+              <div className="my-4  text-red-500 text-base text-center">
+                {error}
+              </div>
+            )}
             <button
               className="w-full p-2 font-semibold text-customBlue rounded-lg bg-gray-800 hover:bg-customBlue hover:text-black flex justify-center "
               onClick={handleNextClick}
             >
-              {error && (
-                <div className="my-4  text-red-500 text-base text-center">
-                  {error}
-                </div>
-              )}
               {isRegistering ? <SmallLoading /> : t("buttons.next")}
             </button>
           </div>
