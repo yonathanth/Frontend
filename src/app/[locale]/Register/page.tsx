@@ -126,7 +126,7 @@ const Register = () => {
     e.preventDefault();
 
     if (!selectedPackage) {
-      setError("Please choose a package below.");
+      setError("Please choose a package.");
       return;
     }
 
