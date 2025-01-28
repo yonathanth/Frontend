@@ -365,7 +365,7 @@ const Register = () => {
                   </label>
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="mt-4 hidden sm:block">
                 <button
                   className="w-full p-2 font-semibold text-customBlue rounded-lg bg-gray-800 hover:bg-customBlue hover:text-black flex justify-center "
                   onClick={handleNextClick}
@@ -474,6 +474,19 @@ const Register = () => {
                 onClose={closeTermsModal}
               />
             </label>
+          </div>
+          <div className="my-4  sm:hidden">
+            <button
+              className="w-full p-2 font-semibold text-customBlue rounded-lg bg-gray-800 hover:bg-customBlue hover:text-black flex justify-center "
+              onClick={handleNextClick}
+            >
+              {isRegistering ? <SmallLoading /> : t("buttons.next")}
+            </button>
+            {error && (
+              <div className="my-4  text-red-500 text-base text-center">
+                {error}
+              </div>
+            )}
           </div>
         </div>
       </div>

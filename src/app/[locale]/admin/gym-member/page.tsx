@@ -109,10 +109,16 @@ const GymMembersList = () => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
+    const matchesDate = member.startDate
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
     const matchesStatus = statusFilter
       ? member.status.toLowerCase() === statusFilter.toLowerCase()
       : true;
-    return (matchesSearchTerm || matchesService) && matchesStatus;
+    return (
+      (matchesSearchTerm || matchesService || matchesDate) && matchesStatus
+    );
   });
 
   const updateUserStatus = async (
