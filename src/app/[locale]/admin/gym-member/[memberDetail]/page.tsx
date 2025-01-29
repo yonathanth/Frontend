@@ -10,6 +10,7 @@ import {
   faDownload,
   faEdit,
   faCalendar,
+  faRefresh,
 } from "@fortawesome/free-solid-svg-icons";
 
 import ProfileImageWithModal, {
@@ -23,6 +24,7 @@ import NotificationModal from "../../components/NotificationModal";
 import EditAdmin from "../../components/EditMemberForm";
 import Loading from "../../loading";
 import axios from "axios";
+import SmallLoading from "../../components/SmallLoading";
 interface Service {
   id: string;
   name: string;
@@ -88,6 +90,7 @@ const MemberDetails = ({
   params: { locale: string; memberDetail: string };
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmtModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const handleNotify = () => {
     setIsModalOpen(true);
@@ -103,6 +106,8 @@ const MemberDetails = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
+  const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
+
   const [message, setMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -181,6 +186,32 @@ const MemberDetails = ({
     }
   };
 
+  const handleRefresh = async (id: string) => {
+    setIsModalLoading(true);
+    try {
+      const response = await fetch(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/memberManagement/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong.");
+      }
+      setIsConfirmModalOpen(false);
+      setIsModalLoading(false);
+
+      return { success: true, message: data.message };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  };
   if (loading) {
     return <div>Loading member details...</div>;
   }
@@ -274,6 +305,12 @@ const MemberDetails = ({
               className="text-xs mt-3 bg-customBlue text-black py-1 px-4 rounded-full self-start"
             >
               <FontAwesomeIcon icon={faCalendar} />
+            </button>
+            <button
+              onClick={() => setIsConfirmModalOpen(true)}
+              className="text-xs mt-3 bg-customBlue text-black py-1 px-4 rounded-full self-start"
+            >
+              <FontAwesomeIcon icon={faRefresh} />
             </button>
           </div>
         </div>
@@ -459,6 +496,31 @@ const MemberDetails = ({
       {errorMessage && (
         <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
           {errorMessage}
+        </div>
+      )}
+      {isConfirmtModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#121212] p-6 rounded-lg text-white max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">Confirm Member Reset</h2>
+            <p className="text-sm mb-6">
+              Are you sure you want to reset the details of{" "}
+              <span className="font-semibold">{memberDetails.fullName}</span>
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-700 transition"
+                onClick={() => setIsConfirmModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-customBlue text-white rounded hover:bg-customHoverBlue transition"
+                onClick={() => handleRefresh(memberDetails.id)}
+              >
+                {isModalLoading ? <SmallLoading /> : "Confirm"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
