@@ -7,13 +7,17 @@ import "./styles/fonts.css";
 import { Inter } from "next/font/google";
 import { CartProvider } from "./Shop/_components/CartContext";
 import { ServiceProvider } from "./admin/components/serviceContext";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-export const metadata = {
-  title: "Robi Fitness - Gym in Hawassa",
+export const metadata: Metadata = {
+  title: {
+    default: "Robi Fitness Hawassa",
+    template: "%s | Robi Fitness Hawassa",
+  },
   description:
-    "Robi Fitness is a premier gym in Hawassa, offering top-notch fitness services and facilities.",
+    "Robi Fitness is a premier Health and Fitness Center in Hawassa, offering top-notch fitness services and facilities.",
 };
 
 export default async function RootLayout({
