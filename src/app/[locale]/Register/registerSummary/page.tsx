@@ -67,18 +67,14 @@ const RegisterSummary = () => {
           </h3>
           <div className="bg-[#c0ebff] p-4 mt-2 rounded-lg border border-customBlue">
             <p className="mb-2 text-black">
-              Please transfer 50% of the total amount to one of the following
-              accounts:
+              Please transfer the total amount to one of the following accounts:
             </p>
             <ul className="list-none text-black">
+              <li>CBE: 1000403462385 - Samrawit Solomon </li>
+              <li>CBE: 1000351858684 - Robel Getahun </li>
+
               <li>
-                <strong>CBE:</strong> Account Number 123456789
-              </li>
-              <li>
-                <strong>Bank of Abyssinia:</strong> Account Number 987654321
-              </li>
-              <li>
-                <strong>TeleBirr:</strong> Phone Number 0912345678
+                ABYSSINIA: 119144884 - Robel Getahun and or Samrawit Solomon
               </li>
             </ul>
           </div>
