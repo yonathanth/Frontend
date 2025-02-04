@@ -14,6 +14,24 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user"); // "user" = front, "environment" = back
   const streamRef = useRef<MediaStream | null>(null);
+  const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+
+  useEffect(() => {
+    const checkCameraAvailability = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
+        setHasMultipleCameras(videoDevices.length > 1); // If more than one, enable switching
+      } catch (error) {
+        console.error("Error checking camera availability:", error);
+        setHasMultipleCameras(false);
+      }
+    };
+
+    checkCameraAvailability();
+  }, []);
 
   useEffect(() => {
     startCamera();
@@ -23,8 +41,6 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
 
   const startCamera = async () => {
     try {
-      stopCamera(); // Ensure any previous stream is stopped before starting a new one
-
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
       });
@@ -33,6 +49,11 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
         videoRef.current.srcObject = stream;
         videoRef.current.play();
         setIsCameraActive(true);
+      }
+
+      // Stop the previous stream after successfully setting the new one
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
 
       streamRef.current = stream;
@@ -99,12 +120,14 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
           Capture Photo
         </button>
 
-        <button
-          onClick={toggleCamera}
-          className="mt-4 w-full p-3 bg-purple-600 text-white rounded-lg"
-        >
-          Switch Camera
-        </button>
+        {hasMultipleCameras && (
+          <button
+            onClick={toggleCamera}
+            className="mt-4 w-full p-3 bg-customBlue text-white rounded-lg"
+          >
+            Switch Camera
+          </button>
+        )}
 
         <button
           onClick={onClose}
