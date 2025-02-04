@@ -307,7 +307,8 @@ const GymMembersList = () => {
                 <option value="inactive">Inactive</option>
                 <option value="frozen">Frozen</option>
                 <option value="expired">Expired</option>
-                <option value="dormant">dormant</option>
+                <option value="dormant">Dormant</option>
+                <option value="pending">Pending</option>
               </select>
             </div>
           </div>
