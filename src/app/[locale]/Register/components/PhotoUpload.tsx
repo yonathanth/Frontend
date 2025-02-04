@@ -11,9 +11,10 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user"); // "user" = front, "environment" = back
-  const streamRef = useRef<MediaStream | null>(null);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
         const videoDevices = devices.filter(
           (device) => device.kind === "videoinput"
         );
-        setHasMultipleCameras(videoDevices.length > 1); // If more than one, enable switching
+        setHasMultipleCameras(videoDevices.length > 1); // Enable switching if more than one camera exists
       } catch (error) {
         console.error("Error checking camera availability:", error);
         setHasMultipleCameras(false);
@@ -36,11 +37,14 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
   useEffect(() => {
     startCamera();
 
-    return () => stopCamera();
-  }, [facingMode]);
+    return () => stopCamera(); // Cleanup when component unmounts
+  }, []);
 
   const startCamera = async () => {
     try {
+      // Stop any existing stream before starting a new one
+      stopCamera();
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
       });
@@ -49,11 +53,6 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
         videoRef.current.srcObject = stream;
         videoRef.current.play();
         setIsCameraActive(true);
-      }
-
-      // Stop the previous stream after successfully setting the new one
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
       }
 
       streamRef.current = stream;
@@ -70,8 +69,24 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
     }
   };
 
-  const toggleCamera = () => {
-    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+  const toggleCamera = async () => {
+    if (!streamRef.current) return;
+
+    try {
+      const videoTrack = streamRef.current.getVideoTracks()[0];
+      const newFacingMode = facingMode === "user" ? "environment" : "user";
+
+      const supports = videoTrack.getCapabilities();
+      if (supports.facingMode) {
+        await videoTrack.applyConstraints({ facingMode: newFacingMode });
+      } else {
+        // If applyConstraints is not supported, fallback to restarting the stream
+        setFacingMode(newFacingMode);
+        startCamera();
+      }
+    } catch (error) {
+      console.error("Error switching camera:", error);
+    }
   };
 
   const capturePhoto = () => {
