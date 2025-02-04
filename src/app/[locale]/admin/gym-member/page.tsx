@@ -357,7 +357,7 @@ const GymMembersList = () => {
 
       <div className="md:p-6">
         <div className="overflow-x-auto overflow-y-auto ">
-          <table className="min-w-[800px] w-full">
+          <table className="min-w-[800px] w-full mb-32">
             <thead>
               <tr>
                 <th className="px-2 text-left text-gray-200 font-bold text-sm py-3">
