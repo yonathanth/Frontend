@@ -137,6 +137,7 @@ const WebcamCapture: React.FC<WebcamCaptureProps> = ({
 
         {hasMultipleCameras && (
           <button
+            type="button"
             onClick={toggleCamera}
             className="mt-4 w-full p-3 bg-customBlue text-white rounded-lg"
           >
