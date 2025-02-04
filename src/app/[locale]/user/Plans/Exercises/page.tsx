@@ -13,21 +13,26 @@ interface ExerciseListProps {
   className?: string;
 }
 
-const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => {
-  const [selectedExercise, setSelectedExercise] = useState<ExerciseType | null>(null);
+const ExerciseList: React.FC<ExerciseListProps> = ({
+  exercises,
+  className,
+}) => {
+  const [selectedExercise, setSelectedExercise] = useState<ExerciseType | null>(
+    null
+  );
   const [filter, setFilter] = useState("all");
   const videoRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isYouTubeLoaderReady, setIsYouTubeLoaderReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const filteredExercises =
     filter === "all"
       ? exercises
       : exercises.filter((exercise: ExerciseType) =>
-        exercise.focusArea.toLowerCase().includes(filter)
-      );
+          exercise.focusArea.toLowerCase().includes(filter)
+        );
   useEffect(() => {
     // Set the first meal from the "All" list as default when the page loads
     if (filteredExercises.length > 0 && !selectedExercise) {
@@ -113,47 +118,62 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
 
   if (isLoading) return <LoadingPage />;
   return (
-    <div className={`flex flex-col md:flex-row h-auto bg-[#1e1e1e] text-white rounded-3xl ${className || ""}`}>
-
+    <div
+      className={`flex flex-col md:flex-row h-auto bg-[#1e1e1e] text-white rounded-3xl ${
+        className || ""
+      }`}
+    >
       {/* Sidebar */}
-      <div className="w-full rounded-full md:w-1/3 p-4 bg-[#1e1e1e]">
-
+      <div className="w-72 rounded-3xl sm:rounded-none sm:rounded-tl-3xl  sm:rounded-bl-3xl md:w-1/2 p-4 bg-[#1e1e1e]">
         {/* Filter Buttons */}
-        <div className="bg-[#2a2a2a] p-2 rounded-full flex w-[22rem] md:w-full  lg:flex-nowrap justify-start gap-2 mb-4 overflow-x-auto scrollbar-hide">
-          {["All", "Chest", "Back", "Legs", "Arms", "Core", "Shoulders", "FullBody", "Other", "UpperBody", "LowerBody"].map(
-            (category) => (
-              <button
-                key={category}
-                onClick={() => setFilter(category.toLowerCase())}
-                className={`px-5 py-1 text-xs rounded-full ${filter === category.toLowerCase() ? "bg-customBlue" : "bg-[#1e1e1e] hover:bg-[#555555]"
-                  }`}
-              >
-                {category}
-              </button>
-            )
-          )}
+        <div className="bg-[#2a2a2a] p-2 rounded-full md:w-full flex lg:flex-nowrap justify-start gap-4 mb-4 overflow-x-auto scrollbar-hide scrollbar-thumb-[#555555] scrollbar-track-transparent scroll-p-4">
+          {[
+            "All",
+            "Chest",
+            "Back",
+            "Legs",
+            "Arms",
+            "Core",
+            "Shoulders",
+            "FullBody",
+            "Other",
+            "UpperBody",
+            "LowerBody",
+          ].map((category) => (
+            <button
+              key={category}
+              onClick={() => setFilter(category.toLowerCase())}
+              className={`px-5 py-1 text-xs rounded-full ${
+                filter === category.toLowerCase()
+                  ? "bg-customBlue"
+                  : "bg-[#1e1e1e] hover:bg-[#555555]"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
         </div>
-        <ul className="space-y-2">
+        <ul className="space-y-2 md:w-full h-96 overflow-y-auto pr-5">
           {filteredExercises.map((exercise) => (
             <li
-
               key={exercise.slug}
               onClick={() => handleExerciseClick(exercise)}
-              className={`flex items-center justify-between p-3 cursor-pointer rounded-full ${selectedExercise?.slug === exercise.slug
+              className={`flex items-center justify-between p-3 cursor-pointer rounded-full ${
+                selectedExercise?.slug === exercise.slug
                   ? "bg-customBlue"
                   : "bg-[#2a2a2a] hover:bg-[#333333]"
-                }`}
+              }`}
             >
               <div className="flex items-baseline gap-2">
                 <h3 className="text-sm">{exercise.name}</h3>
-                <p className="text-xs text-gray-300 font-extralight">{exercise.focusArea}</p>
+                <p className="text-xs text-gray-300 font-extralight">
+                  {exercise.focusArea}
+                </p>
               </div>
             </li>
           ))}
         </ul>
       </div>
-
-
 
       {/* Video Preview */}
       <div className="flex-1 md:flex items-center justify-center p-1">
@@ -163,8 +183,9 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
             <>
               <div className="relative w-full h-full">
                 <Image
-                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
-                    }`}
+                  src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
+                    selectedExercise ? selectedExercise.slug : ""
+                  }`}
                   alt={selectedExercise ? selectedExercise.name : ""}
                   fill={true}
                   quality={90}
@@ -175,7 +196,11 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10"
                 onClick={handlePlayVideo}
               >
-                <FontAwesomeIcon icon={faPlay} size="3x" className="text-white" />
+                <FontAwesomeIcon
+                  icon={faPlay}
+                  size="3x"
+                  className="text-white"
+                />
               </button>
             </>
           )}
@@ -200,8 +225,9 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-full h-full">
                   <Image
-                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${selectedExercise ? selectedExercise.slug : ""
-                      }`}
+                    src={`${NEXT_PUBLIC_API_BASE_URL}/uploads/exercises/${
+                      selectedExercise ? selectedExercise.slug : ""
+                    }`}
                     alt={selectedExercise ? selectedExercise.name : ""}
                     layout="intrinsic"
                     fill
@@ -217,7 +243,6 @@ const ExerciseList: React.FC<ExerciseListProps> = ({ exercises, className }) => 
         </div>
       )}
     </div>
-
   );
 };
 

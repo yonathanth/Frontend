@@ -250,7 +250,9 @@ const MemberDetails = ({
               alt="barcode"
               className="h-6 w-12 lg:w-16 bg-white"
             />
-            <span className="text-customBlue">M</span>
+            <span className="text-customBlue">
+              {memberDetails.gender.toLowerCase() === "male" ? "M" : "F"}
+            </span>
           </div>
         </div>
 

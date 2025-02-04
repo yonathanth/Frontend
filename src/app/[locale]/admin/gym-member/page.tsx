@@ -261,7 +261,7 @@ const GymMembersList = () => {
             className="bg-customBlue  text-black font-light mb-4 md:mb-0 px-4 py-2 rounded-lg hover:bg-customHoverBlue flex items-center space-x-2"
           >
             <FontAwesomeIcon icon={faPlus} />
-            <span>Add Member</span>
+            <span className="hidden md:block">Add Member</span>
           </button>
           <button
             onClick={() => downloadUsers()}

@@ -176,7 +176,10 @@ const Page = () => {
         <div className="bg-[#111111] rounded-lg flex justify-between items-center">
           <div className="flex items-center p-4 space-x-4">
             <Image
-              src={memberDetails?.profileImageUrl || ""}
+              src={
+                `${NEXT_PUBLIC_API_BASE_URL}${memberDetails.profileImageUrl}` ||
+                ""
+              }
               alt="Profile"
               width={64}
               height={64}
