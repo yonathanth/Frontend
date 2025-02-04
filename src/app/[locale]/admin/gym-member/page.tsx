@@ -62,6 +62,12 @@ const GymMembersList = () => {
   const [showDateModal, setShowDateModal] = useState<boolean>(false);
   const [selectedMemberForDate, setSelectedMemberForDate] =
     useState<Member | null>(null);
+  const [showFreezeModal, setShowFreezeModal] = useState<boolean>(false);
+
+  const [selectedMemberForFreeze, setSelectedMemberForFreeze] =
+    useState<Member | null>(null);
+  let [freezeDuration, setFreezeDuration] = useState<number>();
+
   let [activationDate, setActivationDate] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
@@ -105,7 +111,7 @@ const GymMembersList = () => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
-    const matchesService = member.service.name
+    const matchesService = member.service?.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
@@ -124,7 +130,8 @@ const GymMembersList = () => {
   const updateUserStatus = async (
     memberId: string,
     newStatus: string,
-    startDate?: string
+    startDate?: string,
+    freezeDuration?: number
   ) => {
     setIsLoading(true);
     try {
@@ -133,6 +140,7 @@ const GymMembersList = () => {
         {
           status: newStatus,
           startDate,
+          freezeDuration,
         }
       );
       console.log(response.data);
@@ -186,7 +194,8 @@ const GymMembersList = () => {
     } else if (action === "Deactivate" && status !== "inactive") {
       updateUserStatus(id, "inactive");
     } else if (action === "Freeze" && status === "active") {
-      updateUserStatus(id, "frozen");
+      setSelectedMemberForFreeze(member);
+      setShowFreezeModal(true);
     } else if (action === "Unfreeze" && status === "frozen") {
       updateUserStatus(id, "unfreeze");
     } else if (action === "Dormant" && status !== "dormant") {
@@ -233,6 +242,18 @@ const GymMembersList = () => {
       await updateUserStatus(selectedMemberForDate.id, "active", formattedDate); // Pass the correct date here
       setShowDateModal(false);
       setActivationDate(""); // Reset the date input after submission
+    }
+  };
+  const handleFreezeDurationSubmission = async () => {
+    if (selectedMemberForFreeze) {
+      await updateUserStatus(
+        selectedMemberForFreeze.id,
+        "frozen",
+        undefined,
+        freezeDuration
+      );
+      setShowFreezeModal(false);
+      setFreezeDuration(0);
     }
   };
 
@@ -289,7 +310,7 @@ const GymMembersList = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="relative">
+          <div className="relative ">
             <div className="bg-[#ffffff29] px-4 py-2 rounded-md border border-gray-600 flex items-center">
               <span className="text-gray-300">
                 <FontAwesomeIcon
@@ -298,7 +319,7 @@ const GymMembersList = () => {
                 />
               </span>
               <select
-                className="absolute mt-4 opacity-0 px-5 cursor-pointer right-0  z-10 rounded-md bg-zinc-900 "
+                className="absolute mt-4 opacity-0 px-5 cursor-pointer left-0  z-10 rounded-md bg-zinc-900 "
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -403,7 +424,7 @@ const GymMembersList = () => {
                           : "-"}
                       </td>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
-                        {member.service.name}
+                        {member.service?.name}
                       </td>
                       <td className="text-gray-400 py-3 px-2 font-extralight text-sm">
                         {member.startDate.substring(0, 10)}
@@ -661,6 +682,37 @@ const GymMembersList = () => {
               </button>
               <button
                 onClick={() => setShowDateModal(false)}
+                className="bg-gray-300 text-black px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showFreezeModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-black p-6 rounded-lg w-80">
+            <h3 className="text-lg font-semibold mb-4">
+              Select Freeze Duration Date for{" "}
+              {selectedMemberForFreeze?.fullName}
+            </h3>
+            <input
+              type="number"
+              value={freezeDuration}
+              onChange={(e) => setFreezeDuration(Number(e.target.value))}
+              className="w-full p-2 border bg-[#ffffff29] border-gray-300 rounded-md mb-4"
+              required
+            />
+            <div className="flex justify-between">
+              <button
+                onClick={handleFreezeDurationSubmission}
+                className="bg-customBlue text-white px-4 py-2 rounded-md"
+              >
+                {isLoading ? <SmallLoading /> : "Freeze"}
+              </button>
+              <button
+                onClick={() => setShowFreezeModal(false)}
                 className="bg-gray-300 text-black px-4 py-2 rounded-md"
               >
                 Cancel
