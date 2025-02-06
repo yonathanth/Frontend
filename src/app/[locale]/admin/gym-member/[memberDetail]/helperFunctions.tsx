@@ -205,9 +205,11 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.text("St.Gabriel, Hawassa, In front of Evening Star", cardWidth / 2, 38, {
     align: "center",
   });
-  doc.text("+25193971420 | +251933788999", cardWidth / 2, 43, {
+  doc.text("+251913212323 | +251943313282", cardWidth / 2, 43, {
     align: "center",
   });
+  doc.setFont("Montserrat", "bold");
+
   doc.text("www.robifitness.com", cardWidth / 2, 50, { align: "center" });
 
   // Save the PDF
