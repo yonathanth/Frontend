@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import axios from "axios";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 const AttendancePage: React.FC = () => {
   const [userId, setUserId] = useState<string>("");
   const [result, setResult] = useState<string>("");
@@ -31,10 +30,8 @@ const AttendancePage: React.FC = () => {
       );
 
       if (response.data.success) {
-        const { totalAttendance, daysLeft } = response.data.data;
-        setResult(
-          `Attendance recorded successfully! Total Attendance: ${totalAttendance}, Days Left: ${daysLeft}.`
-        );
+        const { totalAttendance, name } = response.data.data;
+        setResult(`Attendance recorded for ${name} successfully!.`);
       }
     } catch (err: any) {
       setResult("");
