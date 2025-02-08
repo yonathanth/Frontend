@@ -15,6 +15,7 @@ import SmallLoading from "../components/SmallLoading";
 import Loading from "../loading";
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import downloadUsers from "./helper"; // Adjust the path as needed
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Service {
   id: string;
@@ -54,7 +55,14 @@ export type Member = {
 };
 
 const GymMembersList = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Initialize state from query parameters
+  const initialSearchTerm = searchParams.get("searchTerm") || "";
+  const initialStatusFilter = searchParams.get("statusFilter") || "";
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [statusFilter, setStatusFilter] = useState(initialStatusFilter);
   const [isLoading, setIsLoading] = useState(false);
 
   const [memberList, setMemberList] = useState<Member[]>([]);
@@ -71,7 +79,6 @@ const GymMembersList = () => {
   let [activationDate, setActivationDate] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
-  const [statusFilter, setStatusFilter] = useState<string>("");
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // Add loading state
@@ -105,6 +112,13 @@ const GymMembersList = () => {
   useEffect(() => {
     fetchMembers();
   }, []);
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchTerm) params.set("searchTerm", searchTerm);
+    if (statusFilter) params.set("statusFilter", statusFilter);
+    // router.push changes the URL, updating the query string
+    router.push(`?${params.toString()}`);
+  }, [searchTerm, statusFilter, router]);
 
   const filteredMembers = memberList.filter((member) => {
     const matchesSearchTerm = member.fullName
