@@ -79,12 +79,11 @@ const fetchImageAsBase64 = async (url: string) => {
 const downloadMemberId = async (memberDetails: memberDetails) => {
   const doc = new jsPDF("landscape", "mm", "credit-card"); // ID size in landscape mode
 
-  const cardWidth = 85.6; // Standard width
-  const cardHeight = 54; // Standard height
+  const cardWidth = 88; // Standard width
+  const cardHeight = 56; // Standard height
   const orange = "#FF6600";
   const black = "#000000";
   const white = "#ffffff";
-  const gray = "#555555";
 
   // Fetch image utility
 
@@ -98,30 +97,30 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   const logoBase64 = await fetchImageAsBase64("/Images/logo.png");
   // FRONT SIDE
   // Left Black Background
-  doc.setFillColor(black);
-  doc.rect(0, 0, cardWidth / 2 - 6.5, cardHeight, "F");
+  // doc.setFillColor(black);
+  // doc.rect(0, 0, cardWidth / 2 - 6.5, cardHeight - 30, "F");
 
-  // Right White Background
-  doc.setFillColor(white);
-  doc.rect(cardWidth / 2, 0, cardWidth / 2, cardHeight, "F");
+  // // Right White Background
+  // doc.setFillColor(white);
+  // doc.rect(cardWidth / 2, 0, cardWidth / 2, cardHeight, "F");
 
-  // Orange Divider
-  doc.setFillColor(orange);
-  doc.rect(cardWidth / 2 - 7, 0, 0.5, cardHeight, "F");
+  // // Orange Divider
+  // doc.setFillColor(orange);
+  // doc.rect(cardWidth / 2 - 7, 0, 0.5, cardHeight - 30, "F");
 
   // Profile photo
   if (profileImgBase64) {
-    doc.addImage(profileImgBase64, "JPEG", 8, 14, 20, 20, undefined, "FAST");
+    doc.addImage(profileImgBase64, "JPEG", 8, 5, 20, 20, undefined, "FAST");
   }
 
   // Name and Gender on the Left
   doc.setFont("Montserrat", "bold");
   doc.setFontSize(10);
-  doc.setTextColor(white);
+  doc.setTextColor(black);
   doc.text(
     capitalize(memberDetails.fullName.split(" ")[0]),
     (cardWidth / 2 - 6.5) / 2,
-    40,
+    29,
     { align: "center" }
   );
   doc.setFont("Montserrat", "normal");
@@ -131,7 +130,7 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
       capitalize(memberDetails.fullName.split(" ")[1])) ||
       "",
     (cardWidth / 2 - 6.5) / 2,
-    43,
+    32,
     { align: "center" }
   );
   doc.setFont("Montserrat", "bold");
@@ -150,64 +149,73 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.setFont("Montserrat", "normal");
   doc.setFontSize(6);
   doc.setTextColor(black);
-  doc.text("Phone no.", cardWidth / 2, 17);
-  doc.text("Address", cardWidth / 2, 22);
-  doc.text("Service", cardWidth / 2, 27);
-  doc.text("Emergency", cardWidth / 2, 32);
-  doc.text("Sex", cardWidth / 2, 37);
+  doc.text("Phone no.", cardWidth / 2 - 4, 9);
+  doc.text("Address", cardWidth / 2 - 4, 14);
+  doc.text("Service", cardWidth / 2 - 4, 19);
+  doc.text("Emergency", cardWidth / 2 - 4, 24);
+  doc.text("Sex", cardWidth / 2 - 4, 29);
 
   doc.setFontSize(8);
   doc.setFont("Montserrat", "bold");
 
   doc.setTextColor(black);
-  doc.text(memberDetails.phoneNumber, cardWidth / 2 + 15, 17);
+  doc.text(memberDetails.phoneNumber, cardWidth / 2 + 11, 9);
 
   const truncatedAdress = truncateText(memberDetails.address!, 17);
-  doc.text(truncatedAdress, cardWidth / 2 + 15, 22);
+  doc.text(truncatedAdress, cardWidth / 2 + 11, 14);
 
   const truncatedServiceName = truncateText(memberDetails.service.name, 17);
-  doc.text(truncatedServiceName, cardWidth / 2 + 15, 27);
+  doc.text(truncatedServiceName, cardWidth / 2 + 11, 19);
 
   const truncatedEmergencyContact = truncateText(
     memberDetails.emergencyContact!,
-    17
+    33
   );
-  doc.text(truncatedEmergencyContact, cardWidth / 2 + 15, 32);
-  doc.text(memberDetails.gender, cardWidth / 2 + 15, 37);
-
-  // Logo
-  if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", 2, 0, 8, 12);
-  }
-
-  // "ID" Label on the Top-Right
-  doc.setFontSize(8);
-  doc.setTextColor(black);
-  doc.text("ID", cardWidth - 3, 5, { align: "right" });
-  // BACK SIDE
-  doc.addPage();
-  doc.setFillColor(white);
-  doc.rect(0, 0, cardWidth, cardHeight, "F");
+  doc.text(truncatedEmergencyContact, cardWidth / 2 + 11, 24);
+  doc.text(memberDetails.gender, cardWidth / 2 + 11, 29);
 
   // Barcode on the Right Bottom
   if (barcodeImgBase64) {
-    doc.addImage(barcodeImgBase64, "PNG", 6, 8, 75, 15);
+    doc.addImage(barcodeImgBase64, "PNG", 6, 36, 75, 15);
+  }
+
+  // Logo
+
+  // "ID" Label
+
+  doc.setFontSize(8);
+  doc.setTextColor(black);
+  doc.text("ID", cardWidth - 5, 5, { align: "right" });
+  // BACK SIDE
+  doc.addPage();
+  doc.setFillColor(black);
+  doc.rect(0, 0, cardWidth, cardHeight, "F");
+
+  if (logoBase64) {
+    doc.addImage(logoBase64, "PNG", cardWidth / 2 - 10, 8, 20, 24);
   }
 
   // Centered text
-  doc.setTextColor(black);
+  doc.setTextColor(white);
   doc.setFont("Montserrat", "bold");
   doc.setFontSize(10);
-  doc.text("Robi Fitness Center", cardWidth / 2, 33, { align: "center" });
+  doc.text("Robi Fitness Center", cardWidth / 2, 35, { align: "center" });
 
   doc.setFont("Montserrat", "normal");
   doc.setFontSize(8);
-  doc.text("St.Gabriel, Hawassa, In front of Evening Star", cardWidth / 2, 38, {
+  doc.text(
+    "St.Gabriel, In front of Evening Star, D.L Building",
+    cardWidth / 2,
+    40,
+    {
+      align: "center",
+    }
+  );
+
+  doc.text("+251913212323 | +251943313282", cardWidth / 2, 45, {
     align: "center",
   });
-  doc.text("+251913212323 | +251943313282", cardWidth / 2, 43, {
-    align: "center",
-  });
+
   doc.setFont("Montserrat", "bold");
 
   doc.text("www.robifitness.com", cardWidth / 2, 50, { align: "center" });
