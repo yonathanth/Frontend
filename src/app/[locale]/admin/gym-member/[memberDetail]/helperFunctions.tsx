@@ -199,20 +199,20 @@ const downloadMemberId = async (memberDetails: memberDetails) => {
   doc.setTextColor(white);
   doc.setFont("Montserrat", "bold");
   doc.setFontSize(10);
-  doc.text("Robi Fitness Center", cardWidth / 2, 35, { align: "center" });
+  doc.text("Robi Fitness Center", cardWidth / 2, 33, { align: "center" });
 
   doc.setFont("Montserrat", "normal");
   doc.setFontSize(8);
   doc.text(
     "St.Gabriel, In front of Evening Star, D.L Building",
     cardWidth / 2,
-    40,
+    38,
     {
       align: "center",
     }
   );
 
-  doc.text("+251913212323 | +251943313282", cardWidth / 2, 45, {
+  doc.text("+251913212323 | +251943313282", cardWidth / 2, 43, {
     align: "center",
   });
 
@@ -233,27 +233,20 @@ const downloadMemberDetails = async (memberDetails: memberDetails) => {
   const white = "#FFFFFF";
 
   // Fetch the logo as a Base64 string
-  const logoBase64 = await fetchImageAsBase64("/images/logo.png");
 
   // Add black background for the logo
-  doc.setFillColor(black);
-  doc.rect(80, 5, 50, 40, "F"); // Black rectangle background for the logo
+  const profileImgBase64 = memberDetails.profileImageUrl
+    ? await fetchImageAsBase64(
+        `${NEXT_PUBLIC_API_BASE_URL}${memberDetails.profileImageUrl}`
+      )
+    : null;
 
-  // Add logo (if provided)
-  if (logoBase64) {
-    const logoWidth = 30;
-    const logoHeight = 30;
-    doc.addImage(
-      logoBase64,
-      "PNG",
-      90,
-      10,
-      logoWidth,
-      logoHeight,
-      undefined,
-      "FAST"
-    );
+  // Add profile image if available
+  if (profileImgBase64) {
+    doc.addImage(profileImgBase64, "JPEG", 80, 5, 50, 40, undefined, "FAST");
   }
+
+  // Add logo at the top left if provided
 
   // Add title
   doc.setFont("helvetica", "bold");
@@ -284,7 +277,7 @@ const downloadMemberDetails = async (memberDetails: memberDetails) => {
         : "N/A"
     }`,
     `Emergency Contact: ${memberDetails.emergencyContact ? "Yes" : "No"}`,
-    `Exercis Restrictions: ${
+    `Exercise Restrictions: ${
       memberDetails.healthCondition?.exerciseRestriction ? "Yes" : "No"
     }`,
     `Pain During Workout: ${

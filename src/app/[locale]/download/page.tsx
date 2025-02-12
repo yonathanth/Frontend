@@ -64,16 +64,27 @@ const downloadAllMemberIds = async () => {
       return;
     }
 
-    const doc = new jsPDF("landscape", "mm", "credit-card");
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: [97, 63], // Set exact dimensions in mm
+    });
     const cardWidth = 88;
     const cardHeight = 56;
     const orange = "#FF6600";
     const black = "#000000";
     const white = "#ffffff";
 
-    for (let i = 0; i < 3; i++) {
-      console.log("hi");
+    for (let i = 0; i < members.length; i++) {
       const member = members[i];
+      const startDate = new Date(member.startDate); // Convert to Date object
+
+      if (
+        startDate >= new Date("2025-01-09") &&
+        startDate <= new Date("2025-01-13")
+      ) {
+        continue; // Skip members within the range
+      }
 
       const profileImgBase64 = member.profileImageUrl
         ? await fetchImageAsBase642(member.profileImageUrl)
@@ -84,17 +95,17 @@ const downloadAllMemberIds = async () => {
 
       if (i > 0) doc.addPage();
 
-      // Left Black Background
-      doc.setFillColor(black);
-      doc.rect(0, 0, cardWidth / 2 - 6.5, cardHeight, "F");
+      //   // Left Black Background
+      //   doc.setFillColor(black);
+      //   doc.rect(0, 0, cardWidth / 2 - 6.5, cardHeight, "F");
 
-      // Right White Background
-      doc.setFillColor(white);
-      doc.rect(cardWidth / 2, 0, cardWidth / 2, cardHeight, "F");
+      //   // Right White Background
+      //   doc.setFillColor(white);
+      //   doc.rect(cardWidth / 2, 0, cardWidth / 2, cardHeight, "F");
 
-      // Orange Divider
-      doc.setFillColor(orange);
-      doc.rect(cardWidth / 2 - 7, 0, 0.5, cardHeight, "F");
+      //   // Orange Divider
+      //   doc.setFillColor(orange);
+      //   doc.rect(cardWidth / 2 - 7, 0, 0.5, cardHeight, "F");
 
       // Profile photo
       if (profileImgBase64) {
@@ -106,7 +117,7 @@ const downloadAllMemberIds = async () => {
       doc.setFontSize(10);
       doc.setTextColor(black);
       doc.text(
-        capitalize(members.fullName.split(" ")[0]),
+        capitalize(member.fullName.split(" ")[0]),
         (cardWidth / 2 - 6.5) / 2,
         29,
         { align: "center" }
@@ -114,8 +125,8 @@ const downloadAllMemberIds = async () => {
       doc.setFont("Montserrat", "normal");
       doc.setFontSize(7);
       doc.text(
-        (members.fullName.split(" ")[1] &&
-          capitalize(members.fullName.split(" ")[1])) ||
+        (member.fullName.split(" ")[1] &&
+          capitalize(member.fullName.split(" ")[1])) ||
           "",
         (cardWidth / 2 - 6.5) / 2,
         32,
@@ -125,7 +136,7 @@ const downloadAllMemberIds = async () => {
       doc.setFontSize(7);
 
       // doc.text(
-      //   members.gender === "male" ? "M" : "F",
+      //   member.gender === "male" ? "M" : "F",
       //   (cardWidth / 2 - 6.5) / 2,
       //   46,
       //   {
@@ -147,24 +158,29 @@ const downloadAllMemberIds = async () => {
       doc.setFont("Montserrat", "bold");
 
       doc.setTextColor(black);
-      doc.text(members.phoneNumber, cardWidth / 2 + 11, 9);
+      doc.text(member.phoneNumber, cardWidth / 2 + 11, 9);
 
-      const truncatedAdress = truncateText(members.address!, 17);
+      const truncatedAdress = truncateText(member.address!, 17);
       doc.text(truncatedAdress, cardWidth / 2 + 11, 14);
 
-      const truncatedServiceName = truncateText(members.service.name, 17);
+      const truncatedServiceName = truncateText(member.service.name, 17);
       doc.text(truncatedServiceName, cardWidth / 2 + 11, 19);
 
       const truncatedEmergencyContact = truncateText(
-        members.emergencyContact!,
+        member.emergencyContact!,
         33
       );
       doc.text(truncatedEmergencyContact, cardWidth / 2 + 11, 24);
-      doc.text(members.gender, cardWidth / 2 + 11, 29);
+      doc.text(member.gender, cardWidth / 2 + 11, 29);
 
       // barcode
+      const pageWidth = doc.internal.pageSize.getWidth(); // Get the document width
+      const imgWidth = 75; // Your image width
+
+      const centerX = (pageWidth - imgWidth) / 2; // Calculate center position
+
       if (barcodeImgBase64) {
-        doc.addImage(barcodeImgBase64, "PNG", 6, 36, 75, 15);
+        doc.addImage(barcodeImgBase64, "PNG", centerX, 36, imgWidth, 15);
       }
 
       // "ID" Label
@@ -173,41 +189,41 @@ const downloadAllMemberIds = async () => {
       doc.text("ID", cardWidth - 5, 5, { align: "right" });
 
       // BACK SIDE
-      doc.addPage();
-      doc.setFillColor(black);
-      doc.rect(0, 0, cardWidth, cardHeight, "F");
+      // doc.addPage();
+      // doc.setFillColor(black);
+      // doc.rect(0, 0, cardWidth, cardHeight, "F");
 
-      if (logoBase64) {
-        doc.addImage(logoBase64, "PNG", cardWidth / 2 - 10, 8, 20, 24);
-      }
+      // if (logoBase64) {
+      //   doc.addImage(logoBase64, "PNG", cardWidth / 2 - 10, 8, 20, 24);
+      // }
 
-      // Centered text
-      doc.setTextColor(white);
-      doc.setFont("Montserrat", "bold");
-      doc.setFontSize(10);
-      doc.text("Robi Fitness Center", cardWidth / 2, 35, { align: "center" });
+      // // Centered text
+      // doc.setTextColor(white);
+      // doc.setFont("Montserrat", "bold");
+      // doc.setFontSize(10);
+      // doc.text("Robi Fitness Center", cardWidth / 2, 33, { align: "center" });
 
-      doc.setFont("Montserrat", "normal");
-      doc.setFontSize(8);
-      doc.text(
-        "St.Gabriel, In front of Evening Star, D.L Building",
-        cardWidth / 2,
-        40,
-        {
-          align: "center",
-        }
-      );
+      // doc.setFont("Montserrat", "normal");
+      // doc.setFontSize(8);
+      // doc.text(
+      //   "St.Gabriel, In front of Evening Star, D.L Building",
+      //   cardWidth / 2,
+      //   38,
+      //   {
+      //     align: "center",
+      //   }
+      // );
 
-      doc.text("+251913212323 | +251943313282", cardWidth / 2, 45, {
-        align: "center",
-      });
+      // doc.text("+251913212323 | +251943313282", cardWidth / 2, 43, {
+      //   align: "center",
+      // });
 
-      doc.setFont("Montserrat", "bold");
+      // doc.setFont("Montserrat", "bold");
 
-      doc.text("www.robifitness.com", cardWidth / 2, 50, { align: "center" });
+      // doc.text("www.robifitness.com", cardWidth / 2, 50, { align: "center" });
     }
 
-    doc.save("All_Members_IDs.pdf");
+    doc.save("All_Member_IDs.pdf");
   } catch (error) {
     console.error("Error generating IDs:", error);
   }

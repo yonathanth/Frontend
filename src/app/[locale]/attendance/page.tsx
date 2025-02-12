@@ -31,7 +31,7 @@ const AttendancePage: React.FC = () => {
 
       if (response.data.success) {
         const { totalAttendance, name } = response.data.data;
-        setResult(`Attendance recorded for ${name} successfully!.`);
+        setResult(`✅ Attendance recorded for ${name} successfully!.`);
       }
     } catch (err: any) {
       setResult("");
