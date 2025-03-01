@@ -11,6 +11,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ setActiveNav }) => {
   const navItems = [
     { name: "Dashboard", path: "/en/admin" },
     { name: "Gym Members", path: "/en/admin/gym-member" },
+    { name: "Attendance", path: "/en/admin/attendance-list" },
+
     { name: "Employees", path: "/en/admin/employee" },
     { name: "Inventory", path: "/en/admin/inventory" },
     { name: "Stock", path: "/en/admin/stock" },

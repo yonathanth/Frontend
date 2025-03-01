@@ -189,7 +189,7 @@ test-button:hover {
   border: 2px solid #2596be;
 }
 
-.shalops{
+.shalops {
   font-style: normal;
   padding: 0.1em 0.3em;
   border-radius: 0.2em;
@@ -197,13 +197,12 @@ test-button:hover {
   background: white;
   background: linear-gradient(to right, mediumturquoise, mediumpurple);
   transform: skewX(-10deg);
-  display: inline-block;  }
+  display: inline-block;
+}
 
-
-  /* Hide the spinner for number inputs */
+/* Hide the spinner for number inputs */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
