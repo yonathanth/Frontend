@@ -5,6 +5,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter, useSearchParams } from "next/navigation";
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface GymMember {
   id: string;
@@ -35,7 +36,7 @@ const GymAttendanceList = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/api/attendance?date=${selectedDate}`
+          `${NEXT_PUBLIC_API_BASE_URL}/api/attendance?date=${selectedDate}`
         );
 
         // Ensure response is an array
