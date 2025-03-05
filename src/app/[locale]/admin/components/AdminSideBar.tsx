@@ -34,7 +34,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ setActiveNav }) => {
           <Link
             key={item.name}
             href={item.path}
-            className="w-full text-left px-4 font-extralight py-2 hover:text-customBlue focus:text-customBlue"
+            className="w-full text-left px-4 font-extralight py-3 hover:text-customBlue focus:text-customBlue"
             onClick={() => setActiveNav(item.name)}
           >
             {item.name}
