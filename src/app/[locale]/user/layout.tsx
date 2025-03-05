@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import UserHeader from "./components/UserHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -62,8 +62,8 @@ interface CustomJwtPayload {
 export const dynamic = "force-dynamic";
 
 export default function UserLayout({
-                                     children,
-                                   }: {
+  children,
+}: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function UserLayout({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const getUserDetails = useCallback(async() => {
+  const getUserDetails = useCallback(async () => {
     try {
       const res = await fetch(
         `${NEXT_PUBLIC_API_BASE_URL}/api/members/${userId}`,
@@ -103,7 +103,7 @@ export default function UserLayout({
     } finally {
       setIsLoading(false);
     }
-  },[userId]);
+  }, [userId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -155,16 +155,16 @@ export default function UserLayout({
           sidebarOpen ? "fixed" : "hidden"
         } fixed top-0 left-0 h-full bg-black lg:relative lg:flex lg:h-auto z-20`}
       >
-        <UserSidebar setActiveNav={setActiveNav} />
+        {/* <UserSidebar setActiveNav={setActiveNav} /> */}
       </div>
 
-      {/* Overlay Background for Sidebar (when open) */}
+      {/* Overlay Background for Sidebar (when open)
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black opacity-50 z-10 lg:hidden font-jost"
           onClick={() => setSidebarOpen(false)}
         ></div>
-      )}
+      )} */}
 
       {/* Mobile Sidebar & Header */}
       <div className="flex-1 flex flex-col lg:hidden">
@@ -177,7 +177,7 @@ export default function UserLayout({
             <FontAwesomeIcon icon={faBars} className="text-white text-2xl" />
           </button>
 
-          <UserHeader activeNav={activeNav} user={user} />
+          {/* <UserHeader activeNav={activeNav} user={user} /> */}
         </div>
         {/* Main content that scrolls if needed */}
         <main className="flex-1 bg-black overflow-auto">{children}</main>
@@ -186,7 +186,7 @@ export default function UserLayout({
       {/* Desktop Layout */}
       <div className="hidden lg:flex flex-1 flex-col">
         {/* Desktop Header */}
-        <UserHeader activeNav={activeNav} user={user} />
+        {/* <UserHeader activeNav={activeNav} user={user} /> */}
 
         {/* Main content that scrolls if needed */}
         <main className="flex-1 bg-black p-6 overflow-auto">{children}</main>
