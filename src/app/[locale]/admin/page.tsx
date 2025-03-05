@@ -34,7 +34,7 @@ const ResponsiveModal: React.FC = () => {
       >
         {/* Modal title */}
         <h2
-          className="text-center text-6xl font-bold mb-5
+          className="text-center text-6xl font-bold mb-6
         "
         >
           {" "}
