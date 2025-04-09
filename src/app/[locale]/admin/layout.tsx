@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import AdminSidebar from "./components/AdminSideBar";
-// import AdminHeader from "./components/AdminHeader";
+import AdminSidebar from "./components/AdminSideBar";
+import AdminHeader from "./components/AdminHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { jwtDecode } from "jwt-decode";
@@ -64,7 +64,7 @@ export default function AdminLayout({
           sidebarOpen ? "fixed" : "hidden"
         } lg:relative lg:flex z-20`}
       >
-        {/* <AdminSidebar setActiveNav={setActiveNav} /> */}
+        <AdminSidebar setActiveNav={setActiveNav} />
       </div>
       {sidebarOpen && (
         <div
@@ -80,12 +80,12 @@ export default function AdminLayout({
           >
             <FontAwesomeIcon icon={faBars} className="text-white text-2xl" />
           </button>
-          {/* <AdminHeader activeNav={activeNav} /> */}
+          <AdminHeader activeNav={activeNav} />
         </div>
         <main className="flex-1 bg-black p-6 overflow-auto">{children}</main>
       </div>
       <div className="hidden lg:flex flex-1 flex-col">
-        {/* <AdminHeader activeNav={activeNav} /> */}
+        <AdminHeader activeNav={activeNav} />
         <main className="flex-1 bg-black p-6 overflow-auto">{children}</main>
       </div>
     </div>
