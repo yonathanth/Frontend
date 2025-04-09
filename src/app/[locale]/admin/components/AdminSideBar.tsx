@@ -20,8 +20,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ setActiveNav }) => {
     { name: "Financial Report", path: "/en/admin/financial-report" },
     { name: "Services", path: "/en/admin/services" },
     { name: "Requests", path: "/en/admin/subscription-request" },
-    { name: "Communications", path: "/en/admin/communications" },
-    { name: "Moderators", path: "/en/admin/moderators" },
+    // { name: "Communications", path: "/en/admin/communications" },
+    // { name: "Moderators", path: "/en/admin/moderators" },
   ];
 
   return (
