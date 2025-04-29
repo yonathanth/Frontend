@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Robi Fitness Hawassa",
   },
   description:
-    "Robi Fitness is a premier Health and Fitness Center in Hawassa, offering top-notch fitness services and facilities.",
+    "Robi Fitness is a Health and Fitness Center in Hawassa, offering top-notch fitness services and facilities.",
 };
 
 export default async function RootLayout({
